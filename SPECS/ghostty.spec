@@ -8,7 +8,7 @@ URL:            https://mitchellh.com/ghostty
 Source0:        %{name}-%{version}.tar.gz
 
 BuildRequires:  zig >= 0.13.0, zig < 0.14.0, pandoc
-Requires:       bzip2, fontconfig, freetype, gtk4, harfbuzz, pixman, zlib-ng
+Requires:       bzip2, fontconfig, freetype, gtk4, harfbuzz, pixman
 
 %global debug_package %{nil}
 
@@ -24,7 +24,7 @@ interactive applications.
 
 %build
 ZIG_GLOBAL_CACHE_DIR="$(pwd)/.zig-cache" ./nix/build-support/fetch-zig-cache.sh
-zig build --system "$(pwd)/.zig-cache/p" -fno-sys=oniguruma -Dcpu=baseline -Doptimize=ReleaseFast -Demit-docs 
+zig build --system "$(pwd)/.zig-cache/p" -fno-sys=oniguruma -Dcpu=baseline -Doptimize=ReleaseFast -Demit-docs -Dpie
 
 %install
 mkdir -p %{buildroot}%{_bindir}
@@ -34,23 +34,23 @@ cp -r zig-out/share/* %{buildroot}%{_datadir}
 
 %files
 
-%{_bindir}/ghostty
+# Our application
+%{_bindir}/%{name}
 
 # Themes and shell integration
 %docdir %{_datadir}/ghostty/doc
 
+# It's okay to own this directory
+%{_datadir}/ghostty/*
+
 # Executable files
 %defattr(0755, root, root) 
 %{_datadir}/ghostty/shell-integration/bash/bash-preexec.sh
+%{_datadir}/ghostty/shell-integration/bash/ghostty.bash
 %{_datadir}/ghostty/shell-integration/elvish/lib/ghostty-integration.elv
 %{_datadir}/ghostty/shell-integration/fish/vendor_conf.d/ghostty-shell-integration.fish
-%defattr(644, root, root)
-
-%{_datadir}/ghostty/shell-integration/zsh/.zshenv
 %{_datadir}/ghostty/shell-integration/zsh/ghostty-integration
-
-# It's okay to own this directory
-%{_datadir}/ghostty/*
+%defattr(644, root, root)
 
 %{_datadir}/fish/vendor_completions.d/ghostty.fish
 %{_datadir}/bat/syntaxes/ghostty.sublime-syntax
@@ -87,5 +87,5 @@ cp -r zig-out/share/* %{buildroot}%{_datadir}
 
 
 %changelog
-* Thu Nov 14 2024 Anthony <anthony.zh.oon@gmail.com> 0.0.1 Working on smooth
+* Thu Nov 14 2024 Anthony <anthony.zh.oon@gmail.com> Working on smooth 0.0.1-1
 - 
