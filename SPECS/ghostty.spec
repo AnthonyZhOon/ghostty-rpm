@@ -7,6 +7,8 @@ License:        Unknown
 URL:            https://mitchellh.com/ghostty
 Source0:        %{name}-%{version}.tar.gz
 
+# Compile with zig, which self-sources C/C++ compiling
+# Use pandoc to build docs
 BuildRequires:  zig >= 0.13.0, zig < 0.14.0, pandoc
 Requires:       bzip2, fontconfig, freetype, gtk4, harfbuzz, pixman
 
@@ -23,8 +25,9 @@ interactive applications.
 
 
 %build
+# I want to move this into a source step
 ZIG_GLOBAL_CACHE_DIR="$(pwd)/.zig-cache" ./nix/build-support/fetch-zig-cache.sh
-zig build --system "$(pwd)/.zig-cache/p" -fno-sys=oniguruma -Dcpu=baseline -Doptimize=ReleaseFast -Demit-docs -Dpie
+zig build --system "$(pwd)/.zig-cache/p" -fno-sys=oniguruma -Dcpu=baseline -Dtarget=native -Doptimize=ReleaseFast -Demit-docs -Dpie
 
 %install
 mkdir -p %{buildroot}%{_bindir}
@@ -43,15 +46,6 @@ cp -r zig-out/share/* %{buildroot}%{_datadir}
 # It's okay to own this directory
 %{_datadir}/ghostty/*
 
-# Executable files
-%defattr(0755, root, root) 
-%{_datadir}/ghostty/shell-integration/bash/bash-preexec.sh
-%{_datadir}/ghostty/shell-integration/bash/ghostty.bash
-%{_datadir}/ghostty/shell-integration/elvish/lib/ghostty-integration.elv
-%{_datadir}/ghostty/shell-integration/fish/vendor_conf.d/ghostty-shell-integration.fish
-%{_datadir}/ghostty/shell-integration/zsh/ghostty-integration
-%defattr(644, root, root)
-
 %{_datadir}/fish/vendor_completions.d/ghostty.fish
 %{_datadir}/bat/syntaxes/ghostty.sublime-syntax
 %{_datadir}/applications/com.mitchellh.ghostty.desktop
@@ -66,8 +60,8 @@ cp -r zig-out/share/* %{buildroot}%{_datadir}
 %{_datadir}/icons/hicolor/32x32@2/apps/com.mitchellh.ghostty.png
 %{_datadir}/icons/hicolor/512x512/apps/com.mitchellh.ghostty.png
  
-%{_datadir}/man/man1/ghostty.1.gz
-%{_datadir}/man/man5/ghostty.5.gz
+%{_mandir}/man1/ghostty.1*
+%{_mandir}/man5/ghostty.5*
 
 %{_datadir}/nvim/site/ftdetect/ghostty.vim
 %{_datadir}/nvim/site/ftplugin/ghostty.vim
