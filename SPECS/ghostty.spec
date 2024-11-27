@@ -27,13 +27,15 @@ interactive applications.
 %build
 # I want to move this into a source step
 ZIG_GLOBAL_CACHE_DIR="$(pwd)/.zig-cache" ./nix/build-support/fetch-zig-cache.sh
-zig build --system "$(pwd)/.zig-cache/p" -fno-sys=oniguruma -Dcpu=baseline -Dtarget=native -Doptimize=ReleaseFast -Demit-docs -Dpie
+zig build --system "$(pwd)/.zig-cache/p" -Dcpu=baseline -Dtarget=native -Doptimize=ReleaseFast -Demit-docs -Dpie
 
 %install
-mkdir -p %{buildroot}%{_bindir}
-mkdir -p %{buildroot}%{_datadir}
-cp -r zig-out/bin/* %{buildroot}%{_bindir}
-cp -r zig-out/share/* %{buildroot}%{_datadir}
+zig build --prefix %{buildroot}%{_prefix} --system "$(pwd)/.zig-cache/p" -Dcpu=baseline -Dtarget=native -Doptimize=ReleaseFast -Demit-docs -Dpie
+
+# mkdir -p %{buildroot}%{_bindir}
+# mkdir -p %{buildroot}%{_datadir}
+# cp -r zig-out/bin/* %{buildroot}%{_bindir}
+# cp -r zig-out/share/* %{buildroot}%{_datadir}
 
 %files
 
