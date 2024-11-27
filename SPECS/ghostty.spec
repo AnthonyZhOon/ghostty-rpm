@@ -9,8 +9,8 @@ Source0:        %{name}-%{version}.tar.gz
 
 # Compile with zig, which self-sources C/C++ compiling
 # Use pandoc to build docs
-BuildRequires:  zig >= 0.13.0, zig < 0.14.0, pandoc
-Requires:       bzip2, fontconfig, freetype, gtk4, harfbuzz, pixman
+BuildRequires:  zig >= 0.13.0, zig < 0.14.0
+# Requires:       bzip2, fontconfig, freetype, gtk4, harfbuzz, pixman
 
 %global debug_package %{nil}
 
