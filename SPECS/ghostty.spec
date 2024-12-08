@@ -1,6 +1,6 @@
 Name:           ghostty
-Version:        0.0.1
-Release:        1%{?dist}
+Version:        source
+Release:        %autorelease
 Summary:        A modern terminal emulator in Zig, source branch
 
 License:        Unknown
@@ -9,8 +9,7 @@ Source0:        %{name}-%{version}.tar.gz
 
 # Compile with zig, which self-sources C/C++ compiling
 # Use pandoc to build docs
-BuildRequires:  zig >= 0.13.0, zig < 0.14.0
-# Requires:       bzip2, fontconfig, freetype, gtk4, harfbuzz, pixman
+BuildRequires:  zig >= 0.13.0, zig < 0.14.0, pandoc
 
 %global debug_package %{nil}
 
@@ -30,22 +29,18 @@ ZIG_GLOBAL_CACHE_DIR="$(pwd)/.zig-cache" ./nix/build-support/fetch-zig-cache.sh
 zig build --system "$(pwd)/.zig-cache/p" -Dcpu=baseline -Dtarget=native -Doptimize=ReleaseFast -Demit-docs -Dpie
 
 %install
+# use install step of the build script
 zig build --prefix %{buildroot}%{_prefix} --system "$(pwd)/.zig-cache/p" -Dcpu=baseline -Dtarget=native -Doptimize=ReleaseFast -Demit-docs -Dpie
 
-# mkdir -p %{buildroot}%{_bindir}
-# mkdir -p %{buildroot}%{_datadir}
-# cp -r zig-out/bin/* %{buildroot}%{_bindir}
-# cp -r zig-out/share/* %{buildroot}%{_datadir}
 
 %files
 
 # Our application
 %{_bindir}/%{name}
 
-# Themes and shell integration
 %docdir %{_datadir}/ghostty/doc
 
-# It's okay to own this directory
+# It's okay to own this directory as it is created by ghostty
 %{_datadir}/ghostty/*
 
 %{_datadir}/fish/vendor_completions.d/ghostty.fish
@@ -83,5 +78,4 @@ zig build --prefix %{buildroot}%{_prefix} --system "$(pwd)/.zig-cache/p" -Dcpu=b
 
 
 %changelog
-* Thu Nov 14 2024 Anthony <anthony.zh.oon@gmail.com> Working on smooth 0.0.1-1
-- 
+%autochangelog
