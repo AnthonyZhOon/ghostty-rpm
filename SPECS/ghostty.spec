@@ -1,6 +1,6 @@
 Name:           ghostty
-Version:        source
-Release:        %autorelease
+Version:        0.1.0
+Release:        1%{?dist}
 Summary:        A modern terminal emulator in Zig, source branch
 
 License:        Unknown
