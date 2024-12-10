@@ -26,7 +26,7 @@ fetch() {
 create_tar() {
   cd "${SOURCES_DIR}"
   mkdir -p "$BUILD_NAME" # Silent if directory already exists
-  tar -xvf "${SOURCE_TAR}"
+  tar -xvf "${SOURCE_TAR}" -C "$BUILD_NAME"
   tar --create --file "${BUILD_NAME}.tar.gz" "${BUILD_NAME}" 
   cd "${CURR}"
 }
