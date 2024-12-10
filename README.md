@@ -3,14 +3,19 @@
 ## Build tools
 
 ``` bash
+# rpmbuild tools
 $ dnf install gcc rpm-build rpm-devel rpmlint make python bash coreutils diffutils patch rpmdevtools
+# Ghostty requires this version of zig docs are built with pandoc
+# Sources ar
+$ dnf install zig-0.13.0 pandoc
+# Fetch github releases using the CLI, releases are signed with `minisign`
+$ dnf install gh minisign
+# Do we need runtime link headers?
 ```
 
 ## Build Steps
 
-1. Retrieve source to compile a .tar.gz
-	- Verify against key
-2. Fetch zig package manager dependencies as a source
-3. Run `rpmbuild -bb SPECS/ghostty.spec`
+1. Create a directory at `~/rpmbuild` #TODO: Use `mock` for independent dirs... or copr with make...
+2. Run the fetch and build script `bash package_from_tip.sh`
 
-The completed .rpm file will be created under `RPM/<arch>/`
+The completed .rpm file will be created under `RPMS/<arch>/`
