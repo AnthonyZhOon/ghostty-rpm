@@ -73,6 +73,9 @@ zig build --prefix %{buildroot}%{_prefix} --system "$(pwd)/.zig-cache/p" -Dcpu=b
 %{_datadir}/terminfo/ghostty.terminfo
 %{_datadir}/terminfo/x/xterm-ghostty
 
+# KDE integration
+%{_datadir}/kio/servicemenus/com.mitchellh.ghostty.desktop
+
 # %license add-license-file-here
 
 
