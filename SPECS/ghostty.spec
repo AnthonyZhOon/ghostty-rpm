@@ -10,8 +10,10 @@ Source0:        %{name}-%{version}.tar.gz
 # Compile with zig, which self-sources C/C++ compiling
 # Use pandoc to build docs
 BuildRequires:  zig >= 0.13.0, zig < 0.14.0, pandoc
-
-%global debug_package %{nil}
+# We require -devel packages to provide pkg-config information to compile and link against dynamic libraries
+BuildRequires:  fontconfig-devel, freetype-devel, harfbuzz-devel, gtk4-devel, 
+# Choose zlib-ng over zlib-ng-compat as we don't require compatibility with 32-bit systems
+BuildRequires:  oniguruma-devel, glib2-devel, libadwaita-devel, libpng-devel, zlib-ng-devel
 
 %description
 Ghostty is a cross-platform, GPU-accelerated terminal emulator that aims to push
@@ -19,12 +21,15 @@ the boundaries of what is possible with a terminal emulator by exposing modern,
 opt-in features that enable CLI tool developers to build more feature rich,
 interactive applications.
 
+# Is this okay? Ghostty uses sentry to create coredumps for debugging
+%global debug_package %{nil}
+
 %prep
 %autosetup
 
 
 %build
-# I want to move this into a source step
+# I want to move this into the prep step as the fetch is part of the sources ideally
 ZIG_GLOBAL_CACHE_DIR="$(pwd)/.zig-cache" ./nix/build-support/fetch-zig-cache.sh
 zig build --system "$(pwd)/.zig-cache/p" -Dcpu=baseline -Dtarget=native -Doptimize=ReleaseFast -Demit-docs -Dpie
 
@@ -77,7 +82,6 @@ zig build --prefix %{buildroot}%{_prefix} --system "$(pwd)/.zig-cache/p" -Dcpu=b
 %{_datadir}/kio/servicemenus/com.mitchellh.ghostty.desktop
 
 # %license add-license-file-here
-
 
 
 %changelog
