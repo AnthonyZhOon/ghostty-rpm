@@ -14,6 +14,8 @@ BuildRequires:  zig >= 0.13.0, zig < 0.14.0, pandoc
 BuildRequires:  fontconfig-devel, freetype-devel, harfbuzz-devel, gtk4-devel, 
 # Choose zlib-ng over zlib-ng-compat as we don't require compatibility with 32-bit systems
 BuildRequires:  oniguruma-devel, glib2-devel, libadwaita-devel, libpng-devel, zlib-ng-devel
+# Testing requires hostname util
+BuildRequires:  hostname
 
 %description
 Ghostty is a cross-platform, GPU-accelerated terminal emulator that aims to push
@@ -29,13 +31,17 @@ interactive applications.
 
 
 %build
+%define _build_flags --system "$(pwd)/.zig-cache/p" -Dcpu=baseline -Dtarget=native -Doptimize=ReleaseFast -Demit-docs -Dpie
 # I want to move this into the prep step as the fetch is part of the sources ideally
 ZIG_GLOBAL_CACHE_DIR="$(pwd)/.zig-cache" ./nix/build-support/fetch-zig-cache.sh
-zig build --system "$(pwd)/.zig-cache/p" -Dcpu=baseline -Dtarget=native -Doptimize=ReleaseFast -Demit-docs -Dpie
+zig build %{_build_flags}
+
+%check
+zig build test %{_build_flags}
 
 %install
 # use install step of the build script
-zig build --prefix %{buildroot}%{_prefix} --system "$(pwd)/.zig-cache/p" -Dcpu=baseline -Dtarget=native -Doptimize=ReleaseFast -Demit-docs -Dpie
+zig build install --prefix %{buildroot}%{_prefix} %{_build_flags}
 
 
 %files
