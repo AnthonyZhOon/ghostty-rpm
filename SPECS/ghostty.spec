@@ -56,6 +56,7 @@ zig build install --prefix %{buildroot}%{_prefix} %{_build_flags}
 
 %{_datadir}/fish/vendor_completions.d/ghostty.fish
 %{_datadir}/bat/syntaxes/ghostty.sublime-syntax
+%{_datadir}/zsh/site-functions/_ghostty
 %{_datadir}/applications/com.mitchellh.ghostty.desktop
 
 %{_datadir}/icons/hicolor/128x128/apps/com.mitchellh.ghostty.png
