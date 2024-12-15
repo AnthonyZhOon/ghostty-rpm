@@ -10,10 +10,12 @@ Source0:        %{name}-%{version}.tar.gz
 # Compile with zig, which self-sources C/C++ compiling
 # Use pandoc to build docs
 BuildRequires:  zig >= 0.13.0, zig < 0.14.0, pandoc
-# We require -devel packages to provide pkg-config information to compile and link against dynamic libraries
-BuildRequires:  fontconfig-devel, freetype-devel, harfbuzz-devel, gtk4-devel, 
+
+# Dynamic linking dependencies
+BuildRequires:  pkgconfig(fontconfig), pkgconfig(freetype2), pkgconfig(harfbuzz), pkgconfig(gtk4), 
 # Choose zlib-ng over zlib-ng-compat as we don't require compatibility with 32-bit systems
-BuildRequires:  oniguruma-devel, glib2-devel, libadwaita-devel, libpng-devel, zlib-ng-devel
+BuildRequires:  pkgconfig(oniguruma), pkgconfig(glib-2.0), pkgconfig(libadwaita-1), pkgconfig(libpng), pkgconfig(zlib-ng)
+
 # Testing requires hostname util
 BuildRequires:  hostname
 
