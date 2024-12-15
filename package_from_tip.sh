@@ -37,8 +37,8 @@ build() {
   TEMPLATE_SPEC="./SPECS/ghostty.spec"
   THIS_SPEC="./SPECS/${BUILD_NAME}.spec"
 
-  sed -e "s|Version:.*|Version:\t${BUILD_VERSION}|" < "$TEMPLATE_SPEC" > "$THIS_SPEC"
-  rpmbuild -ba "$THIS_SPEC"
+  sed -e "s|Version:.*|Version:       ${BUILD_VERSION}|" < "$TEMPLATE_SPEC" > "$THIS_SPEC"
+  rpmbuild -bs "$THIS_SPEC"
 }
 
 main() {
