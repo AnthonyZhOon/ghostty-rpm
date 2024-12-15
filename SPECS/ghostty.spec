@@ -35,7 +35,8 @@ interactive applications.
 %build
 %define _build_flags --system "$(pwd)/.zig-cache/p" -Dcpu=baseline -Dtarget=native -Doptimize=ReleaseFast -Demit-docs -Dpie
 # I want to move this into the prep step as the fetch is part of the sources ideally
-ZIG_GLOBAL_CACHE_DIR="$(pwd)/.zig-cache" ./nix/build-support/fetch-zig-cache.sh
+ZIG_GLOBAL_CACHE_DIR="$(pwd)/.zig-cache" ./nix/build-support/fetch-zig-cache.sh # _REQUIRES_NETWORK
+
 zig build %{_build_flags}
 
 %check

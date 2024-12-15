@@ -20,13 +20,19 @@ $ dnf install gh minisign
 
 The completed .rpm file will be created under `RPMS/<arch>/`
 
-## Caveats
+Note: 
+  If I forgot, I might have left this in just producing the `.spec` file and `.src.rpm`
+  You can either `rpmbuild -bb SPECS/<GENERATED_SPEC_FILE>.spec` to build from the archive and spec
+  Or `rpmbuild --rebuild SRPMS/<GENERATED_SRC_RPM>.src.rpm` to build the `.rpm` from the `.src.rpm`
 
-Currently we perform a zig build --fetch inside our build step, this compromises reproducible builds
-for release packages but I think is acceptable for nightly builds.
+## Reproducible builds
 
-Packaging a release will have to perform this fetch when preparing the source tar, does this mean producing
-downstream archives of the source separate from the build step?
+As we need to fetch zig package manager dependencies that are statically linked as build dependencies,
+a network dependency can compromise reproducible builds.
 
-The fetch is used for zig package management which finds the pkg-config and static link source files
-as dependencies for the build step.
+The `bash package_from_tip.sh --without-network` flag produces a `.spec` file and `.src.rpm` file that can be built
+reliably in a network-isolated environment.
+
+This works by extracting the release, fetching the required depedencies into a cache directory inside the archive.
+Then producing the archive source.
+
