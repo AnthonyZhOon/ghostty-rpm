@@ -18,6 +18,8 @@ BuildRequires:  pkgconfig(oniguruma), pkgconfig(glib-2.0), pkgconfig(libadwaita-
 
 # Testing requires hostname util
 BuildRequires:  hostname
+# Deduplicate installed files using fdupes
+BuildRequires:  fdupes
 
 %description
 Ghostty is a cross-platform, GPU-accelerated terminal emulator that aims to push
@@ -44,8 +46,10 @@ zig build test %{_build_flags}
 
 %install
 # use install step of the build script
-zig build install --prefix %{buildroot}%{_prefix} %{_build_flags}
+zig build install --prefix %{buildroot}/%{_prefix} %{_build_flags}
 
+# Symlink duplicate files to save space https://en.opensuse.org/openSUSE:Packaging_Conventions_RPM_Macros#%fdupes
+%fdupes %{buildroot}/${_datadir}
 
 %files
 
@@ -57,11 +61,14 @@ zig build install --prefix %{buildroot}%{_prefix} %{_build_flags}
 # It's okay to own this directory as it is created by ghostty
 %{_datadir}/ghostty/*
 
+# Shell integrations
+%{_datadir}/bash-completion/completions/ghostty.bash
 %{_datadir}/fish/vendor_completions.d/ghostty.fish
 %{_datadir}/bat/syntaxes/ghostty.sublime-syntax
 %{_datadir}/zsh/site-functions/_ghostty
 %{_datadir}/applications/com.mitchellh.ghostty.desktop
 
+# Icons
 %{_datadir}/icons/hicolor/128x128/apps/com.mitchellh.ghostty.png
 %{_datadir}/icons/hicolor/128x128@2/apps/com.mitchellh.ghostty.png
 %{_datadir}/icons/hicolor/16x16/apps/com.mitchellh.ghostty.png
