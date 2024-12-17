@@ -26,7 +26,7 @@ fetch() {
 extract() {
   cd "$CURR"
   cd "${SOURCES_DIR}"
-  mkdir "$BUILD_NAME" || rm -r "$BUILD_NAME" && mkdir "$BUILD_NAME"  # Pretty safe deletion, don't store important files in SOURCES as we always generate what we need
+  mkdir "$BUILD_NAME" || rm -r "$BUILD_NAME" && mkdir -p "$BUILD_NAME"  # Pretty safe deletion, don't store important files in SOURCES as we always generate what we need
   tar -xvf "${SOURCE_TAR}" -C "$BUILD_NAME"
 }
 
