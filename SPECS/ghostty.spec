@@ -19,13 +19,14 @@ BuildRequires:  pkgconfig(fontconfig), pkgconfig(freetype2), pkgconfig(harfbuzz)
 BuildRequires:  pkgconfig(oniguruma), pkgconfig(glib-2.0), pkgconfig(libadwaita-1), pkgconfig(libpng), pkgconfig(zlib-ng)
 
 %if %{with use_system_simdutf}
-BuildRequires: pkgconfig(simdutf) >= 4.0.0
+BuildRequires: pkgconfig(simdutf) >= 4.0.9
 %endif
 
 # Testing requires hostname util
 BuildRequires:  hostname
-# Deduplicate installed files using fdupes
-BuildRequires:  fdupes
+# Deduplicate installed files using fdupes, validate .desktop spec compliance
+BuildRequires:  fdupes, desktop-file-utils
+
 
 %description
 Ghostty is a cross-platform, GPU-accelerated terminal emulator that aims to push
@@ -54,6 +55,7 @@ zig build %{_build_flags}
 
 
 %check
+desktop-file-validate %{buildroot}/%{_datadir}/applications/com.mitchellh.ghostty.desktop
 zig build test %{_build_flags}
 
 
