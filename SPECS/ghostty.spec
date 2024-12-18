@@ -7,6 +7,8 @@ License:        Unknown
 URL:            https://mitchellh.com/ghostty
 Source0:        %{name}-%{version}.tar.gz
 
+%bcond_with use_system_simdutf
+
 # Compile with zig, which self-sources C/C++ compiling
 # Use pandoc to build docs
 BuildRequires:  zig >= 0.13.0, zig < 0.14.0, pandoc
@@ -15,6 +17,10 @@ BuildRequires:  zig >= 0.13.0, zig < 0.14.0, pandoc
 BuildRequires:  pkgconfig(fontconfig), pkgconfig(freetype2), pkgconfig(harfbuzz), pkgconfig(gtk4), 
 # Choose zlib-ng over zlib-ng-compat as we don't require compatibility with 32-bit systems
 BuildRequires:  pkgconfig(oniguruma), pkgconfig(glib-2.0), pkgconfig(libadwaita-1), pkgconfig(libpng), pkgconfig(zlib-ng)
+
+%if %{with use_system_simdutf}
+BuildRequires: pkgconfig(simdutf) >= 4.0.0
+%endif
 
 # Testing requires hostname util
 BuildRequires:  hostname
@@ -35,14 +41,21 @@ interactive applications.
 
 
 %build
-%define _build_flags --system "$(pwd)/.zig-cache/p" -Dcpu=baseline -Dtarget=native -Doptimize=ReleaseFast -Demit-docs -Dpie
+%if %{with use_system_simdutf}
+%global _build_flags -fsys=simdutf --system "$(pwd)/.zig-cache/p" -Dcpu=baseline -Dtarget=native -Doptimize=ReleaseFast -Demit-docs -Dpie
+%else
+%global _build_flags --system "$(pwd)/.zig-cache/p" -Dcpu=baseline -Dtarget=native -Doptimize=ReleaseFast -Demit-docs -Dpie
+
+%endif
 # I want to move this into the prep step as the fetch is part of the sources ideally
 ZIG_GLOBAL_CACHE_DIR="$(pwd)/.zig-cache" ./nix/build-support/fetch-zig-cache.sh # _REQUIRES_NETWORK
 
 zig build %{_build_flags}
 
+
 %check
 zig build test %{_build_flags}
+
 
 %install
 # use install step of the build script
@@ -50,6 +63,7 @@ zig build install --prefix %{buildroot}/%{_prefix} %{_build_flags}
 
 # Symlink duplicate files to save space https://en.opensuse.org/openSUSE:Packaging_Conventions_RPM_Macros#%fdupes
 %fdupes %{buildroot}/${_datadir}
+
 
 %files
 
