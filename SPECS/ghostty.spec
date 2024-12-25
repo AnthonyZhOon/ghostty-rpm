@@ -8,6 +8,7 @@ URL:            https://mitchellh.com/ghostty
 Source0:        %{name}-%{version}.tar.gz
 
 %bcond_with use_system_simdutf
+%bcond_with refetch_zig_packages
 
 # Compile with zig, which self-sources C/C++ compiling
 # Use pandoc to build docs
@@ -49,8 +50,9 @@ interactive applications.
 
 %endif
 # I want to move this into the prep step as the fetch is part of the sources ideally
+%if %{with refetch_zig_packages}
 ZIG_GLOBAL_CACHE_DIR="$(pwd)/.zig-cache" ./nix/build-support/fetch-zig-cache.sh # _REQUIRES_NETWORK
-
+%endif
 zig build %{_build_flags}
 
 
