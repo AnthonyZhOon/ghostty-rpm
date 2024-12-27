@@ -8,25 +8,25 @@ set -x # Emit each command executed
 GHOSTTY_PUB_KEY='RWQlAjJC23149WL2sEpT/l0QKy7hMIFhYdQOFy0Z7z7PbneUgvlsnYcV' # From https://github.com/ghostty-org/ghostty/blob/main/PACKAGING.md
 UTC_DATE=$(date -u -I | sed "s|-||g") # UTC date in ISO8601 format without hyphens
 SOURCES_DIR='./SOURCES'
-SOURCE_VERSION='source'
+SOURCE_VERSION='v1.0.0'
 BUILD_VERSION="1.0.0" # RECONSIDER THIS ONE, I want a git commit on this
 # BUILD_VERSION="0.1.1" # RECONSIDER THIS ONE, I want a git commit on this
-SOURCE_NAME="ghostty-${SOURCE_VERSION}"
+SOURCE_NAME="${SOURCE_VERSION}"
 BUILD_NAME="ghostty-${BUILD_VERSION}"
 CURR=$(pwd)
 
 # Fetch source data and check signature
 fetch() {
   cd "$CURR"
-  gh release download tip -R ghostty-org/ghostty --dir "$SOURCES_DIR" --pattern '*.tar.gz*' --clobber
-  minisign -Vm "${SOURCES_DIR}/${SOURCE_NAME}.tar.gz" -P "$GHOSTTY_PUB_KEY"
+  wget -P "$SOURCES_DIR" "https://github.com/ghostty-org/ghostty/archive/refs/tags/${SOURCE_VERSION}.tar.gz"
+  # gh release download tip -R ghostty-org/ghostty --dir "$SOURCES_DIR" --pattern '*.tar.gz*' --clobber
+  # minisign -Vm "${SOURCES_DIR}/${SOURCE_NAME}.tar.gz" -P "$GHOSTTY_PUB_KEY"
 }
 
 extract() {
   cd "$CURR"
   cd "${SOURCES_DIR}"
   tar -xvf "${SOURCE_NAME}.tar.gz"
-  mv "${SOURCE_NAME}" "${BUILD_NAME}"
 }
 
 # Optional step to cache network dependencies
