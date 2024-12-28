@@ -1,23 +1,25 @@
 Name:           ghostty
-Version:        0.1.0
+Version:        1.0.0
 Release:        %autorelease
-Summary:        A modern terminal emulator in Zig, source branch
+Summary:        A modern, feature-rich terminal emulator in Zig
 
-License:        Unknown
+License:        MIT
 URL:            https://mitchellh.com/ghostty
-Source0:        %{name}-%{version}.tar.gz
+Source0:        https://release.files.ghostty.org/VERSION/ghostty-source.tar.gz
+Source1:        https://release.files.ghostty.org/VERSION/ghostty-source.tar.gz.minisig
 
 %bcond_with use_system_simdutf
-%bcond_with refetch_zig_packages
+%bcond_without fetch_zig_packages
 
 # Compile with zig, which self-sources C/C++ compiling
-# Use pandoc to build docs
-BuildRequires:  zig >= 0.13.0, zig < 0.14.0, pandoc
+# Use pandoc to build docs, minisig to checks signature
+BuildRequires:  zig >= 0.13.0, zig < 0.14.0, pandoc, minisign
 
 # Dynamic linking dependencies
 BuildRequires:  pkgconfig(fontconfig), pkgconfig(freetype2), pkgconfig(harfbuzz), pkgconfig(gtk4), 
 # Choose zlib-ng over zlib-ng-compat as we don't require compatibility with 32-bit systems
 BuildRequires:  pkgconfig(oniguruma), pkgconfig(glib-2.0), pkgconfig(libadwaita-1), pkgconfig(libpng), pkgconfig(zlib-ng)
+
 
 %if %{with use_system_simdutf}
 BuildRequires: pkgconfig(simdutf) >= 4.0.9
@@ -39,20 +41,24 @@ interactive applications.
 %global debug_package %{nil}
 
 %prep
-%autosetup
+# Check source signature with minisign pubkey at https://github.com/ghostty-org/ghostty/blob/main/PACKAGING.md
+%global pubkey RWQlAjJC23149WL2sEpT/l0QKy7hMIFhYdQOFy0Z7z7PbneUgvlsnYcV
+minisign -Vm %{SOURCE0} -x %{SOURCE1} -P %{pubkey}
+%setup -q -n ghostty-source
+
+%if %{with fetch_zig_packages}
+ZIG_GLOBAL_CACHE_DIR="/tmp/zig-cache" ./nix/build-support/fetch-zig-cache.sh # _REQUIRES_NETWORK
+%endif
 
 
 %build
 %if %{with use_system_simdutf}
-%global _build_flags -fsys=simdutf --system "$(pwd)/.zig-cache/p" -Dcpu=baseline -Dtarget=native -Doptimize=ReleaseFast -Demit-docs -Dpie
+%global _build_flags -fsys=simdutf --system "/tmp/zig-cache/p" -Dcpu=baseline -Dtarget=native -Doptimize=ReleaseFast -Demit-docs -Dpie
 %else
-%global _build_flags --system "$(pwd)/.zig-cache/p" -Dcpu=baseline -Dtarget=native -Doptimize=ReleaseFast -Demit-docs -Dpie
+%global _build_flags --system "/tmp/zig-cache/p" -Dcpu=baseline -Dtarget=native -Doptimize=ReleaseFast -Demit-docs -Dpie
 
 %endif
 # I want to move this into the prep step as the fetch is part of the sources ideally
-%if %{with refetch_zig_packages}
-ZIG_GLOBAL_CACHE_DIR="$(pwd)/.zig-cache" ./nix/build-support/fetch-zig-cache.sh # _REQUIRES_NETWORK
-%endif
 zig build %{_build_flags}
 
 
@@ -116,7 +122,7 @@ zig build install --prefix %{buildroot}/%{_prefix} %{_build_flags}
 # KDE integration
 %{_datadir}/kio/servicemenus/com.mitchellh.ghostty.desktop
 
-# %license add-license-file-here
+%license LICENSE
 
 
 %changelog
