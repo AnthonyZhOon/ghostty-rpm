@@ -1,9 +1,9 @@
-%bcond simdutf 1
 %bcond test 1
-
 # Fedora 40 doesn't have the required simdutf version
 %if 0%{?fedora} == 40
 %bcond simdutf 0
+%else
+%bcond simdutf 1
 %endif
 
 %global debug_package %{nil}
