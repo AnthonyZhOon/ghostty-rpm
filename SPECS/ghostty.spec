@@ -1,6 +1,6 @@
 Name:           ghostty
 Version:        1.0.0
-Release:        %autorelease
+Release:        2%{?dist}
 Summary:        A modern, feature-rich terminal emulator in Zig
 
 License:        MIT
