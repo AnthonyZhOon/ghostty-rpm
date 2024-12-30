@@ -88,7 +88,7 @@ ZIG_GLOBAL_CACHE_DIR="/tmp/offline-cache" ./nix/build-support/fetch-zig-cache.sh
 
 
 %build
-%global _build_flags %{?with_simdutf:-fsys=simdutf} --system "/tmp/offline-cache/p" -Dcpu=baseline -Doptimize=ReleaseFast
+%global _build_flags %{?with_simdutf:-fsys=simdutf} -Dversion-string=%{version} --system "/tmp/offline-cache/p" -Dcpu=baseline -Doptimize=ReleaseFast
 # I want to move this into the prep step as the fetch is part of the sources ideally
 zig build %{_build_flags}
 
