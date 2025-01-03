@@ -6,63 +6,100 @@
 %bcond simdutf 1
 %endif
 
+# Need to disable build from stripping debug
 %global debug_package %{nil}
 %global project_id          com.mitchellh.ghostty
-%global project_description Ghostty is a cross-platform, GPU-accelerated terminal emulator that aims to push \
-the boundaries of what is possible with a terminal emulator by exposing modern, \
-opt-in features that enable CLI tool developers to build more feature rich, \
-interactive applications.
+%global project_description %{expand:
+Ghostty is a cross-platform, GPU-accelerated terminal emulator that aims to push 
+the boundaries of what is possible with a terminal emulator by exposing modern, 
+opt-in features that enable CLI tool developers to build more feature rich, 
+interactive applications.}
+
+%global pubkey RWQlAjJC23149WL2sEpT/l0QKy7hMIFhYdQOFy0Z7z7PbneUgvlsnYcV
+%global build_flags %{shrink:
+  %{?with_simdutf:-fsys=simdutf} \
+   --system "/tmp/offline-cache/p" \
+   -Dcpu=baseline \
+   -Doptimize=ReleaseFast \
+   -Dversion-string=%{version}
+}
+
+# Performance issues and debug build banner in safe
+%global _zig_release_mode fast
 
 Name:           ghostty
-Version:        1.0.0
-Release:        4%{?dist}
+Version:        1.0.1
+Release:        1%{?dist}
 Summary:        A modern, feature-rich terminal emulator in Zig
 
 License:        MIT AND OFL-1.1
 URL:            https://ghostty.org
-Source0:        https://release.files.ghostty.org/%{version}/%{name}-source.tar.gz
-Source1:        https://release.files.ghostty.org/%{version}/%{name}-source.tar.gz.minisig
+Source0:        https://release.files.ghostty.org/%{version}/%{name}-%{version}.tar.gz
+Source1:        https://release.files.ghostty.org/%{version}/%{name}-%{version}.tar.gz.minisig
 
+ExclusiveArch: %{zig_arches}
 # Compile with zig, which bundles a C/C++ compiler
 # Use pandoc to build docs, minisign to check signature
-BuildRequires:  zig >= 0.13.0, zig < 0.14.0, pandoc, minisign
+BuildRequires:  (zig >= 0.13.0 with zig < 0.14.0~)
+BuildRequires:   pandoc
+BuildRequires:   minisign
+BuildRequires:   zig-rpm-macros
 
-# Choose zlib-ng over zlib-ng-compat as we don't require compatibility with 32-bit systems
-BuildRequires:  pkgconfig(fontconfig), pkgconfig(freetype2), pkgconfig(harfbuzz)
-BuildRequires:  pkgconfig(gtk4), pkgconfig(oniguruma), pkgconfig(glib-2.0),
-BuildRequires:  pkgconfig(libadwaita-1), pkgconfig(libpng), pkgconfig(zlib-ng)
-
-
+BuildRequires:  pkgconfig(fontconfig)
+BuildRequires:  pkgconfig(freetype2)
+BuildRequires:  pkgconfig(glib-2.0),
+BuildRequires:  pkgconfig(gtk4)
+BuildRequires:  pkgconfig(harfbuzz)
+BuildRequires:  pkgconfig(libadwaita-1)
+BuildRequires:  pkgconfig(libpng)
+BuildRequires:  pkgconfig(oniguruma)
 %if %{with simdutf}
-BuildRequires: pkgconfig(simdutf) >= 4.0.9
+BuildRequires: pkgconfig(simdutf) >= 5.2.8
 %endif
+BuildRequires:  pkgconfig(zlib-ng)
 
-# Deduplicate installed files using fdupes, validate .desktop spec compliance
-BuildRequires:  fdupes, desktop-file-utils
 
-# Testing requires hostname util
+# Validate desktop vile and deduplicate files according to lints + guidelines
+BuildRequires:  desktop-file-utils
+BuildRequires:  fdupes
+
 %if %{with test}
 BuildRequires: hostname
 %endif
 
 Requires: %{name}-terminfo = %{version}-%{release}
 
-# Static linked or compiled, referencing the build.zig.zon
-Provides:      bundled(font(CodeNewRoman)), bundled(font(CozetteVector))
-Provides:      bundled(font(Inconsolata)), bundled(font(JuliaMono))
-Provides:      bundled(font(JetBrainsMonoNerdFont)), bundled(font(JetBrainsMonoNoNF))
-Provides:      bundled(font(KawkabMono)), bundled(font(Lilex))
-Provides:      bundled(font(MonaspaceNeon)), bundled(font(NotoColorEmoji))
-Provides:      bundled(font(NotoEmoji))
+# Embedded fonts
+# see src/font/embedded.zig
+# Discovered with  `fc-query -f '%{fontversion}\n' ./CozetteVector.ttf | perl -E 'printf "%.3f\n", <>/65536.0'`
+Provides:      bundled(font(CodeNewRoman)) = 2.000
+Provides:      bundled(font(CozetteVector)) = 1.22.2
+Provides:      bundled(font(Inconsolata)) = 3.001
+Provides:      bundled(font(JetBrainsMonoNerdFont)) = 2.304
+Provides:      bundled(font(JetBrainsMonoNoNF)) = 2.304
+Provides:      bundled(font(JuliaMono)) = 0.055
+Provides:      bundled(font(KawkabMono)) = 1.000 # Version does not match known releases
+Provides:      bundled(font(Lilex)) = 2.200 
+Provides:      bundled(font(MonaspaceNeon)) = 1.000
+Provides:      bundled(font(NotoColorEmoji)) = 2.034
+Provides:      bundled(font(NotoEmoji)) = 1.002
+
+# More C bindings are bundled in ./pkgs which are for now developed as part of ghostty however they can be linked statically
 Provides:      bundled(glslang) = 14.2.0
+%if %{without simdutf}
+Provides:      bundled(simdutf) = 5.2.8
+%endif
 Provides:      bundled(spirv-cross) = 13.1.1
 
-# There are more build dependencies statically linked
-# listed in the build.zig.zon
+Provides:      bundled(zig(dude_the_builder/ziglyph)) = 0.13.0~gitb89d43d1e3fb01b6074bc1f7fc980324b04d26a5 # https://deps.files.ghostty.org/ziglyph-b89d43d1e3fb01b6074bc1f7fc980324b04d26a5.tar.gz
+Provides:      bundled(zig(mitchellh/libxev)) = 0~gitdb6a52bafadf00360e675fefa7926e8e6c0e9931 # https://github.com/mitchellh/libxev/archive/db6a52bafadf00360e675fefa7926e8e6c0e9931.tar.gz
+Provides:      bundled(zig(mitchellh/mach-glfw)) = 0~git37c2995f31abcf7e8378fba68ddcf4a3faa02de0 # https://github.com/mitchellh/mach-glfw/archive/37c2995f31abcf7e8378fba68ddcf4a3faa02de0.tar.gz
+Provides:      bundled(zig(mitchellh/zig-js)) = 0~gitd0b8b0a57c52fbc89f9d9fecba75ca29da7dd7d1 # https://github.com/mitchellh/zig-js/archive/d0b8b0a57c52fbc89f9d9fecba75ca29da7dd7d1.tar.gz
+Provides:      bundled(zig(mitchellh/zig-objc)) = 0~git9b8ba849b0f58fe207ecd6ab7c147af55b17556e # https://github.com/mitchellh/zig-objc/archive/9b8ba849b0f58fe207ecd6ab7c147af55b17556e.tar.gz
+Provides:      bundled(zig(natecraddock/zf)) = 0~gited99ca18b02dda052e20ba467e90b623c04690dd # git+https://github.com/natecraddock/zf/?ref=main#ed99ca18b02dda052e20ba467e90b623c04690dd
+Provides:      bundled(zig(rockorager/libvaxis)) = 0~git6d729a2dc3b934818dffe06d2ba3ce02841ed74b # git+https://github.com/rockorager/libvaxis/?ref=main#6d729a2dc3b934818dffe06d2ba3ce02841ed74b
+Provides:      bundled(zig(vancluever/z2d)) = 0.4.0 # git+https://github.com/vancluever/z2d?ref=v0.4.0#4638bb02a9dc41cc2fb811f092811f6a951c752a
 
-%if %{without simdutf}
-Provides:      bundled(simdutf) = 4.0.9
-%endif
 %description
 %{project_description}
 
@@ -80,26 +117,25 @@ Terminfo files for %{name}
 
 %prep
 # Check source signature with minisign pubkey at https://github.com/ghostty-org/ghostty/blob/main/PACKAGING.md
-%global pubkey RWQlAjJC23149WL2sEpT/l0QKy7hMIFhYdQOFy0Z7z7PbneUgvlsnYcV
 minisign -Vm %{SOURCE0} -x %{SOURCE1} -P %{pubkey}
-%setup -q -n %{name}-source
+%autosetup
 
 ZIG_GLOBAL_CACHE_DIR="/tmp/offline-cache" ./nix/build-support/fetch-zig-cache.sh # _REQUIRES_NETWORK
 
 
 %build
-%global _build_flags %{?with_simdutf:-fsys=simdutf} --system "/tmp/offline-cache/p" -Dcpu=baseline -Doptimize=ReleaseFast
 # I want to move this into the prep step as the fetch is part of the sources ideally
-zig build %{_build_flags}
+%{zig_build} %{build_flags}
 
 
 %install
 # use install step of the build script
-zig build install --prefix %{buildroot}/%{_prefix} %{_build_flags}
+%{zig_install} %{build_flags}
 %fdupes %{buildroot}/${_datadir}
 
 %check
 desktop-file-validate %{buildroot}/%{_datadir}/applications/%{project_id}.desktop
+%{buildroot}/%{_bindir}/%{name} --version
 
 %if %{with test}
 # These are currently unit tests for individual features in ghostty
