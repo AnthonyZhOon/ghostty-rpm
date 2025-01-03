@@ -74,11 +74,13 @@ Requires: %{name}-terminfo = %{version}-%{release}
 # Discovered with  `fc-query -f '%{fontversion}\n' ./CozetteVector.ttf | perl -E 'printf "%.3f\n", <>/65536.0'`
 Provides:      bundled(font(CodeNewRoman)) = 2.000
 Provides:      bundled(font(CozetteVector)) = 1.22.2
+Provides:      bundled(font(GeistMono)) = 1.2.0
 Provides:      bundled(font(Inconsolata)) = 3.001
 Provides:      bundled(font(JetBrainsMonoNerdFont)) = 2.304
 Provides:      bundled(font(JetBrainsMonoNoNF)) = 2.304
 Provides:      bundled(font(JuliaMono)) = 0.055
-Provides:      bundled(font(KawkabMono)) = 1.000 # Version does not match known releases
+# Version does not match known releases
+Provides:      bundled(font(KawkabMono)) = 1.000 
 Provides:      bundled(font(Lilex)) = 2.200 
 Provides:      bundled(font(MonaspaceNeon)) = 1.000
 Provides:      bundled(font(NotoColorEmoji)) = 2.034
