@@ -27,16 +27,17 @@ interactive applications.}
 # Performance issues and debug build banner in safe
 %global _zig_release_mode fast
 
-Name:           ghostty
-Version:        1.0.1
+Name:           ghostty-tip
+Version:        1.0.1+post
 Release:        1%{?dist}
 Summary:        A modern, feature-rich terminal emulator in Zig
 
 License:        MIT AND OFL-1.1
 URL:            https://ghostty.org
-Source0:        https://release.files.ghostty.org/%{version}/%{name}-%{version}.tar.gz
-Source1:        https://release.files.ghostty.org/%{version}/%{name}-%{version}.tar.gz.minisig
+Source0:        https://release.files.ghostty.org/tip/%{name}-source.tar.gz
+Source1:        https://release.files.ghostty.org/tip/%{name}-source.tar.gz.minisig
 
+Conflicts:      ghostty
 ExclusiveArch: %{zig_arches}
 # Compile with zig, which bundles a C/C++ compiler
 # Use pandoc to build docs, minisign to check signature
@@ -93,14 +94,22 @@ Provides:      bundled(simdutf) = 5.2.8
 %endif
 Provides:      bundled(spirv-cross) = 13.1.1
 
-Provides:      bundled(zig(dude_the_builder/ziglyph)) = 0.13.0~gitb89d43d1e3fb01b6074bc1f7fc980324b04d26a5 # https://deps.files.ghostty.org/ziglyph-b89d43d1e3fb01b6074bc1f7fc980324b04d26a5.tar.gz
-Provides:      bundled(zig(mitchellh/libxev)) = 0~gitdb6a52bafadf00360e675fefa7926e8e6c0e9931 # https://github.com/mitchellh/libxev/archive/db6a52bafadf00360e675fefa7926e8e6c0e9931.tar.gz
-Provides:      bundled(zig(mitchellh/mach-glfw)) = 0~git37c2995f31abcf7e8378fba68ddcf4a3faa02de0 # https://github.com/mitchellh/mach-glfw/archive/37c2995f31abcf7e8378fba68ddcf4a3faa02de0.tar.gz
-Provides:      bundled(zig(mitchellh/zig-js)) = 0~gitd0b8b0a57c52fbc89f9d9fecba75ca29da7dd7d1 # https://github.com/mitchellh/zig-js/archive/d0b8b0a57c52fbc89f9d9fecba75ca29da7dd7d1.tar.gz
-Provides:      bundled(zig(mitchellh/zig-objc)) = 0~git9b8ba849b0f58fe207ecd6ab7c147af55b17556e # https://github.com/mitchellh/zig-objc/archive/9b8ba849b0f58fe207ecd6ab7c147af55b17556e.tar.gz
-Provides:      bundled(zig(natecraddock/zf)) = 0~gited99ca18b02dda052e20ba467e90b623c04690dd # git+https://github.com/natecraddock/zf/?ref=main#ed99ca18b02dda052e20ba467e90b623c04690dd
-Provides:      bundled(zig(rockorager/libvaxis)) = 0~git6d729a2dc3b934818dffe06d2ba3ce02841ed74b # git+https://github.com/rockorager/libvaxis/?ref=main#6d729a2dc3b934818dffe06d2ba3ce02841ed74b
-Provides:      bundled(zig(vancluever/z2d)) = 0.4.0 # git+https://github.com/vancluever/z2d?ref=v0.4.0#4638bb02a9dc41cc2fb811f092811f6a951c752a
+# https://deps.files.ghostty.org/ziglyph-b89d43d1e3fb01b6074bc1f7fc980324b04d26a5.tar.gz
+Provides:      bundled(zig(dude_the_builder/ziglyph)) = 0.13.0~gitb89d43d1e3fb01b6074bc1f7fc980324b04d26a5 
+# https://github.com/mitchellh/libxev/archive/db6a52bafadf00360e675fefa7926e8e6c0e9931.tar.gz
+Provides:      bundled(zig(mitchellh/libxev)) = 0~gitdb6a52bafadf00360e675fefa7926e8e6c0e9931 
+# https://github.com/mitchellh/mach-glfw/archive/37c2995f31abcf7e8378fba68ddcf4a3faa02de0.tar.gz
+Provides:      bundled(zig(mitchellh/mach-glfw)) = 0~git37c2995f31abcf7e8378fba68ddcf4a3faa02de0 
+# https://github.com/mitchellh/zig-js/archive/d0b8b0a57c52fbc89f9d9fecba75ca29da7dd7d1.tar.gz
+Provides:      bundled(zig(mitchellh/zig-js)) = 0~gitd0b8b0a57c52fbc89f9d9fecba75ca29da7dd7d1 
+# https://github.com/mitchellh/zig-objc/archive/9b8ba849b0f58fe207ecd6ab7c147af55b17556e.tar.gz
+Provides:      bundled(zig(mitchellh/zig-objc)) = 0~git9b8ba849b0f58fe207ecd6ab7c147af55b17556e 
+# git+https://github.com/natecraddock/zf/?ref=main#ed99ca18b02dda052e20ba467e90b623c04690dd
+Provides:      bundled(zig(natecraddock/zf)) = 0~gited99ca18b02dda052e20ba467e90b623c04690dd 
+# git+https://github.com/rockorager/libvaxis/?ref=main#6d729a2dc3b934818dffe06d2ba3ce02841ed74b
+Provides:      bundled(zig(rockorager/libvaxis)) = 0~git6d729a2dc3b934818dffe06d2ba3ce02841ed74b 
+# git+https://github.com/vancluever/z2d?ref=v0.4.0#4638bb02a9dc41cc2fb811f092811f6a951c752a
+Provides:      bundled(zig(vancluever/z2d)) = 0.4.0 
 
 %description
 %{project_description}
