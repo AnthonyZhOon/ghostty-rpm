@@ -18,24 +18,24 @@ interactive applications.}
 %global pubkey RWQlAjJC23149WL2sEpT/l0QKy7hMIFhYdQOFy0Z7z7PbneUgvlsnYcV
 %global build_flags %{shrink:
   %{?with_simdutf:-fsys=simdutf} \
-   --system "/tmp/offline-cache/p" \
-   -Dcpu=baseline \
    -Doptimize=ReleaseFast \
    -Dversion-string=%{version}
 }
 
 # Performance issues and debug build banner in safe
 %global _zig_release_mode fast
+%global _zig_cache_dir /tmp/zig-cache
 
-Name:           ghostty-tip
+Name:           ghostty
 Version:        1.0.1+post
 Release:        1%{?dist}
 Summary:        A modern, feature-rich terminal emulator in Zig
 
 License:        MIT AND OFL-1.1
 URL:            https://ghostty.org
-Source0:        https://release.files.ghostty.org/tip/%{name}-source.tar.gz
-Source1:        https://release.files.ghostty.org/tip/%{name}-source.tar.gz.minisig
+
+Source0:        https://github.com/ghostty-org/ghostty/releases/download/tip/%{name}-source.tar.gz
+Source1:        https://github.com/ghostty-org/ghostty/releases/download/tip/%{name}-source.tar.gz.minisig
 
 Conflicts:      ghostty
 ExclusiveArch: %{zig_arches}
@@ -129,9 +129,9 @@ Terminfo files for %{name}
 %prep
 # Check source signature with minisign pubkey at https://github.com/ghostty-org/ghostty/blob/main/PACKAGING.md
 minisign -Vm %{SOURCE0} -x %{SOURCE1} -P %{pubkey}
-%autosetup
+%setup -q -n ghostty-source
 
-ZIG_GLOBAL_CACHE_DIR="/tmp/offline-cache" ./nix/build-support/fetch-zig-cache.sh # _REQUIRES_NETWORK
+ZIG_GLOBAL_CACHE_DIR=%{_zig_cache_dir} ./nix/build-support/fetch-zig-cache.sh # _REQUIRES_NETWORK
 
 
 %build
@@ -150,7 +150,7 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/%{project_id}.deskto
 
 %if %{with test}
 # These are currently unit tests for individual features in ghostty
-zig build test %{_build_flags}
+zig build test %{build_flags}
 %endif
 
 %files
