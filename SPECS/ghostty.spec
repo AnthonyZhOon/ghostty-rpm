@@ -71,7 +71,8 @@ BuildRequires: hostname
 Requires: %{name}-terminfo = %{version}-%{release}
 
 # Embedded fonts
-# see src/font/embedded.zig
+# see src/font/embedded.zig, most fonts are in source for tests and only
+# JetBrainsMono, Noto Color Emoji, and Noto Color are in the application.
 # Discovered with  `fc-query -f '%{fontversion}\n' ./CozetteVector.ttf | perl -E 'printf "%.3f\n", <>/65536.0'`
 Provides:      bundled(font(CodeNewRoman)) = 2.000
 Provides:      bundled(font(CozetteVector)) = 1.22.2
