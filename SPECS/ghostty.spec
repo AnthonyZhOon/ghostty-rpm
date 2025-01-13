@@ -1,4 +1,4 @@
-# To handle zig package management which builds a cache directory of its
+# To handle zig package management which requires a cache directory of its dependencies
 # build step with `zig fetch <url>`. We can instead download the archive
 # sources and do `zig fetch <path>` to populate the package cache offline
 %bcond test 1
@@ -71,7 +71,7 @@ interactive applications.}
 
 Name:           ghostty
 Version:        1.0.1
-Release:        1%{?dist}
+Release:        %autorelease
 Summary:        A modern, feature-rich terminal emulator in Zig
 
 # unbundled dependencies only require the in-tree pkg/* directory and use system integration
@@ -147,9 +147,6 @@ Source28:       https://github.com/mitchellh/zig-js/archive/%{zig_js_commit}/zig
 Source29:       https://deps.files.ghostty.org/fontconfig-%{fontconfig_version}.tar.gz
 # unbundling in process https://github.com/ghostty-org/ghostty/pull/4205
 Source30:       https://github.com/freetype/freetype/archive/refs/tags/VER-%{freetype_dash_version}.tar.gz#/freetype2-%{freetype_dash_version}.tar.gz
-
-# Source31:       https://github.com/harfbuzz/harfbuzz/archive/refs/tags/%{harfbuzz_version}/harfbuzz-%{harfbuzz_version}.tar.gz
-# Source32:       https://github.com/kkos/oniguruma/archive/refs/tags/v%{oniguruma_version}/oniguruma-%{oniguruma_version}.tar.gz
 
 ExclusiveArch: %{zig_arches}
 # Compile with zig, which bundles a C/C++ compiler
@@ -237,7 +234,7 @@ Terminfo files for %{name}
 # Check source signature with minisign pubkey at https://github.com/ghostty-org/ghostty/blob/main/PACKAGING.md
 minisign -Vm %{SOURCE0} -x %{SOURCE1} -P %{pubkey}
 %setup -q %{setup_args}
-# Put all packages in the cache
+# Put all packages in the cache using directory names after extracting archives
 
 %zig_fetch utfcpp-%{utfcpp_version}
 %zig_fetch iTerm2-Color-Schemes-%{iterm2_color_commit}
@@ -261,14 +258,12 @@ minisign -Vm %{SOURCE0} -x %{SOURCE1} -P %{pubkey}
 
 # Change to stubs after 1.0.1
 %zig_fetch fontconfig-%{fontconfig_version}
-#	mkdir -p %{_zig_cache_dir}/p/12201149afb3326c56c05bb0a577f54f76ac20deece63aa2f5cd6ff31a4fa4fcb3b7
 %zig_fetch freetype-VER-%{freetype_dash_version}
-#	mkdir -p %{_zig_cache_dir}/p/1220b81f6ecfb3fd222f76cf9106fecfa6554ab07ec7fdc4124b9bb063ae2adf969d 
 
 # stubbing some packages that don't need bundled sources
-#	%zig_fetch harfbuzz-%{harfbuzz_version}
+#	harfbuzz
 mkdir -p %{_zig_cache_dir}/p/1220b8588f106c996af10249bfa092c6fb2f35fbacb1505ef477a0b04a7dd1063122
-#	%zig_fetch oniguruma-%{oniguruma_version}
+#	oniguruma
 mkdir -p %{_zig_cache_dir}/p/1220c15e72eadd0d9085a8af134904d9a0f5dfcbed5f606ad60edc60ebeccd9706bb 
 #   libxml2
 mkdir -p %{_zig_cache_dir}/p/122032442d95c3b428ae8e526017fad881e7dc78eab4d558e9a58a80bfbd65a64f7d
