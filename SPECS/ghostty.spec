@@ -206,14 +206,14 @@ Provides:      bundled(simdutf) = 5.2.8
 Provides:      bundled(spirv-cross) = 13.1.1
 
 
-Provides:      bundled(zon(libvaxis)) = 0~git6d729a2dc3b934818dffe06d2ba3ce02841ed74b 
-Provides:      bundled(zon(ziglyph)) = 0~gitb89d43d1e3fb01b6074bc1f7fc980324b04d26a5 
-Provides:      bundled(zon(libxev)) = 0~gitdb6a52bafadf00360e675fefa7926e8e6c0e9931 
-Provides:      bundled(zon(mach-glfw)) = 0~git37c2995f31abcf7e8378fba68ddcf4a3faa02de0 
-Provides:      bundled(zon(zig-js)) = 0~gitd0b8b0a57c52fbc89f9d9fecba75ca29da7dd7d1 
-Provides:      bundled(zon(zig-objc)) = 0~git9b8ba849b0f58fe207ecd6ab7c147af55b17556e 
-Provides:      bundled(zon(zf)) = 0~gited99ca18b02dda052e20ba467e90b623c04690dd 
-Provides:      bundled(zon(z2d)) = 0.4.0 
+Provides:      bundled(libvaxis) = 0~git6d729a2dc3b934818dffe06d2ba3ce02841ed74b 
+Provides:      bundled(ziglyph) = 0~gitb89d43d1e3fb01b6074bc1f7fc980324b04d26a5 
+Provides:      bundled(libxev) = 0~gitdb6a52bafadf00360e675fefa7926e8e6c0e9931 
+Provides:      bundled(mach-glfw) = 0~git37c2995f31abcf7e8378fba68ddcf4a3faa02de0 
+Provides:      bundled(zig-js) = 0~gitd0b8b0a57c52fbc89f9d9fecba75ca29da7dd7d1 
+Provides:      bundled(zig-objc) = 0~git9b8ba849b0f58fe207ecd6ab7c147af55b17556e 
+Provides:      bundled(zf) = 0~gited99ca18b02dda052e20ba467e90b623c04690dd 
+Provides:      bundled(z2d) = 0.4.0 
 
 %description
 %{project_description}
