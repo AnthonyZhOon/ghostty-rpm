@@ -72,7 +72,7 @@ interactive applications.}
 Name:           ghostty
 Version:        1.0.2~tip
 Release:        %autorelease
-Summary:        A modern, feature-rich terminal emulator in Zig
+Summary:        A fast, feature-rich, and cross-platform terminal emulator in Zig
 
 # unbundled dependencies only require the in-tree pkg/* directory and use system integration
 # not requiring bundling the upstream source, their licenses are not included in this package
@@ -203,29 +203,25 @@ Provides:       bundled(font(MonaspaceNeon)) = 1.000
 Provides:       bundled(font(NotoColorEmoji)) = 2.034
 Provides:       bundled(font(NotoEmoji)) = 1.002
 
-# More C bindings are bundled in ./pkgs which are for now developed as part of ghostty however they can be linked statically
+# Statically linked dependencies
 Provides:       bundled(glslang) = 14.2.0
+Provides:       bundled(libvaxis) = 0~git6d729a2dc3b934818dffe06d2ba3ce02841ed74b
+Provides:       bundled(libxev) = 0~gitdb6a52bafadf00360e675fefa7926e8e6c0e9931
+Provides:       bundled(mach-glfw) = 0~git37c2995f31abcf7e8378fba68ddcf4a3faa02de0
+Provides:       bundled(pixels) = 0~git%{pixels_commit}
+Provides:       bundled(plasma-wayland-protocols) = 0~git%{plasma_wayland_protocols_commit}
 %if %{without simdutf}
 Provides:       bundled(simdutf) = 5.2.8
 %endif
 Provides:       bundled(spirv-cross) = 13.1.1
-
-
-Provides:       bundled(libvaxis) = 0~git6d729a2dc3b934818dffe06d2ba3ce02841ed74b 
-Provides:       bundled(ziglyph) = 0~gitb89d43d1e3fb01b6074bc1f7fc980324b04d26a5 
-Provides:       bundled(libxev) = 0~gitdb6a52bafadf00360e675fefa7926e8e6c0e9931 
-Provides:       bundled(mach-glfw) = 0~git37c2995f31abcf7e8378fba68ddcf4a3faa02de0 
-Provides:       bundled(zig-js) = 0~gitd0b8b0a57c52fbc89f9d9fecba75ca29da7dd7d1 
-Provides:       bundled(zig-objc) = 0~git9b8ba849b0f58fe207ecd6ab7c147af55b17556e 
-Provides:       bundled(zf) = 0~gited99ca18b02dda052e20ba467e90b623c04690dd 
-Provides:       bundled(z2d) = 0.4.0 
-
-# does not bundle freetype and fontconfig
-Provides:       bundled(zig-wayland) = 0~git%{zig_wayland_commit}
 Provides:       bundled(wayland) = 0~git%{wayland_commit}
 Provides:       bundled(wayland-protocols) = 0~git%{wayland_protocols_commit}
-Provides:       bundled(plasma-wayland-protocols) = 0~git%{plasma_wayland_protocols_commit}
-Provides:       bundled(pixels) = 0~git%{pixels_commit}
+Provides:       bundled(z2d) = 0.4.0
+Provides:       bundled(zf) = 0~gited99ca18b02dda052e20ba467e90b623c04690dd
+Provides:       bundled(zig-js) = 0~gitd0b8b0a57c52fbc89f9d9fecba75ca29da7dd7d1
+Provides:       bundled(ziglyph) = 0~gitb89d43d1e3fb01b6074bc1f7fc980324b04d26a5
+Provides:       bundled(zig-objc) = 0~git9b8ba849b0f58fe207ecd6ab7c147af55b17556e
+Provides:       bundled(zig-wayland) = 0~git%{zig_wayland_commit}
 
 %description
 %{project_description}
