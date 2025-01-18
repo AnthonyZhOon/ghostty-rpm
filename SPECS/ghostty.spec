@@ -51,17 +51,14 @@
    %{?with_simdutf:-fsys=simdutf} \
    -Dgtk-wayland=true \
    -Dgtk-x11=true \
-# tip builds don't include use the default tip version string
-#  -Dversion-string=%{version} \
    -Dstrip=false \
+#  -Dversion-string=%{version} \
 }
 
 # macro to provide setup args for bundled dependency sources
 %global setup_args %{lua for i = 10, 32 do print(" -a " .. i) end}
 %global stub_package() %{expand:mkdir -p %{_zig_cache_dir}/p/%1}
 
-# Need to disable build from stripping debug
-%global debug_package %{nil}
 %global project_id          com.mitchellh.ghostty
 %global project_description %{expand:
 Ghostty is a cross-platform, GPU-accelerated terminal emulator that aims to push 
