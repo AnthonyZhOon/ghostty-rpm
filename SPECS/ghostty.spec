@@ -57,7 +57,8 @@
 }
 
 # macro to provide setup args for bundled dependency sources
-%global setup_args %{lua for i = 10, 33 do print(" -a " .. i) end}
+%global setup_args %{lua for i = 10, 32 do print(" -a " .. i) end}
+%global stub_package() %{expand:mkdir -p %{_zig_cache_dir}/p/%1}
 
 # Need to disable build from stripping debug
 %global debug_package %{nil}
@@ -151,7 +152,6 @@ Source29:       https://codeberg.org/ifreund/zig-wayland/archive/%{zig_wayland_c
 Source30:       https://deps.files.ghostty.org/wayland-%{wayland_commit}.tar.gz
 Source31:       https://deps.files.ghostty.org/wayland-protocols-%{wayland_protocols_commit}.tar.gz
 Source32:       https://github.com/KDE/plasma-wayland-protocols/archive/%{plasma_wayland_protocols_commit}/plasma-wayland-protocols-%{plasma_wayland_protocols_commit}.tar.gz
-Source33:       https://github.com/make-github-pseudonymous-again/pixels/archive/%{pixels_commit}/pixels-%{pixels_commit}.tar.gz
 
 ExclusiveArch: %{zig_arches}
 # Compile with zig, which bundles a C/C++ compiler
@@ -208,7 +208,6 @@ Provides:       bundled(glslang) = 14.2.0
 Provides:       bundled(libvaxis) = 0~git6d729a2dc3b934818dffe06d2ba3ce02841ed74b
 Provides:       bundled(libxev) = 0~gitdb6a52bafadf00360e675fefa7926e8e6c0e9931
 Provides:       bundled(mach-glfw) = 0~git37c2995f31abcf7e8378fba68ddcf4a3faa02de0
-Provides:       bundled(pixels) = 0~git%{pixels_commit}
 Provides:       bundled(plasma-wayland-protocols) = 0~git%{plasma_wayland_protocols_commit}
 %if %{without simdutf}
 Provides:       bundled(simdutf) = 5.2.8
@@ -229,7 +228,7 @@ Provides:       bundled(zig-wayland) = 0~git%{zig_wayland_commit}
 %package terminfo
 Summary:       Terminfo for ghostty (xterm-ghostty)
 BuildArch:     noarch
-License:        MIT AND MIT-Modern-Variant AND Zlib AND curl AND MPL-2.0 AND HPND AND LicenseRef-Fedora-Public-Domain AND Unicode-DFS-2016 AND Unicode-3.0 AND BSL-1.0 AND Apache-2.0 AND BSD-2-Clause AND BSD-3-Clause AND BSD-4-Clause AND (FTL OR GPL-2.0-or-later) AND APSL-2.0 AND ClArtistic AND GPL-3.0-or-later AND (GPL-2.0-or-later WITH Autoconf-exception-generic) AND OFL-1.1 AND (WTFPL OR CC0-1.0)
+License:        MIT AND Apache-2.0 AND APSL-2.0 AND BSD-2-Clause AND BSD-3-Clause AND BSD-4-Clause AND BSL-1.0 AND ClArtistic AND curl AND (GPL-2.0-or-later WITH Autoconf-exception-generic) AND GPL-3.0-or-later AND LGPL-2.1 AND LicenseRef-Fedora-Public-Domain AND MPL-2.0 AND OFL-1.1 AND Unicode-3.0 AND (WTFPL OR CC0-1.0) AND License:        MIT AND (FTL OR GPL-2.0-or-later) AND (GPL-2.0-or-later WITH Autoconf-exception-generic) AND (WTFPL OR CC0-1.0) AND APSL-2.0 AND Apache-2.0     AND BSD-2-Clause AND BSD-3-Clause AND BSD-4-Clause AND BSL-1.0 AND ClArtistic AND GPL-3.0-or-later AND HPND AND LGPL-2.1 AND LicenseRef-Fedora-Public-Domain AND LicenseRef-Public-Domain AND MIT-Modern-Variant AND MPL-2.0 AND OFL-1.1 AND Unicode-3.0 AND Unicode-DFS-2016 AND Zlib) AND curl
 
 Requires:      ncurses-base
 
@@ -267,25 +266,27 @@ minisign -Vm %{SOURCE0} -x %{SOURCE1} -P %{pubkey}
 %zig_fetch wayland-main
 %zig_fetch wayland-protocols-main
 %zig_fetch plasma-wayland-protocols-%{plasma_wayland_protocols_commit}
-%zig_fetch pixels-%{pixels_commit}
 %zig_fetch zig-wayland
 
 
 # stubbing some packages that don't need bundled sources
+# Find hash by building without fetch which compares against build.zig.zon hash
 # freetype
-mkdir -p %{_zig_cache_dir}/p/1220b81f6ecfb3fd222f76cf9106fecfa6554ab07ec7fdc4124b9bb063ae2adf969d
+%stub_package '1220b81f6ecfb3fd222f76cf9106fecfa6554ab07ec7fdc4124b9bb063ae2adf969d'
 # fontconfig
-mkdir -p %{_zig_cache_dir}/p/12201149afb3326c56c05bb0a577f54f76ac20deece63aa2f5cd6ff31a4fa4fcb3b7
+%stub_package '12201149afb3326c56c05bb0a577f54f76ac20deece63aa2f5cd6ff31a4fa4fcb3b7'
 # harfbuzz
-mkdir -p %{_zig_cache_dir}/p/1220b8588f106c996af10249bfa092c6fb2f35fbacb1505ef477a0b04a7dd1063122
+%stub_package '1220b8588f106c996af10249bfa092c6fb2f35fbacb1505ef477a0b04a7dd1063122'
+# libxml2
+%stub_package '122032442d95c3b428ae8e526017fad881e7dc78eab4d558e9a58a80bfbd65a64f7d'
+# libpng
+%stub_package '1220aa013f0c83da3fb64ea6d327f9173fa008d10e28bc9349eac3463457723b1c66'
 #	oniguruma
-mkdir -p %{_zig_cache_dir}/p/1220c15e72eadd0d9085a8af134904d9a0f5dfcbed5f606ad60edc60ebeccd9706bb 
-#   libxml2
-mkdir -p %{_zig_cache_dir}/p/122032442d95c3b428ae8e526017fad881e7dc78eab4d558e9a58a80bfbd65a64f7d
-#   libpng
-mkdir -p %{_zig_cache_dir}/p/1220aa013f0c83da3fb64ea6d327f9173fa008d10e28bc9349eac3463457723b1c66
-#   zlib
-mkdir -p %{_zig_cache_dir}/p/1220fed0c74e1019b3ee29edae2051788b080cd96e90d56836eea857b0b966742efb
+%stub_package '1220c15e72eadd0d9085a8af134904d9a0f5dfcbed5f606ad60edc60ebeccd9706bb'
+# pixels (wuffs test)
+%stub_package '12207ff340169c7d40c570b4b6a97db614fe47e0d83b5801a932dcd44917424c8806'
+# zlib
+%stub_package '1220fed0c74e1019b3ee29edae2051788b080cd96e90d56836eea857b0b966742efb'
 
 %build
 # I want to move this into the prep step as the fetch is part of the sources ideally
