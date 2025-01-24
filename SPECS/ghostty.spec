@@ -10,7 +10,7 @@
 %endif
 
 %global utfcpp_version 4.0.5
-%global iterm2_color_commit 25cb3c3f52c7011cd8a599f8d144fc63f4409eb6
+%global iterm2_color_commit 0e23daf59234fc892cba949562d7bf69204594bb
 %global z2d_commit 4638bb02a9dc41cc2fb811f092811f6a951c752a
 %global spirv_cross_commit 476f384eb7d9e48613c45179e502a15ab95b6b49
 %global libvaxis_commit1 6d729a2dc3b934818dffe06d2ba3ce02841ed74b
@@ -278,7 +278,7 @@ minisign -Vm %{SOURCE0} -x %{SOURCE1} -P %{pubkey}
 %stub_package '122032442d95c3b428ae8e526017fad881e7dc78eab4d558e9a58a80bfbd65a64f7d'
 # libpng
 %stub_package '1220aa013f0c83da3fb64ea6d327f9173fa008d10e28bc9349eac3463457723b1c66'
-#	oniguruma
+# oniguruma
 %stub_package '1220c15e72eadd0d9085a8af134904d9a0f5dfcbed5f606ad60edc60ebeccd9706bb'
 # pixels (wuffs test)
 %stub_package '12207ff340169c7d40c570b4b6a97db614fe47e0d83b5801a932dcd44917424c8806'
@@ -286,12 +286,10 @@ minisign -Vm %{SOURCE0} -x %{SOURCE1} -P %{pubkey}
 %stub_package '1220fed0c74e1019b3ee29edae2051788b080cd96e90d56836eea857b0b966742efb'
 
 %build
-# I want to move this into the prep step as the fetch is part of the sources ideally
 %{zig_build} %{build_flags}
 
 
 %install
-# use install step of the build script
 %{zig_install} %{build_flags}
 %fdupes %{buildroot}/${_datadir}
 
@@ -324,14 +322,15 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/%{project_id}.deskto
 %{_datadir}/zsh/site-functions/_%{name}
 %{_datadir}/bat/syntaxes/%{name}.sublime-syntax
 
-# Consider separating and depending on vim/nvim
 %{_datadir}/nvim/site/{ftdetect,ftplugin,syntax,compiler}/%{name}.vim
 %{_datadir}/vim/vimfiles/{ftdetect,ftplugin,syntax,compiler}/%{name}.vim
 %docdir %{_datadir}/%{name}/doc
+%doc README.md
 
 %files terminfo
 %license LICENSE
 %{_datadir}/terminfo/g/%{name}
+# the terminfo/ghostty.termcap file is used as a sentinel to discover the GHOSTTY_RESOURCES_DIR
 %{_datadir}/terminfo/%{name}.term{cap,info}
 %{_datadir}/terminfo/x/xterm-%{name}
 
