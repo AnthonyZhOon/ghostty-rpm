@@ -18,7 +18,7 @@
 %global sentry_version 0.7.8
 %global glslang_version 14.2.0
 %global highway_version 1.1.0
-%global libxev_commit db6a52bafadf00360e675fefa7926e8e6c0e9931
+%global libxev_commit 31eed4e337fed7b0149319e5cdbb62b848c24fbd
 %global imgui_commit e391fe2e66eb1c96b1624ae8444dc64c23146ef4
 %global breakpad_commit b99f444ba5f6b98cac261cbb391d8766b34a5918
 %global wuffs_version 0.4.0-alpha.9
@@ -330,8 +330,7 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/%{project_id}.deskto
 %files terminfo
 %license LICENSE
 %{_datadir}/terminfo/g/%{name}
-# the terminfo/ghostty.termcap file is used as a sentinel to discover the GHOSTTY_RESOURCES_DIR
-%{_datadir}/terminfo/%{name}.term{cap,info}
+# the terminfo/x/xterm-ghostty file is used as a sentinel to discover the GHOSTTY_RESOURCES_DIR
 %{_datadir}/terminfo/x/xterm-%{name}
 
 
