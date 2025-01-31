@@ -52,7 +52,7 @@
    -Dgtk-wayland=true \
    -Dgtk-x11=true \
    -Dstrip=false \
-#  -Dversion-string=%{version} \
+   -Dversion-string=%{version} \
 }
 
 # macro to provide setup args for bundled dependency sources
@@ -68,7 +68,7 @@ interactive applications.}
 
 
 Name:           ghostty
-Version:        1.0.2~tip
+Version:        1.1.0
 Release:        %autorelease
 Summary:        A fast, feature-rich, and cross-platform terminal emulator in Zig
 
