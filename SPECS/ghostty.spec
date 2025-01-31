@@ -42,7 +42,7 @@
 
 # Performance issues and debug build banner in safe
 %global _zig_release_mode fast
-%global _zig_cache_dir %{builddir}/zig-cache
+%global _zig_cache_dir %{_builddir}/zig-cache
 
 # zig-rpm-macros is broken for system integration
 # fixed in zig-rpm-macros-0.13.0-4
