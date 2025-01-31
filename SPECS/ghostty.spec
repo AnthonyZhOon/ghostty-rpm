@@ -309,6 +309,7 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/%{project_id}.deskto
 %{_datadir}/%{name}/
 %{_datadir}/applications/%{project_id}.desktop
 # KDE integration
+%attr(644, -, -)
 %{_datadir}/kio/servicemenus/%{project_id}.desktop
 
 %{_datadir}/nautilus-python/extensions/%{project_id}.py
