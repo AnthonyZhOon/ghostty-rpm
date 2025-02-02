@@ -72,13 +72,12 @@ Version:        1.1.0
 Release:        %autorelease
 Summary:        A fast, feature-rich, and cross-platform terminal emulator in Zig
 
-# unbundled dependencies only require the in-tree pkg/* directory and use system integration
-# not requiring bundling the upstream source, their licenses are not included in this package
+# Licenses for the dependencies themselves and in-tree bindings under pkg/ (both dependency and bindings)
 #
 # ghostty:                    MIT
 # libvaxis:                   MIT
 # libxev:                     MIT
-# plasma-wayland-protocols    LGPL-2.1
+# plasma-wayland-protocols    LGPL-2.1-only
 # wayland                     MIT
 # wayland-protocols           MIT
 # zig-wayland                 MIT
@@ -90,15 +89,15 @@ Summary:        A fast, feature-rich, and cross-platform terminal emulator in Zi
 # ziglyph:                    MIT
 # zg:                         MIT
 # iTerm2-Color-Schemes:       MIT
-# pkg/fontconfig (unbundled): HPND AND LicenseRef-Fedora-Public-Domain AND Unicode-DFS-2016
-# pkg/harfbuzz (unbundled):   MIT-Modern-Variant
+# pkg/fontconfig:             MIT-Modern-Variant AND MIT AND HPND AND LicenseRef-Fedora-Public-Domain AND Unicode-DFS-2016
+# pkg/harfbuzz:               MIT-Modern-Variant
 # pkg/utfcpp:                 BSL-1.0
 # pkg/spirv-cross:            Apache-2.0
 # pkg/sentry:                 MIT
-# pkg/glslang:                BSD-2-Clause AND BSD-3-Clause AND GPL-3.0-or-later AND Apache-2.0
-# pkg/freetype (unbundled):   (FTL OR GPL-2.0-or-later) AND BSD-3-Clause AND MIT AND MIT-Modern-Variant AND LicenseRef-Public-Domain AND Zlib)
-# pkg/oniguruma (unbundled):  BSD-2-Clause
-# pkg/highway:                Apache-2.0
+# pkg/glslang:                BSD-2-Clause AND BSD-3-Clause AND GPL-3.0-or-later AND Apache-2.0 AND MIT
+# pkg/freetype:               (FTL OR GPL-2.0-or-later) AND (MIT or Apache-2.0)AND Zlib
+# pkg/oniguruma:              BSD-2-Clause
+# pkg/highway:                Apache-2.0 AND BSD-3-Clause
 # pkg/cimgui:                 MIT
 # pkg/breakpad:               MIT AND BSD-2-Clause AND BSD-3-Clause AND BSD-4-Clause AND Apache-2.0 AND MIT AND curl AND APSL-2.0 AND ClArtistic AND Unicode-3.0 AND LicenseRef-Fedora-Public-Domain AND (GPL-2.0-or-later WITH Autoconf-exception-generic)
 # pkg/wuffs:                  Apache-2.0 AND MIT
@@ -116,7 +115,7 @@ Summary:        A fast, feature-rich, and cross-platform terminal emulator in Zi
 # CozetteVector               MIT
 # NerdFont                    MIT AND OFL-1.1
 
-License:        MIT AND Apache-2.0 AND APSL-2.0 AND BSD-2-Clause AND BSD-3-Clause AND BSD-4-Clause AND BSL-1.0 AND ClArtistic AND curl AND (GPL-2.0-or-later WITH Autoconf-exception-generic) AND GPL-3.0-or-later AND LGPL-2.1 AND LicenseRef-Fedora-Public-Domain AND MPL-2.0 AND OFL-1.1 AND Unicode-3.0 AND (WTFPL OR CC0-1.0) AND License:        MIT AND (FTL OR GPL-2.0-or-later) AND (GPL-2.0-or-later WITH Autoconf-exception-generic) AND (WTFPL OR CC0-1.0) AND APSL-2.0 AND Apache-2.0     AND BSD-2-Clause AND BSD-3-Clause AND BSD-4-Clause AND BSL-1.0 AND ClArtistic AND GPL-3.0-or-later AND HPND AND LGPL-2.1 AND LicenseRef-Fedora-Public-Domain AND LicenseRef-Public-Domain AND MIT-Modern-Variant AND MPL-2.0 AND OFL-1.1 AND Unicode-3.0 AND Unicode-DFS-2016 AND Zlib) AND curl
+License: MIT AND Apache-2.0 AND APSL-2.0 AND BSD-2-Clause AND BSD-3-Clause AND BSD-4-Clause AND BSL-1.0 AND ClArtistic AND curl AND (FTL OR GPL-2.0-or-later) AND (GPL-2.0-or-later WITH Autoconf-exception-generic) AND GPL-3.0-or-later AND HPND AND LGPL-2.1-only AND LicenseRef-Fedora-Public-Domain AND MIT-Modern-Variant AND (MIT or Apache-2.0)AND Zlib AND MPL-2.0 AND OFL-1.1 AND Unicode-3.0 AND Unicode-DFS-2016 AND (WTFPL OR CC0-1.0)
 URL:            https://ghostty.org
 Source0:        https://github.com/ghostty-org/ghostty/releases/download/tip/ghostty-source.tar.gz
 Source1:        https://github.com/ghostty-org/ghostty/releases/download/tip/ghostty-source.tar.gz.minisig
