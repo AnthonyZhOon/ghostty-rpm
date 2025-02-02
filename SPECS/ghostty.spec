@@ -51,7 +51,7 @@
    %{?with_simdutf:-fsys=simdutf} \
    -Dgtk-wayland=true \
    -Dgtk-x11=true \
-   -Dsentry=true \
+   -Dsentry=false \
    -Dstrip=false \
    -Dversion-string=%{version} \
 }
