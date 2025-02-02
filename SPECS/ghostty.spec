@@ -51,6 +51,7 @@
    %{?with_simdutf:-fsys=simdutf} \
    -Dgtk-wayland=true \
    -Dgtk-x11=true \
+   -Dsentry=true \
    -Dstrip=false \
    -Dversion-string=%{version} \
 }
@@ -128,8 +129,7 @@ Source13:       https://github.com/KhronosGroup/SPIRV-Cross/archive/%{spirv_cros
 # zf requires a different version of libvaxis than ghostty
 Source14:       https://github.com/rockorager/libvaxis/archive/%{libvaxis_commit1}/libvaxis-%{libvaxis_commit1}.tar.gz
 Source15:       https://github.com/rockorager/libvaxis/archive/%{libvaxis_commit2}/libvaxis-%{libvaxis_commit2}.tar.gz
-# sentry is only used for catching errors and not for uploading
-# PR to disable it https://github.com/ghostty-org/ghostty/pull/3934
+# sentry is only used for catching error dumps and not for uploading
 Source16:       https://github.com/getsentry/sentry-native/archive/refs/tags/%{sentry_version}/sentry-native-%{sentry_version}.tar.gz
 Source17:       https://github.com/KhronosGroup/glslang/archive/refs/tags/%{glslang_version}/glslang-%{glslang_version}.tar.gz
 Source18:       https://github.com/google/highway/archive/refs/tags/%{highway_version}/highway-%{highway_version}.tar.gz
