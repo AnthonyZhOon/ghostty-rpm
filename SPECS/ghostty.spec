@@ -118,8 +118,9 @@ Summary:        A fast, feature-rich, and cross-platform terminal emulator in Zi
 
 License: MIT AND Apache-2.0 AND APSL-2.0 AND BSD-2-Clause AND BSD-3-Clause AND BSD-4-Clause AND BSL-1.0 AND ClArtistic AND curl AND (FTL OR GPL-2.0-or-later) AND (GPL-2.0-or-later WITH Autoconf-exception-generic) AND GPL-3.0-or-later AND HPND AND LGPL-2.1-only AND LicenseRef-Fedora-Public-Domain AND MIT-Modern-Variant AND (MIT or Apache-2.0)AND Zlib AND MPL-2.0 AND OFL-1.1 AND Unicode-3.0 AND Unicode-DFS-2016 AND (WTFPL OR CC0-1.0)
 URL:            https://ghostty.org
-Source0:        https://github.com/ghostty-org/ghostty/releases/download/tip/ghostty-source.tar.gz
-Source1:        https://github.com/ghostty-org/ghostty/releases/download/tip/ghostty-source.tar.gz.minisig
+
+Source0:        https://release.files.ghostty.org/%{version}/ghostty-%{version}.tar.gz
+Source1:        https://release.files.ghostty.org/%{version}/ghostty-%{version}.tar.gz.minisig
 
 # Take these archives from recursively searching URLs in build.zig.zon files, and build errors when not included
 Source10:       https://github.com/nemtrif/utfcpp/archive/refs/tags/v%{utfcpp_version}/utfcpp-%{utfcpp_version}.tar.gz
@@ -236,7 +237,7 @@ Terminfo files for %{name}
 %prep
 # Check source signature with minisign pubkey at https://github.com/ghostty-org/ghostty/blob/main/PACKAGING.md
 minisign -Vm %{SOURCE0} -x %{SOURCE1} -P %{pubkey}
-%setup -q -n ghostty-source %{setup_args}
+%setup -q %{setup_args}
 # Put all packages in the cache using directory names after extracting archives
 
 %zig_fetch utfcpp-%{utfcpp_version}
