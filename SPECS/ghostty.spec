@@ -10,7 +10,7 @@
 %endif
 
 %global utfcpp_version 4.0.5
-%global iterm2_color_commit 0e23daf59234fc892cba949562d7bf69204594bb
+%global iterm2_color_commit db227d159adc265818f2e898da0f70ef8d7b580e
 %global z2d_commit 4638bb02a9dc41cc2fb811f092811f6a951c752a
 %global spirv_cross_commit 476f384eb7d9e48613c45179e502a15ab95b6b49
 %global libvaxis_commit1 6d729a2dc3b934818dffe06d2ba3ce02841ed74b
@@ -311,7 +311,7 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/%{project_id}.deskto
 %attr(644, -, -)
 %{_datadir}/kio/servicemenus/%{project_id}.desktop
 
-%{_datadir}/nautilus-python/extensions/%{project_id}.py
+%{_datadir}/nautilus-python/extensions/%{name}.py
 
 %{_datadir}/icons/hicolor/*/apps/%{project_id}.png
 %{_mandir}/man{1,5}/%{name}.{1,5}*
