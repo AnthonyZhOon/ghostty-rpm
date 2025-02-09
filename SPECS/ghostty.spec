@@ -318,9 +318,9 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/%{project_id}.deskto
 %{_mandir}/man{1,5}/%{name}.{1,5}*
 
 # Shell completions
-%{_datadir}/bash-completion/completions/%{name}.bash
-%{_datadir}/fish/vendor_completions.d/%{name}.fish
-%{_datadir}/zsh/site-functions/_%{name}
+%{bash_completions_dir}/%{name}.bash
+%{fish_completions_dir}/%{name}.fish
+%{zsh_completions_dir}/_%{name}
 %{_datadir}/bat/syntaxes/%{name}.sublime-syntax
 
 %{_datadir}/nvim/site/{ftdetect,ftplugin,syntax,compiler}/%{name}.vim
