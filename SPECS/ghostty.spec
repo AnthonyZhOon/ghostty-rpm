@@ -116,7 +116,7 @@ Summary:        A fast, feature-rich, and cross-platform terminal emulator in Zi
 # CozetteVector               MIT
 # NerdFont                    MIT AND OFL-1.1
 
-License: MIT AND Apache-2.0 AND APSL-2.0 AND BSD-2-Clause AND BSD-3-Clause AND BSD-4-Clause AND BSL-1.0 AND ClArtistic AND curl AND (FTL OR GPL-2.0-or-later) AND (GPL-2.0-or-later WITH Autoconf-exception-generic) AND GPL-3.0-or-later AND HPND AND LGPL-2.1-only AND LicenseRef-Fedora-Public-Domain AND MIT-Modern-Variant AND (MIT or Apache-2.0)AND Zlib AND MPL-2.0 AND OFL-1.1 AND Unicode-3.0 AND Unicode-DFS-2016 AND (WTFPL OR CC0-1.0)
+License:        MIT AND Apache-2.0 AND APSL-2.0 AND BSD-2-Clause AND BSD-3-Clause AND BSD-4-Clause AND BSL-1.0 AND ClArtistic AND curl AND (FTL OR GPL-2.0-or-later) AND (GPL-2.0-or-later WITH Autoconf-exception-generic) AND GPL-3.0-or-later AND HPND AND LGPL-2.1-only AND LicenseRef-Fedora-Public-Domain AND MIT-Modern-Variant AND (MIT or Apache-2.0)AND Zlib AND MPL-2.0 AND OFL-1.1 AND Unicode-3.0 AND Unicode-DFS-2016 AND (WTFPL OR CC0-1.0)
 URL:            https://ghostty.org
 Source0:        https://github.com/ghostty-org/ghostty/releases/download/tip/ghostty-source.tar.gz
 Source1:        https://github.com/ghostty-org/ghostty/releases/download/tip/ghostty-source.tar.gz.minisig
@@ -180,6 +180,7 @@ BuildRequires:  hostname
 %endif
 
 Requires:       %{name}-terminfo = %{version}-%{release}
+Requires:       hicolor-icon-theme
 
 # Embedded fonts
 # see src/font/embedded.zig, most fonts are in source for tests and only
@@ -224,7 +225,7 @@ Provides:       bundled(zig-wayland) = 0~git%{zig_wayland_commit}
 %package terminfo
 Summary:       Terminfo for ghostty (xterm-ghostty)
 BuildArch:     noarch
-License:        MIT AND Apache-2.0 AND APSL-2.0 AND BSD-2-Clause AND BSD-3-Clause AND BSD-4-Clause AND BSL-1.0 AND ClArtistic AND curl AND (GPL-2.0-or-later WITH Autoconf-exception-generic) AND GPL-3.0-or-later AND LGPL-2.1 AND LicenseRef-Fedora-Public-Domain AND MPL-2.0 AND OFL-1.1 AND Unicode-3.0 AND (WTFPL OR CC0-1.0) AND License:        MIT AND (FTL OR GPL-2.0-or-later) AND (GPL-2.0-or-later WITH Autoconf-exception-generic) AND (WTFPL OR CC0-1.0) AND APSL-2.0 AND Apache-2.0     AND BSD-2-Clause AND BSD-3-Clause AND BSD-4-Clause AND BSL-1.0 AND ClArtistic AND GPL-3.0-or-later AND HPND AND LGPL-2.1 AND LicenseRef-Fedora-Public-Domain AND LicenseRef-Public-Domain AND MIT-Modern-Variant AND MPL-2.0 AND OFL-1.1 AND Unicode-3.0 AND Unicode-DFS-2016 AND Zlib) AND curl
+License:       MIT AND Apache-2.0 AND APSL-2.0 AND BSD-2-Clause AND BSD-3-Clause AND BSD-4-Clause AND BSL-1.0 AND ClArtistic AND curl AND (FTL OR GPL-2.0-or-later) AND (GPL-2.0-or-later WITH Autoconf-exception-generic) AND GPL-3.0-or-later AND HPND AND LGPL-2.1-only AND LicenseRef-Fedora-Public-Domain AND MIT-Modern-Variant AND (MIT or Apache-2.0)AND Zlib AND MPL-2.0 AND OFL-1.1 AND Unicode-3.0 AND Unicode-DFS-2016 AND (WTFPL OR CC0-1.0)
 
 Requires:      ncurses-base
 
@@ -320,8 +321,8 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/%{project_id}.deskto
 %{bash_completions_dir}/%{name}.bash
 %{fish_completions_dir}/%{name}.fish
 %{zsh_completions_dir}/_%{name}
-%{_datadir}/bat/syntaxes/%{name}.sublime-syntax
 
+%{_datadir}/bat/syntaxes/%{name}.sublime-syntax
 %{_datadir}/nvim/site/{ftdetect,ftplugin,syntax,compiler}/%{name}.vim
 %{_datadir}/vim/vimfiles/{ftdetect,ftplugin,syntax,compiler}/%{name}.vim
 %docdir %{_datadir}/%{name}/doc
