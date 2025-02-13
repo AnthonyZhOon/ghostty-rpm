@@ -27,6 +27,7 @@
 %global ziglyph_commit b89d43d1e3fb01b6074bc1f7fc980324b04d26a5
 %global zf_commit ed99ca18b02dda052e20ba467e90b623c04690dd
 %global zigimg_commit 3a667bdb3d7f0955a5a51c8468eac83210c1439e
+%global zig_gjobject_version 0.2.2
 %global zg_version 0.13.2
 %global zig_wayland_commit fbfe3b4ac0b472a27b1f1a67405436c58cbee12d 
 %global wayland_commit 9cb3d7aa9dc995ffafdbdef7ab86a949d0fb0e7d
@@ -51,13 +52,13 @@
    %{?with_simdutf:-fsys=simdutf} \
    -Dgtk-wayland=true \
    -Dgtk-x11=true \
-   -Dsentry=true \
+   -Dsentry=false \
    -Dstrip=false \
 #  -Dversion-string=%{version} \
 }
 
 # macro to provide setup args for bundled dependency sources
-%global setup_args %{lua for i = 10, 32 do print(" -a " .. i) end}
+%global setup_args %{lua for i = 10, 33 do print(" -a " .. i) end}
 %global stub_package() %{expand:mkdir -p %{_zig_cache_dir}/p/%1}
 
 %global project_id          com.mitchellh.ghostty
@@ -74,6 +75,8 @@ Release:        %autorelease
 Summary:        A fast, feature-rich, and cross-platform terminal emulator in Zig
 
 # Licenses for the dependencies themselves and in-tree bindings under pkg/ (both dependency and bindings)
+# Unbundled dependencies are stubbed and do not contain source code compiled into the result
+# These do not require their license added to a Fedora package
 #
 # ghostty:                    MIT
 # libvaxis:                   MIT
@@ -81,6 +84,7 @@ Summary:        A fast, feature-rich, and cross-platform terminal emulator in Zi
 # plasma-wayland-protocols    LGPL-2.1-only
 # wayland                     MIT
 # wayland-protocols           MIT
+# zig-gobject                 0BSD
 # zig-wayland                 MIT
 # zig-objc:                   MIT
 # zig-js:                     MIT
@@ -90,19 +94,21 @@ Summary:        A fast, feature-rich, and cross-platform terminal emulator in Zi
 # ziglyph:                    MIT
 # zg:                         MIT
 # iTerm2-Color-Schemes:       MIT
-# pkg/fontconfig:             MIT-Modern-Variant AND MIT AND HPND AND LicenseRef-Fedora-Public-Domain AND Unicode-DFS-2016
-# pkg/harfbuzz:               MIT-Modern-Variant
 # pkg/utfcpp:                 BSL-1.0
 # pkg/spirv-cross:            Apache-2.0
 # pkg/sentry:                 MIT
 # pkg/glslang:                BSD-2-Clause AND BSD-3-Clause AND GPL-3.0-or-later AND Apache-2.0 AND MIT
-# pkg/freetype:               (FTL OR GPL-2.0-or-later) AND (MIT or Apache-2.0)AND Zlib
-# pkg/oniguruma:              BSD-2-Clause
 # pkg/highway:                Apache-2.0 AND BSD-3-Clause
 # pkg/cimgui:                 MIT
 # pkg/breakpad:               MIT AND BSD-2-Clause AND BSD-3-Clause AND BSD-4-Clause AND Apache-2.0 AND MIT AND curl AND APSL-2.0 AND ClArtistic AND Unicode-3.0 AND LicenseRef-Fedora-Public-Domain AND (GPL-2.0-or-later WITH Autoconf-exception-generic)
 # pkg/wuffs:                  Apache-2.0 AND MIT
 # vendor/glad                 (WTFPL OR CC0-1.0) AND Apache-2.0    
+
+## unbundled
+# pkg/fontconfig:             MIT-Modern-Variant AND MIT AND HPND AND LicenseRef-Fedora-Public-Domain AND Unicode-DFS-2016
+# pkg/harfbuzz:               MIT-Modern-Variant
+# pkg/freetype:               (FTL OR GPL-2.0-or-later) AND (MIT or Apache-2.0)AND Zlib
+# pkg/oniguruma:              BSD-2-Clause
 
 # CodeNewRoman                OFL-1.1
 # GeistMono                   OFL-1.1
@@ -116,7 +122,7 @@ Summary:        A fast, feature-rich, and cross-platform terminal emulator in Zi
 # CozetteVector               MIT
 # NerdFont                    MIT AND OFL-1.1
 
-License:        MIT AND Apache-2.0 AND APSL-2.0 AND BSD-2-Clause AND BSD-3-Clause AND BSD-4-Clause AND BSL-1.0 AND ClArtistic AND curl AND (FTL OR GPL-2.0-or-later) AND (GPL-2.0-or-later WITH Autoconf-exception-generic) AND GPL-3.0-or-later AND HPND AND LGPL-2.1-only AND LicenseRef-Fedora-Public-Domain AND MIT-Modern-Variant AND (MIT or Apache-2.0)AND Zlib AND MPL-2.0 AND OFL-1.1 AND Unicode-3.0 AND Unicode-DFS-2016 AND (WTFPL OR CC0-1.0)
+License:        MIT AND 0BSD AND Apache-2.0 AND APSL-2.0 AND BSD-2-Clause AND BSD-3-Clause AND BSD-4-Clause AND BSL-1.0 AND ClArtistic AND curl AND (GPL-2.0-or-later WITH Autoconf-exception-generic) AND GPL-3.0-or-later AND LGPL-2.1-only AND LicenseRef-Fedora-Public-Domain AND MPL-2.0 AND OFL-1.1 AND Unicode-3.0 AND (WTFPL OR CC0-1.0)
 URL:            https://ghostty.org
 Source0:        https://github.com/ghostty-org/ghostty/releases/download/tip/ghostty-source.tar.gz
 Source1:        https://github.com/ghostty-org/ghostty/releases/download/tip/ghostty-source.tar.gz.minisig
@@ -143,11 +149,11 @@ Source25:       https://github.com/zigimg/zigimg/archive/%{zigimg_commit}/zigimg
 Source26:       https://codeberg.org/atman/zg/archive/v%{zg_version}.tar.gz#/zg-%{zg_version}.tar.gz
 Source27:       https://github.com/mitchellh/zig-objc/archive/%{zig_objc_commit}/zig-objc-%{zig_objc_commit}.tar.gz
 Source28:       https://github.com/mitchellh/zig-js/archive/%{zig_js_commit}/zig-js-%{zig_js_commit}.tar.gz
-
 Source29:       https://codeberg.org/ifreund/zig-wayland/archive/%{zig_wayland_commit}.tar.gz
 Source30:       https://deps.files.ghostty.org/wayland-%{wayland_commit}.tar.gz
 Source31:       https://deps.files.ghostty.org/wayland-protocols-%{wayland_protocols_commit}.tar.gz
 Source32:       https://github.com/KDE/plasma-wayland-protocols/archive/%{plasma_wayland_protocols_commit}/plasma-wayland-protocols-%{plasma_wayland_protocols_commit}.tar.gz
+Source33:       https://github.com/ianprime0509/zig-gobject/releases/download/v%{zig_gjobject_version}/bindings-gnome47.tar.zst
 
 ExclusiveArch: %{zig_arches}
 # Compile with zig, which bundles a C/C++ compiler
@@ -215,6 +221,7 @@ Provides:       bundled(wayland-protocols) = 0~git%{wayland_protocols_commit}
 Provides:       bundled(z2d) = 0.4.0
 Provides:       bundled(zf) = 0~gited99ca18b02dda052e20ba467e90b623c04690dd
 Provides:       bundled(zig-js) = 0~gitd0b8b0a57c52fbc89f9d9fecba75ca29da7dd7d1
+Provides:       bundled(zig-gobject) = %{zig_gjobject_version}
 Provides:       bundled(ziglyph) = 0~gitb89d43d1e3fb01b6074bc1f7fc980324b04d26a5
 Provides:       bundled(zig-objc) = 0~git9b8ba849b0f58fe207ecd6ab7c147af55b17556e
 Provides:       bundled(zig-wayland) = 0~git%{zig_wayland_commit}
@@ -223,16 +230,25 @@ Provides:       bundled(zig-wayland) = 0~git%{zig_wayland_commit}
 %{project_description}
 
 %package terminfo
-Summary:       Terminfo for ghostty (xterm-ghostty)
+Summary:       Terminfo for ghostty terminal
 BuildArch:     noarch
-License:       MIT AND Apache-2.0 AND APSL-2.0 AND BSD-2-Clause AND BSD-3-Clause AND BSD-4-Clause AND BSL-1.0 AND ClArtistic AND curl AND (FTL OR GPL-2.0-or-later) AND (GPL-2.0-or-later WITH Autoconf-exception-generic) AND GPL-3.0-or-later AND HPND AND LGPL-2.1-only AND LicenseRef-Fedora-Public-Domain AND MIT-Modern-Variant AND (MIT or Apache-2.0)AND Zlib AND MPL-2.0 AND OFL-1.1 AND Unicode-3.0 AND Unicode-DFS-2016 AND (WTFPL OR CC0-1.0)
 
 Requires:      ncurses-base
 
 %description terminfo
 %{project_description}
 
-Terminfo files for %{name}
+Terminfo files for %{name} terminal
+
+%package nautilus
+Summary:       Nautilus extension for %{name}
+BuildArch:     noarch
+
+Requires:      nautilus-python
+Requires:      %{name} = %{version}-%{release}
+
+%description nautilus
+Provides the 'Open in Ghostty' action to start the terminal.
 
 %prep
 # Check source signature with minisign pubkey at https://github.com/ghostty-org/ghostty/blob/main/PACKAGING.md
@@ -257,6 +273,8 @@ minisign -Vm %{SOURCE0} -x %{SOURCE1} -P %{pubkey}
 %zig_fetch zf-%{zf_commit}
 %zig_fetch zigimg-%{zigimg_commit}
 %zig_fetch zg
+#zig-gobject
+%zig_fetch bindings
 %zig_fetch zig-objc-%{zig_objc_commit}
 %zig_fetch zig-js-%{zig_js_commit}
 
@@ -312,7 +330,6 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/%{project_id}.deskto
 %attr(644, -, -)
 %{_datadir}/kio/servicemenus/%{project_id}.desktop
 
-%{_datadir}/nautilus-python/extensions/%{name}.py
 
 %{_datadir}/icons/hicolor/*/apps/%{project_id}.png
 %{_mandir}/man{1,5}/%{name}.{1,5}*
@@ -334,6 +351,9 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/%{project_id}.deskto
 # the terminfo/x/xterm-ghostty file is used as a sentinel to discover the GHOSTTY_RESOURCES_DIR
 %{_datadir}/terminfo/x/xterm-%{name}
 
+%files nautilus
+%license LICENSE
+%{_datadir}/nautilus-python/extensions/%{name}.py
 
 %changelog
 %autochangelog
