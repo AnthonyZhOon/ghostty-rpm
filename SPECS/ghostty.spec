@@ -147,12 +147,12 @@ Source22:       https://github.com/google/wuffs/archive/refs/tags/v%{wuffs_versi
 Source23:       https://deps.files.ghostty.org/ziglyph-%{ziglyph_commit}.tar.gz
 Source24:       https://github.com/natecraddock/zf/archive/%{zf_commit}/zf-%{zf_commit}.tar.gz
 Source25:       https://github.com/zigimg/zigimg/archive/%{zigimg_commit}/zigimg-%{zigimg_commit}.tar.gz
-Source26:       https://codeberg.org/atman/zg/archive/v%{zg_version}.tar.gz#/zg-%{zg_version}.tar.gz
+Source26:       https://codeberg.org/atman/zg/archive/v%{zg_version}.tar.gz
 Source27:       https://github.com/mitchellh/zig-objc/archive/%{zig_objc_commit}/zig-objc-%{zig_objc_commit}.tar.gz
 Source28:       https://github.com/mitchellh/zig-js/archive/%{zig_js_commit}/zig-js-%{zig_js_commit}.tar.gz
 Source29:       https://codeberg.org/ifreund/zig-wayland/archive/%{zig_wayland_commit}.tar.gz
-Source30:       https://deps.files.ghostty.org/wayland-%{wayland_commit}.tar.gz
-Source31:       https://deps.files.ghostty.org/wayland-protocols-%{wayland_protocols_commit}.tar.gz
+Source30:       https://gitlab.freedesktop.org/wayland/wayland/-/archive/%{wayland_commit}/wayland-%{wayland_commit}.tar.gz
+Source31:       https://gitlab.freedesktop.org/wayland/wayland-protocols/-/archive/%{wayland_protocols_commit}/wayland-protocols-%{wayland_protocols_commit}.tar.gz
 Source32:       https://github.com/KDE/plasma-wayland-protocols/archive/%{plasma_wayland_protocols_commit}/plasma-wayland-protocols-%{plasma_wayland_protocols_commit}.tar.gz
 Source33:       https://github.com/ianprime0509/zig-gobject/releases/download/v%{zig_gjobject_version}/bindings-gnome47.tar.zst
 
@@ -166,7 +166,7 @@ BuildRequires:  zig-rpm-macros
 
 BuildRequires:  pkgconfig(fontconfig)
 BuildRequires:  pkgconfig(freetype2)
-BuildRequires:  pkgconfig(glib-2.0),
+BuildRequires:  pkgconfig(glib-2.0)
 BuildRequires:  pkgconfig(gtk4)
 BuildRequires:  pkgconfig(harfbuzz)
 BuildRequires:  pkgconfig(libadwaita-1)
@@ -279,8 +279,8 @@ minisign -Vm %{SOURCE0} -x %{SOURCE1} -P %{pubkey}
 %zig_fetch zig-objc-%{zig_objc_commit}
 %zig_fetch zig-js-%{zig_js_commit}
 
-%zig_fetch wayland-main
-%zig_fetch wayland-protocols-main
+%zig_fetch wayland-%{wayland_commit}
+%zig_fetch wayland-protocols-%{wayland_protocols_commit}
 %zig_fetch plasma-wayland-protocols-%{plasma_wayland_protocols_commit}
 %zig_fetch zig-wayland
 
