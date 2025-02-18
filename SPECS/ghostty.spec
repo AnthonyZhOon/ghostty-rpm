@@ -122,11 +122,7 @@ Summary:        A fast, feature-rich, and cross-platform terminal emulator in Zi
 # CozetteVector               MIT
 # NerdFont                    MIT AND OFL-1.1
 
-<<<<<<< HEAD
 License:        MIT AND 0BSD AND Apache-2.0 AND BSD-2-Clause AND BSD-3-Clause AND BSL-1.0 AND GPL-3.0-or-later AND LGPL-2.1-only AND MPL-2.0 AND OFL-1.1 AND (WTFPL OR CC0-1.0)
-=======
-License:        MIT AND Apache-2.0 AND APSL-2.0 AND BSD-2-Clause AND BSD-3-Clause AND BSD-4-Clause AND BSL-1.0 AND ClArtistic AND curl AND (FTL OR GPL-2.0-or-later) AND (GPL-2.0-or-later WITH Autoconf-exception-generic) AND GPL-3.0-or-later AND HPND AND LGPL-2.1-only AND LicenseRef-Fedora-Public-Domain AND MIT-Modern-Variant AND (MIT or Apache-2.0)AND Zlib AND MPL-2.0 AND OFL-1.1 AND Unicode-3.0 AND Unicode-DFS-2016 AND (WTFPL OR CC0-1.0)
->>>>>>> 5b22ca1 (Require hicolor-icon-themes as owner of icon dirs)
 URL:            https://ghostty.org
 
 Source0:        https://release.files.ghostty.org/%{version}/ghostty-%{version}.tar.gz
