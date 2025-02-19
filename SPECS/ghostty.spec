@@ -10,10 +10,10 @@
 %endif
 
 %global utfcpp_version 4.0.5
-%global iterm2_color_commit db227d159adc265818f2e898da0f70ef8d7b580e
+%global iterm2_color_commit efb1bb1843500a751eb30afa58fe48a6bec8952c
 %global z2d_commit 4638bb02a9dc41cc2fb811f092811f6a951c752a
 %global spirv_cross_commit 476f384eb7d9e48613c45179e502a15ab95b6b49
-%global libvaxis_commit1 6d729a2dc3b934818dffe06d2ba3ce02841ed74b
+%global libvaxis_commit1 2237a7059eae99e9f132dd5acd1555e49d6c7d93
 %global libvaxis_commit2 dc0a228a5544988d4a920cfb40be9cd28db41423
 %global sentry_version 0.7.8
 %global glslang_version 14.2.0
