@@ -187,7 +187,11 @@ BuildRequires:  hostname
 
 Requires:       %{name}-terminfo = %{version}-%{release}
 Requires:       hicolor-icon-theme
-
+# System-wide add-ons for other applications
+# Can become reverse-dependencies later
+Suggests:       %{name}-syntax-vim = %{version}-%{release}
+Suggests:       %{name}-nautilus = %{version}-%{release}
+Suggests:       %{name}-dolphin = %{version}-%{release}
 # Embedded fonts
 # see src/font/embedded.zig, most fonts are in source for tests and only
 # JetBrainsMono, Noto Color Emoji, and Noto Color are in the application.
@@ -250,6 +254,26 @@ Requires:      %{name} = %{version}-%{release}
 %description nautilus
 Provides the 'Open in Ghostty' action to start the terminal.
 
+%package dolphin
+Summary:       Dolphin service menu add-on for %{name}
+BuildArch:     noarch
+
+Requires:      kf6-filesystem
+Requires:      %{name} = %{version}-%{release}
+
+%description dolphin
+Provides the 'Open in Ghostty' menu to start the terminal.
+
+%package syntax-vim
+Summary:       Vim syntax plugin for highlighting %{name}'s files
+BuildArch:     noarch
+
+Requires:      vim-filesystem
+Requires:      %{name} = %{version}-%{release}
+
+%description syntax-vim
+Provides vim syntax and filetype plugins to highlight Ghostty config and theme files
+
 %prep
 # Check source signature with minisign pubkey at https://github.com/ghostty-org/ghostty/blob/main/PACKAGING.md
 minisign -Vm %{SOURCE0} -x %{SOURCE1} -P %{pubkey}
@@ -311,6 +335,18 @@ minisign -Vm %{SOURCE0} -x %{SOURCE1} -P %{pubkey}
 %{zig_install} %{build_flags}
 %fdupes %{buildroot}/${_datadir}
 
+# remove unused files
+# Not supported by hicolor-icon-theme
+rm %{buildroot}/%{_datadir}/icons/hicolor/1024x1024/apps/%{project_id}.png
+# Does not support system-wide configuration
+rm %{buildroot}/%{_datadir}/bat/syntaxes/%{name}.sublime-syntax
+# It seems inappropriate to modify the /usr/share/nvim/runtime dir 
+# and the neovim package does not support a -filesystem package
+# installing under /usr/share/nvim/site will not enable the plugins without
+# adding to the nvim runtimepath variable. So not packaged
+rm %{buildroot}/%{_datadir}/nvim/site/{ftdetect,ftplugin,syntax,compiler}/%{name}.vim
+
+
 %check
 desktop-file-validate %{buildroot}/%{_datadir}/applications/%{project_id}.desktop
 %{buildroot}/%{_bindir}/%{name} --version
@@ -326,9 +362,6 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/%{project_id}.deskto
 # Owned directory containing themes, shell integration and docs
 %{_datadir}/%{name}/
 %{_datadir}/applications/%{project_id}.desktop
-# KDE integration
-%attr(644, -, -)
-%{_datadir}/kio/servicemenus/%{project_id}.desktop
 
 
 %{_datadir}/icons/hicolor/*/apps/%{project_id}.png
@@ -339,9 +372,6 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/%{project_id}.deskto
 %{fish_completions_dir}/%{name}.fish
 %{zsh_completions_dir}/_%{name}
 
-%{_datadir}/bat/syntaxes/%{name}.sublime-syntax
-%{_datadir}/nvim/site/{ftdetect,ftplugin,syntax,compiler}/%{name}.vim
-%{_datadir}/vim/vimfiles/{ftdetect,ftplugin,syntax,compiler}/%{name}.vim
 %docdir %{_datadir}/%{name}/doc
 %doc README.md
 
@@ -354,6 +384,15 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/%{project_id}.deskto
 %files nautilus
 %license LICENSE
 %{_datadir}/nautilus-python/extensions/%{name}.py
+
+%files syntax-vim
+%license LICENSE
+%{_datadir}/vim/vimfiles/{ftdetect,ftplugin,syntax,compiler}/%{name}.vim
+
+%files dolphin
+%license LICENSE
+%attr(644, -, -)
+%{_datadir}/kio/servicemenus/%{project_id}.desktop
 
 %changelog
 %autochangelog
