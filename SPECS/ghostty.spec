@@ -193,6 +193,7 @@ Requires:       hicolor-icon-theme
 Suggests:       %{name}-syntax-vim = %{version}-%{release}
 Suggests:       %{name}-nautilus = %{version}-%{release}
 Suggests:       %{name}-dolphin = %{version}-%{release}
+
 # Embedded fonts
 # see src/font/embedded.zig, most fonts are in source for tests and only
 # JetBrainsMono, Noto Color Emoji, and Noto Color are in the application.
