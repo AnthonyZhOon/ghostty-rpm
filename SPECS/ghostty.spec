@@ -17,7 +17,7 @@
 %global libvaxis_commit2 dc0a228a5544988d4a920cfb40be9cd28db41423
 %global glslang_version 14.2.0
 %global highway_version 1.1.0
-%global libxev_commit 31eed4e337fed7b0149319e5cdbb62b848c24fbd
+%global libxev_commit 8943932a668f338cb2c500f6e1a7396bacd8b55d
 %global imgui_commit e391fe2e66eb1c96b1624ae8444dc64c23146ef4
 %global wuffs_version 0.4.0-alpha.9
 %global ziglyph_commit b89d43d1e3fb01b6074bc1f7fc980324b04d26a5
@@ -156,10 +156,12 @@ ExclusiveArch: %{zig_arches}
 # Compile with zig, which bundles a C/C++ compiler
 # Use pandoc to build docs, minisign to check signature
 BuildRequires:  (zig >= 0.13.0 with zig < 0.14.0~)
-BuildRequires:  pandoc
-BuildRequires:  minisign
 BuildRequires:  zig-rpm-macros
 BuildRequires:  zig-srpm-macros
+BuildRequires:  pandoc
+BuildRequires:  minisign
+# Compile gtk blueprints for UI
+BuildRequires:  blueprint-compiler
 
 BuildRequires:  pkgconfig(fontconfig)
 BuildRequires:  pkgconfig(freetype2)
