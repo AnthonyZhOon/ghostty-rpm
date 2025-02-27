@@ -45,6 +45,9 @@
 %global _zig_release_mode fast
 %global _zig_cache_dir %{_builddir}/zig-cache
 
+%global deps_start 10
+%global deps_end 33
+
 # zig-rpm-macros is broken for system integration
 # fixed in zig-rpm-macros-0.13.0-4
 %global build_flags %{shrink:
@@ -57,8 +60,12 @@
    -Dversion-string=%{version} \
 }
 
-# macro to provide setup args for bundled dependency sources
-%global setup_args %{lua for i = 10, 33 do print(" -a " .. i) end}
+# populates the zig cache with dependency %1 through %2
+%define zig_extract() %{lua:
+   for i = arg[1]//1, arg[2]//1 do 
+      print(rpm.expand(macros.zig_fetch .. " \%{SOURCE" .. i .. "}") .. "\\n") 
+   end
+}
 %global stub_package() %{expand:mkdir -p %{_zig_cache_dir}/p/%1}
 
 %global project_id          com.mitchellh.ghostty
@@ -278,36 +285,10 @@ Provides vim syntax and filetype plugins to highlight Ghostty config and theme f
 %prep
 # Check source signature with minisign pubkey at https://github.com/ghostty-org/ghostty/blob/main/PACKAGING.md
 minisign -Vm %{SOURCE0} -x %{SOURCE1} -P %{pubkey}
-%setup -q %{setup_args}
-# Put all packages in the cache using directory names after extracting archives
-
-%zig_fetch utfcpp-%{utfcpp_version}
-%zig_fetch iTerm2-Color-Schemes-%{iterm2_color_commit}
-%zig_fetch z2d-%{z2d_commit}
-%zig_fetch SPIRV-Cross-%{spirv_cross_commit}
-%zig_fetch libvaxis-%{libvaxis_commit1}
-%zig_fetch libvaxis-%{libvaxis_commit2}
-%zig_fetch sentry-native-%{sentry_version}
-%zig_fetch glslang-%{glslang_version}
-%zig_fetch highway-%{highway_version}
-%zig_fetch libxev-%{libxev_commit}
-%zig_fetch imgui-%{imgui_commit}
-%zig_fetch breakpad-%{breakpad_commit}
-%zig_fetch wuffs-%{wuffs_version}
-%zig_fetch ziglyph
-%zig_fetch zf-%{zf_commit}
-%zig_fetch zigimg-%{zigimg_commit}
-%zig_fetch zg
-#zig-gobject
-%zig_fetch bindings
-%zig_fetch zig-objc-%{zig_objc_commit}
-%zig_fetch zig-js-%{zig_js_commit}
-
-%zig_fetch wayland-%{wayland_commit}
-%zig_fetch wayland-protocols-%{wayland_protocols_commit}
-%zig_fetch plasma-wayland-protocols-%{plasma_wayland_protocols_commit}
-%zig_fetch zig-wayland
-
+%setup -q
+# Fill zig_cache with dependency sources
+# zig will identify fetched dependencies at build time.
+%zig_extract %deps_start %deps_end
 
 # stubbing some packages that don't need bundled sources
 # Find hash by building without fetch which compares against build.zig.zon hash
