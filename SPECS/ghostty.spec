@@ -61,6 +61,7 @@
 }
 
 # populates the zig cache with dependency %1 through %2
+# As I understand, parametric lua macros must be expanded at use-site
 %define zig_extract() %{lua:
    for i = arg[1]//1, arg[2]//1 do 
       print(rpm.expand(macros.zig_fetch .. " \%{SOURCE" .. i .. "}") .. "\\n") 
@@ -286,7 +287,7 @@ Provides vim syntax and filetype plugins to highlight Ghostty config and theme f
 %prep
 # Check source signature with minisign pubkey at https://github.com/ghostty-org/ghostty/blob/main/PACKAGING.md
 minisign -Vm %{SOURCE0} -x %{SOURCE1} -P %{pubkey}
-%setup -q
+%setup -q -n ghostty-source
 # Fill zig_cache with dependency sources
 # zig will identify fetched dependencies at build time.
 %zig_extract %deps_start %deps_end
