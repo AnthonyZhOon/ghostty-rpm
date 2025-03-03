@@ -10,7 +10,7 @@
 %endif
 
 %global utfcpp_version 4.0.5
-%global iterm2_color_commit efb1bb1843500a751eb30afa58fe48a6bec8952c
+%global iterm2_color_commit e21d5ffd19605741d0e3e19d7c5a8c6c25648673
 %global z2d_commit 4638bb02a9dc41cc2fb811f092811f6a951c752a
 %global spirv_cross_commit 476f384eb7d9e48613c45179e502a15ab95b6b49
 %global libvaxis_commit1 2237a7059eae99e9f132dd5acd1555e49d6c7d93
