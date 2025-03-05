@@ -64,7 +64,7 @@
 # populates the zig cache with dependency %1 through %2
 %define zig_extract() %{lua:
    for i = arg[1]//1, arg[2]//1 do 
-      print(rpm.expand(macros.zig_fetch .. " \%{SOURCE" .. i .. "}") .. "\\n") 
+      print(rpm.expand("\%zig_fetch \%{SOURCE" .. i .. "}") .. "\\n") 
    end
 }
 %global stub_package() %{expand:mkdir -p %{_zig_cache_dir}/p/%1}
@@ -171,6 +171,7 @@ BuildRequires:  (zig >= 0.13.0 with zig < 0.14.0~)
 BuildRequires:  pandoc
 BuildRequires:  minisign
 BuildRequires:  zig-rpm-macros
+BuildRequires:  zig-srpm-macros
 
 BuildRequires:  pkgconfig(fontconfig)
 BuildRequires:  pkgconfig(freetype2)
