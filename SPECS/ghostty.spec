@@ -163,6 +163,8 @@ BuildRequires:  pandoc
 BuildRequires:  minisign
 # Compile gtk blueprints for UI
 BuildRequires:  blueprint-compiler
+BuildRequires:  zig-rpm-macros
+BuildRequires:  zig-srpm-macros
 
 BuildRequires:  pkgconfig(fontconfig)
 BuildRequires:  pkgconfig(freetype2)
