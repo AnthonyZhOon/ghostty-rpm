@@ -64,7 +64,7 @@
 # As I understand, parametric lua macros must be expanded at use-site
 %define zig_extract() %{lua:
    for i = arg[1]//1, arg[2]//1 do 
-      print(rpm.expand(macros.zig_fetch .. " \%{SOURCE" .. i .. "}") .. "\\n") 
+      print(rpm.expand("\%zig_fetch \%{SOURCE" .. i .. "}") .. "\\n") 
    end
 }
 %global stub_package() %{expand:mkdir -p %{_zig_cache_dir}/p/%1}
@@ -172,6 +172,8 @@ BuildRequires:  pandoc
 BuildRequires:  minisign
 # Compile gtk blueprints for UI
 BuildRequires:  blueprint-compiler
+BuildRequires:  zig-rpm-macros
+BuildRequires:  zig-srpm-macros
 
 BuildRequires:  pkgconfig(fontconfig)
 BuildRequires:  pkgconfig(freetype2)
