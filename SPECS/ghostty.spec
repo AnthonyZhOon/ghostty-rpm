@@ -4,7 +4,7 @@
 %bcond test 1
 # Fedora 40 doesn't have the required simdutf version
 # simdutf seems too new on fedora 42
-%if 0%{?fedora} == 40 || 0{?fedora} == 42
+%if 0%{?fedora} == 40 || 0%{?fedora} == 42
 %bcond simdutf 0
 %else
 %bcond simdutf 1
