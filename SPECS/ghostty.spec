@@ -113,8 +113,10 @@ Summary:        A fast, feature-rich, and cross-platform terminal emulator in Zi
 # vendor/glad                 (WTFPL OR CC0-1.0) AND Apache-2.0    
 
 ## unbundled
+# pkg/gtk4-layer-shell        MIT
 # pkg/fontconfig:             MIT-Modern-Variant AND MIT AND HPND AND LicenseRef-Fedora-Public-Domain AND Unicode-DFS-2016
 # pkg/harfbuzz:               MIT-Modern-Variant
+# pkg/libintl:                LGPL-2.1-only
 # pkg/freetype:               (FTL OR GPL-2.0-or-later) AND (MIT or Apache-2.0)AND Zlib
 # pkg/oniguruma:              BSD-2-Clause
 
@@ -172,6 +174,8 @@ BuildRequires:  pandoc
 BuildRequires:  minisign
 # Compile gtk blueprints for UI
 BuildRequires:  blueprint-compiler
+# Compiling locale files
+BuildRequires:  gettext
 BuildRequires:  zig-rpm-macros
 BuildRequires:  zig-srpm-macros
 
@@ -179,6 +183,7 @@ BuildRequires:  pkgconfig(fontconfig)
 BuildRequires:  pkgconfig(freetype2)
 BuildRequires:  pkgconfig(glib-2.0)
 BuildRequires:  pkgconfig(gtk4)
+BuildRequires:  pkgconfig(gtk4-layer-shell-0)
 BuildRequires:  pkgconfig(harfbuzz)
 BuildRequires:  pkgconfig(libadwaita-1)
 BuildRequires:  pkgconfig(libpng)
@@ -294,10 +299,14 @@ minisign -Vm %{SOURCE0} -x %{SOURCE1} -P %{pubkey}
 # zig will identify fetched dependencies at build time.
 %zig_extract %deps_start %deps_end
 
-# stubbing some packages that don't need bundled sources
+# stubbing some packages that don't need bundled sources as we opt to dynamic link
 # Find hash by building without fetch which compares against build.zig.zon hash
 # freetype
 %stub_package '1220b81f6ecfb3fd222f76cf9106fecfa6554ab07ec7fdc4124b9bb063ae2adf969d'
+# gettext
+%stub_package '1220f870c853529233ea64a108acaaa81f8d06d7ff4b66c76930be7d78d508aff7a2'
+# gtk4-layer-shell
+%stub_package '12203eff4829ad8afdd828eb323d48e5ba8dbb44d224e9e314d4ab1533c2bec20f4b'
 # fontconfig
 %stub_package '12201149afb3326c56c05bb0a577f54f76ac20deece63aa2f5cd6ff31a4fa4fcb3b7'
 # harfbuzz
@@ -357,6 +366,9 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/%{project_id}.deskto
 %{bash_completions_dir}/%{name}.bash
 %{fish_completions_dir}/%{name}.fish
 %{zsh_completions_dir}/_%{name}
+
+# Locale files
+%{_datadir}/locale/zh_CN.UTF-8/LC_MESSAGES/%{project_id}.mo
 
 %docdir %{_datadir}/%{name}/doc
 %doc README.md
