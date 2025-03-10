@@ -15,15 +15,11 @@
 %global spirv_cross_commit 476f384eb7d9e48613c45179e502a15ab95b6b49
 %global libvaxis_commit1 2237a7059eae99e9f132dd5acd1555e49d6c7d93
 %global libvaxis_commit2 dc0a228a5544988d4a920cfb40be9cd28db41423
-%global sentry_version 0.7.8
 %global glslang_version 14.2.0
 %global highway_version 1.1.0
 %global libxev_commit 8943932a668f338cb2c500f6e1a7396bacd8b55d
 %global imgui_commit e391fe2e66eb1c96b1624ae8444dc64c23146ef4
-%global breakpad_commit b99f444ba5f6b98cac261cbb391d8766b34a5918
 %global wuffs_version 0.4.0-alpha.9
-# 1x1 pixel jpegs for testing wuffs
-%global pixels_commit d843c2714d32e15b48b8d7eeb480295af537f877
 %global ziglyph_commit b89d43d1e3fb01b6074bc1f7fc980324b04d26a5
 %global zf_commit ed99ca18b02dda052e20ba467e90b623c04690dd
 %global zigimg_commit 3a667bdb3d7f0955a5a51c8468eac83210c1439e
@@ -33,11 +29,6 @@
 %global wayland_commit 9cb3d7aa9dc995ffafdbdef7ab86a949d0fb0e7d
 %global wayland_protocols_commit 258d8f88f2c8c25a830c6316f87d23ce1a0f12d9
 %global plasma_wayland_protocols_commit db525e8f9da548cffa2ac77618dd0fbe7f511b86
-# These aren't needed for compiling on linux however these are not marked as lazy
-# thus required to be valid zig packages.
-# Needed for build script switches in 1.0.1
-%global zig_objc_commit 9b8ba849b0f58fe207ecd6ab7c147af55b17556e
-%global zig_js_commit d0b8b0a57c52fbc89f9d9fecba75ca29da7dd7d1
 
 %global pubkey RWQlAjJC23149WL2sEpT/l0QKy7hMIFhYdQOFy0Z7z7PbneUgvlsnYcV
 
@@ -46,7 +37,7 @@
 %global _zig_cache_dir %{_builddir}/zig-cache
 
 %global deps_start 10
-%global deps_end 33
+%global deps_end 29
 
 # zig-rpm-macros is broken for system integration
 # fixed in zig-rpm-macros-0.13.0-4
@@ -94,8 +85,6 @@ Summary:        A fast, feature-rich, and cross-platform terminal emulator in Zi
 # wayland-protocols           MIT
 # zig-gobject                 0BSD
 # zig-wayland                 MIT
-# zig-objc:                   MIT
-# zig-js:                     MIT
 # z2d:                        MPL-2.0
 # zf:                         MIT
 # zigimg:                     MIT
@@ -104,13 +93,11 @@ Summary:        A fast, feature-rich, and cross-platform terminal emulator in Zi
 # iTerm2-Color-Schemes:       MIT
 # pkg/utfcpp:                 BSL-1.0
 # pkg/spirv-cross:            Apache-2.0
-# pkg/sentry:                 MIT
 # pkg/glslang:                BSD-2-Clause AND BSD-3-Clause AND GPL-3.0-or-later AND Apache-2.0 AND MIT
 # pkg/highway:                Apache-2.0 AND BSD-3-Clause
 # pkg/cimgui:                 MIT
-# pkg/breakpad:               MIT AND BSD-2-Clause AND BSD-3-Clause AND BSD-4-Clause AND Apache-2.0 AND MIT AND curl AND APSL-2.0 AND ClArtistic AND Unicode-3.0 AND LicenseRef-Fedora-Public-Domain AND (GPL-2.0-or-later WITH Autoconf-exception-generic)
 # pkg/wuffs:                  Apache-2.0 AND MIT
-# vendor/glad                 (WTFPL OR CC0-1.0) AND Apache-2.0    
+# vendor/glad                 (WTFPL OR CC0-1.0) AND Apache-2.0
 
 ## unbundled
 # pkg/gtk4-layer-shell        MIT
@@ -119,6 +106,10 @@ Summary:        A fast, feature-rich, and cross-platform terminal emulator in Zi
 # pkg/libintl:                LGPL-2.1-only
 # pkg/freetype:               (FTL OR GPL-2.0-or-later) AND (MIT or Apache-2.0)AND Zlib
 # pkg/oniguruma:              BSD-2-Clause
+# pkg/sentry:                 MIT
+# pkg/breakpad:               MIT AND BSD-2-Clause AND BSD-3-Clause AND BSD-4-Clause AND Apache-2.0 AND MIT AND curl AND APSL-2.0 AND ClArtistic AND Unicode-3.0 AND LicenseRef-Fedora-Public-Domain AND (GPL-2.0-or-later WITH Autoconf-exception-generic)
+# zig-objc:                   MIT
+# zig-js:                     MIT
 
 # CodeNewRoman                OFL-1.1
 # GeistMono                   OFL-1.1
@@ -132,7 +123,7 @@ Summary:        A fast, feature-rich, and cross-platform terminal emulator in Zi
 # CozetteVector               MIT
 # NerdFont                    MIT AND OFL-1.1
 
-License:        MIT AND 0BSD AND Apache-2.0 AND APSL-2.0 AND BSD-2-Clause AND BSD-3-Clause AND BSD-4-Clause AND BSL-1.0 AND ClArtistic AND curl AND (GPL-2.0-or-later WITH Autoconf-exception-generic) AND GPL-3.0-or-later AND LGPL-2.1-only AND LicenseRef-Fedora-Public-Domain AND MPL-2.0 AND OFL-1.1 AND Unicode-3.0 AND (WTFPL OR CC0-1.0)
+License:        MIT AND 0BSD AND Apache-2.0 AND BSD-2-Clause AND BSD-3-Clause AND BSL-1.0 AND GPL-3.0-or-later AND LGPL-2.1-only AND MPL-2.0 AND OFL-1.1 AND (WTFPL OR CC0-1.0)
 URL:            https://ghostty.org
 Source0:        https://github.com/ghostty-org/ghostty/releases/download/tip/ghostty-source.tar.gz
 Source1:        https://github.com/ghostty-org/ghostty/releases/download/tip/ghostty-source.tar.gz.minisig
@@ -146,24 +137,20 @@ Source13:       https://github.com/KhronosGroup/SPIRV-Cross/archive/%{spirv_cros
 Source14:       https://github.com/rockorager/libvaxis/archive/%{libvaxis_commit1}/libvaxis-%{libvaxis_commit1}.tar.gz
 Source15:       https://github.com/rockorager/libvaxis/archive/%{libvaxis_commit2}/libvaxis-%{libvaxis_commit2}.tar.gz
 # sentry is only used for catching error dumps and not for uploading
-Source16:       https://github.com/getsentry/sentry-native/archive/refs/tags/%{sentry_version}/sentry-native-%{sentry_version}.tar.gz
-Source17:       https://github.com/KhronosGroup/glslang/archive/refs/tags/%{glslang_version}/glslang-%{glslang_version}.tar.gz
-Source18:       https://github.com/google/highway/archive/refs/tags/%{highway_version}/highway-%{highway_version}.tar.gz
-Source19:       https://github.com/mitchellh/libxev/archive/%{libxev_commit}/libxev-%{libxev_commit}.tar.gz
-Source20:       https://github.com/ocornut/imgui/archive/%{imgui_commit}/imgui-%{imgui_commit}.tar.gz
-Source21:       https://github.com/getsentry/breakpad/archive/%{breakpad_commit}/sentry-breakpad-%{breakpad_commit}.tar.gz
-Source22:       https://github.com/google/wuffs/archive/refs/tags/v%{wuffs_version}/wuffs-%{wuffs_version}.tar.gz
-Source23:       https://deps.files.ghostty.org/ziglyph-%{ziglyph_commit}.tar.gz
-Source24:       https://github.com/natecraddock/zf/archive/%{zf_commit}/zf-%{zf_commit}.tar.gz
-Source25:       https://github.com/zigimg/zigimg/archive/%{zigimg_commit}/zigimg-%{zigimg_commit}.tar.gz
-Source26:       https://codeberg.org/atman/zg/archive/v%{zg_version}.tar.gz
-Source27:       https://github.com/mitchellh/zig-objc/archive/%{zig_objc_commit}/zig-objc-%{zig_objc_commit}.tar.gz
-Source28:       https://github.com/mitchellh/zig-js/archive/%{zig_js_commit}/zig-js-%{zig_js_commit}.tar.gz
-Source29:       https://codeberg.org/ifreund/zig-wayland/archive/%{zig_wayland_commit}.tar.gz
-Source30:       https://gitlab.freedesktop.org/wayland/wayland/-/archive/%{wayland_commit}/wayland-%{wayland_commit}.tar.gz
-Source31:       https://gitlab.freedesktop.org/wayland/wayland-protocols/-/archive/%{wayland_protocols_commit}/wayland-protocols-%{wayland_protocols_commit}.tar.gz
-Source32:       https://github.com/KDE/plasma-wayland-protocols/archive/%{plasma_wayland_protocols_commit}/plasma-wayland-protocols-%{plasma_wayland_protocols_commit}.tar.gz
-Source33:       https://github.com/ianprime0509/zig-gobject/releases/download/v%{zig_gjobject_version}/bindings-gnome47.tar.zst
+Source16:       https://github.com/KhronosGroup/glslang/archive/refs/tags/%{glslang_version}/glslang-%{glslang_version}.tar.gz
+Source17:       https://github.com/google/highway/archive/refs/tags/%{highway_version}/highway-%{highway_version}.tar.gz
+Source18:       https://github.com/mitchellh/libxev/archive/%{libxev_commit}/libxev-%{libxev_commit}.tar.gz
+Source19:       https://github.com/ocornut/imgui/archive/%{imgui_commit}/imgui-%{imgui_commit}.tar.gz
+Source20:       https://github.com/google/wuffs/archive/refs/tags/v%{wuffs_version}/wuffs-%{wuffs_version}.tar.gz
+Source21:       https://deps.files.ghostty.org/ziglyph-%{ziglyph_commit}.tar.gz
+Source22:       https://github.com/natecraddock/zf/archive/%{zf_commit}/zf-%{zf_commit}.tar.gz
+Source23:       https://github.com/zigimg/zigimg/archive/%{zigimg_commit}/zigimg-%{zigimg_commit}.tar.gz
+Source24:       https://codeberg.org/atman/zg/archive/v%{zg_version}.tar.gz
+Source25:       https://codeberg.org/ifreund/zig-wayland/archive/%{zig_wayland_commit}.tar.gz
+Source26:       https://gitlab.freedesktop.org/wayland/wayland/-/archive/%{wayland_commit}/wayland-%{wayland_commit}.tar.gz
+Source27:       https://gitlab.freedesktop.org/wayland/wayland-protocols/-/archive/%{wayland_protocols_commit}/wayland-protocols-%{wayland_protocols_commit}.tar.gz
+Source28:       https://github.com/KDE/plasma-wayland-protocols/archive/%{plasma_wayland_protocols_commit}/plasma-wayland-protocols-%{plasma_wayland_protocols_commit}.tar.gz
+Source29:       https://github.com/ianprime0509/zig-gobject/releases/download/v%{zig_gjobject_version}/bindings-gnome47.tar.zst
 
 ExclusiveArch: %{zig_arches}
 # Compile with zig, which bundles a C/C++ compiler
@@ -241,10 +228,9 @@ Provides:       bundled(wayland) = 0~git%{wayland_commit}
 Provides:       bundled(wayland-protocols) = 0~git%{wayland_protocols_commit}
 Provides:       bundled(z2d) = 0.4.0
 Provides:       bundled(zf) = 0~gited99ca18b02dda052e20ba467e90b623c04690dd
-Provides:       bundled(zig-js) = 0~gitd0b8b0a57c52fbc89f9d9fecba75ca29da7dd7d1
+Provides:       bundled(zg) = %{zg_version}
 Provides:       bundled(zig-gobject) = %{zig_gjobject_version}
 Provides:       bundled(ziglyph) = 0~gitb89d43d1e3fb01b6074bc1f7fc980324b04d26a5
-Provides:       bundled(zig-objc) = 0~git9b8ba849b0f58fe207ecd6ab7c147af55b17556e
 Provides:       bundled(zig-wayland) = 0~git%{zig_wayland_commit}
 
 %description
@@ -321,6 +307,14 @@ minisign -Vm %{SOURCE0} -x %{SOURCE1} -P %{pubkey}
 %stub_package '12207ff340169c7d40c570b4b6a97db614fe47e0d83b5801a932dcd44917424c8806'
 # zlib
 %stub_package '1220fed0c74e1019b3ee29edae2051788b080cd96e90d56836eea857b0b966742efb'
+# sentry
+%stub_package '1220446be831adcca918167647c06c7b825849fa3fba5f22da394667974537a9c77e'
+# breakpad
+%stub_package '12207fd37bb8251919c112dcdd8f616a491857b34a451f7e4486490077206dc2a1ea'
+# zig_js
+%stub_package '12205a66d423259567764fa0fc60c82be35365c21aeb76c5a7dc99698401f4f6fefc'
+# zig_objc
+%stub_package '1220e17e64ef0ef561b3e4b9f3a96a2494285f2ec31c097721bf8c8677ec4415c634'
 
 %build
 %{zig_build} %{build_flags}
