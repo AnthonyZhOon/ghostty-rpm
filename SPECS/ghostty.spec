@@ -100,16 +100,16 @@ Summary:        A fast, feature-rich, and cross-platform terminal emulator in Zi
 # vendor/glad                 (WTFPL OR CC0-1.0) AND Apache-2.0
 
 ## unbundled
-# pkg/gtk4-layer-shell        MIT
+# pkg/breakpad:               MIT AND BSD-2-Clause AND BSD-3-Clause AND BSD-4-Clause AND Apache-2.0 AND MIT AND curl AND APSL-2.0 AND ClArtistic AND Unicode-3.0 AND LicenseRef-Fedora-Public-Domain AND (GPL-2.0-or-later WITH Autoconf-exception-generic)
 # pkg/fontconfig:             MIT-Modern-Variant AND MIT AND HPND AND LicenseRef-Fedora-Public-Domain AND Unicode-DFS-2016
+# pkg/freetype:               (FTL OR GPL-2.0-or-later) AND (MIT or Apache-2.0)AND Zlib
+# pkg/gtk4-layer-shell        MIT
 # pkg/harfbuzz:               MIT-Modern-Variant
 # pkg/libintl:                LGPL-2.1-only
-# pkg/freetype:               (FTL OR GPL-2.0-or-later) AND (MIT or Apache-2.0)AND Zlib
 # pkg/oniguruma:              BSD-2-Clause
 # pkg/sentry:                 MIT
-# pkg/breakpad:               MIT AND BSD-2-Clause AND BSD-3-Clause AND BSD-4-Clause AND Apache-2.0 AND MIT AND curl AND APSL-2.0 AND ClArtistic AND Unicode-3.0 AND LicenseRef-Fedora-Public-Domain AND (GPL-2.0-or-later WITH Autoconf-exception-generic)
-# zig-objc:                   MIT
 # zig-js:                     MIT
+# zig-objc:                   MIT
 
 # CodeNewRoman                OFL-1.1
 # GeistMono                   OFL-1.1
@@ -219,13 +219,13 @@ Provides:       bundled(glslang) = 14.2.0
 Provides:       bundled(libvaxis) = 0~git6d729a2dc3b934818dffe06d2ba3ce02841ed74b
 Provides:       bundled(libxev) = 0~gitdb6a52bafadf00360e675fefa7926e8e6c0e9931
 Provides:       bundled(mach-glfw) = 0~git37c2995f31abcf7e8378fba68ddcf4a3faa02de0
-Provides:       bundled(plasma-wayland-protocols) = 0~git%{plasma_wayland_protocols_commit}
 %if %{without simdutf}
 Provides:       bundled(simdutf) = 5.2.8
 %endif
 Provides:       bundled(spirv-cross) = 13.1.1
 Provides:       bundled(wayland) = 0~git%{wayland_commit}
 Provides:       bundled(wayland-protocols) = 0~git%{wayland_protocols_commit}
+Provides:       bundled(plasma-wayland-protocols) = 0~git%{plasma_wayland_protocols_commit}
 Provides:       bundled(z2d) = 0.4.0
 Provides:       bundled(zf) = 0~gited99ca18b02dda052e20ba467e90b623c04690dd
 Provides:       bundled(zg) = %{zg_version}
