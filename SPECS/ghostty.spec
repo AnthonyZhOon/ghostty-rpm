@@ -8,24 +8,25 @@
 %else
 %bcond simdutf 1
 %endif
+%undefine _missing_build_ids_terminate_build
 
 %global utfcpp_version 4.0.5
-%global iterm2_color_commit e21d5ffd19605741d0e3e19d7c5a8c6c25648673
-%global z2d_commit 4638bb02a9dc41cc2fb811f092811f6a951c752a
+%global iterm2_color_commit e348884a00ef6c98dc837a873c4a867c9164d8a0
+%global z2d_commit 1e89605a624940c310c7a1d81b46a7c5c05919e3
 %global spirv_cross_commit 476f384eb7d9e48613c45179e502a15ab95b6b49
-%global libvaxis_commit1 2237a7059eae99e9f132dd5acd1555e49d6c7d93
+%global libvaxis_commit1 4182b7fa42f27cf14a71dbdb54cfd82c5c6e3447
 %global libvaxis_commit2 dc0a228a5544988d4a920cfb40be9cd28db41423
 %global glslang_version 14.2.0
-%global highway_version 1.1.0
-%global libxev_commit 8943932a668f338cb2c500f6e1a7396bacd8b55d
+%global highway_commit 66486a10623fa0d72fe91260f96c892e41aceb06
+%global libxev_commit 3df9337a9e84450a58a2c4af434ec1a036f7b494
 %global imgui_commit e391fe2e66eb1c96b1624ae8444dc64c23146ef4
 %global wuffs_version 0.4.0-alpha.9
 %global ziglyph_commit b89d43d1e3fb01b6074bc1f7fc980324b04d26a5
-%global zf_commit ed99ca18b02dda052e20ba467e90b623c04690dd
-%global zigimg_commit 3a667bdb3d7f0955a5a51c8468eac83210c1439e
+%global zf_commit 1039cf75447a8d5b8d481fedb914fe848d246276
+%global zigimg_commit 0ce4eca3560d5553b13263d6b6bb72e146dd43d0
 %global zig_gjobject_version 0.2.2
-%global zg_version 0.13.2
-%global zig_wayland_commit fbfe3b4ac0b472a27b1f1a67405436c58cbee12d 
+%global zg_commit 4a002763419a34d61dcbb1f415821b83b9bf8ddc
+%global zig_wayland_commit f3c5d503e540ada8cbcb056420de240af0c094f7 
 %global wayland_commit 9cb3d7aa9dc995ffafdbdef7ab86a949d0fb0e7d
 %global wayland_protocols_commit 258d8f88f2c8c25a830c6316f87d23ce1a0f12d9
 %global plasma_wayland_protocols_commit db525e8f9da548cffa2ac77618dd0fbe7f511b86
@@ -37,7 +38,7 @@
 %global _zig_cache_dir %{_builddir}/zig-cache
 
 %global deps_start 10
-%global deps_end 29
+%global deps_end 30
 
 # zig-rpm-macros is broken for system integration
 # fixed in zig-rpm-macros-0.13.0-4
@@ -139,19 +140,21 @@ Source14:       https://github.com/rockorager/libvaxis/archive/%{libvaxis_commit
 Source15:       https://github.com/rockorager/libvaxis/archive/%{libvaxis_commit2}/libvaxis-%{libvaxis_commit2}.tar.gz
 # sentry is only used for catching error dumps and not for uploading
 Source16:       https://github.com/KhronosGroup/glslang/archive/refs/tags/%{glslang_version}/glslang-%{glslang_version}.tar.gz
-Source17:       https://github.com/google/highway/archive/refs/tags/%{highway_version}/highway-%{highway_version}.tar.gz
+Source17:       https://github.com/google/highway/archive/%{highway_commit}/highway-%{highway_commit}.tar.gz
 Source18:       https://github.com/mitchellh/libxev/archive/%{libxev_commit}/libxev-%{libxev_commit}.tar.gz
 Source19:       https://github.com/ocornut/imgui/archive/%{imgui_commit}/imgui-%{imgui_commit}.tar.gz
 Source20:       https://github.com/google/wuffs/archive/refs/tags/v%{wuffs_version}/wuffs-%{wuffs_version}.tar.gz
 Source21:       https://deps.files.ghostty.org/ziglyph-%{ziglyph_commit}.tar.gz
 Source22:       https://github.com/natecraddock/zf/archive/%{zf_commit}/zf-%{zf_commit}.tar.gz
-Source23:       https://github.com/zigimg/zigimg/archive/%{zigimg_commit}/zigimg-%{zigimg_commit}.tar.gz
-Source24:       https://codeberg.org/atman/zg/archive/v%{zg_version}.tar.gz
+Source23:       https://github.com/TUSF/zigimg/archive/%{zigimg_commit}/zigimg-%{zigimg_commit}.tar.gz
+Source24:       https://codeberg.org/atman/zg/archive/%{zg_commit}.tar.gz
 Source25:       https://codeberg.org/ifreund/zig-wayland/archive/%{zig_wayland_commit}.tar.gz
 Source26:       https://gitlab.freedesktop.org/wayland/wayland/-/archive/%{wayland_commit}/wayland-%{wayland_commit}.tar.gz
 Source27:       https://gitlab.freedesktop.org/wayland/wayland-protocols/-/archive/%{wayland_protocols_commit}/wayland-protocols-%{wayland_protocols_commit}.tar.gz
 Source28:       https://github.com/KDE/plasma-wayland-protocols/archive/%{plasma_wayland_protocols_commit}/plasma-wayland-protocols-%{plasma_wayland_protocols_commit}.tar.gz
 Source29:       https://github.com/ianprime0509/zig-gobject/releases/download/v%{zig_gjobject_version}/bindings-gnome47.tar.zst
+# FIXME: Temporary fork until it is done in-tree
+Source30:       https://github.com/jcollie/ghostty-gobject/releases/download/0.14.0-2025-03-18-21-1/ghostty-gobject-0.14.0-2025-03-18-21-1.tar.zst
 
 ExclusiveArch: %{zig_arches}
 # Compile with zig, which bundles a C/C++ compiler
@@ -217,7 +220,8 @@ Provides:       bundled(font(NotoColorEmoji)) = 2.034
 Provides:       bundled(font(NotoEmoji)) = 1.002
 
 # Statically linked dependencies
-Provides:       bundled(glslang) = 14.2.0
+Provides:       bundled(glslang) = %{glslang_version}
+Provides:       bundled(highway) = 0~git%{highway_commit}
 Provides:       bundled(libvaxis) = 0~git6d729a2dc3b934818dffe06d2ba3ce02841ed74b
 Provides:       bundled(libxev) = 0~gitdb6a52bafadf00360e675fefa7926e8e6c0e9931
 Provides:       bundled(mach-glfw) = 0~git37c2995f31abcf7e8378fba68ddcf4a3faa02de0
@@ -228,11 +232,11 @@ Provides:       bundled(spirv-cross) = 13.1.1
 Provides:       bundled(wayland) = 0~git%{wayland_commit}
 Provides:       bundled(wayland-protocols) = 0~git%{wayland_protocols_commit}
 Provides:       bundled(plasma-wayland-protocols) = 0~git%{plasma_wayland_protocols_commit}
-Provides:       bundled(z2d) = 0.4.0
-Provides:       bundled(zf) = 0~gited99ca18b02dda052e20ba467e90b623c04690dd
-Provides:       bundled(zg) = %{zg_version}
+Provides:       bundled(z2d) = 0~git%{z2d_commit}
+Provides:       bundled(zf) = 0~git%{zf_commit}
+Provides:       bundled(zg) = 0~git%{zg_commit}
 Provides:       bundled(zig-gobject) = %{zig_gjobject_version}
-Provides:       bundled(ziglyph) = 0~gitb89d43d1e3fb01b6074bc1f7fc980324b04d26a5
+Provides:       bundled(ziglyph) = 0~git%{ziglyph_commit}
 Provides:       bundled(zig-wayland) = 0~git%{zig_wayland_commit}
 
 %description
@@ -286,41 +290,17 @@ Provides vim syntax and filetype plugins to highlight Ghostty config and theme f
 %prep
 # Check source signature with minisign pubkey at https://github.com/ghostty-org/ghostty/blob/main/PACKAGING.md
 minisign -Vm %{SOURCE0} -x %{SOURCE1} -P %{pubkey}
-%setup -q -n ghostty-source
+%setup -q -n ghostty-1.1.3-main+141b697
 # Fill zig_cache with dependency sources
 # zig will identify fetched dependencies at build time.
 %zig_extract %deps_start %deps_end
 
 # stubbing some packages that don't need bundled sources as we opt to dynamic link
 # Find hash by building without fetch which compares against build.zig.zon hash
-# freetype
-%stub_package '1220b81f6ecfb3fd222f76cf9106fecfa6554ab07ec7fdc4124b9bb063ae2adf969d'
-# gettext
-%stub_package '1220f870c853529233ea64a108acaaa81f8d06d7ff4b66c76930be7d78d508aff7a2'
-# gtk4-layer-shell
-%stub_package '12203eff4829ad8afdd828eb323d48e5ba8dbb44d224e9e314d4ab1533c2bec20f4b'
-# fontconfig
-%stub_package '12201149afb3326c56c05bb0a577f54f76ac20deece63aa2f5cd6ff31a4fa4fcb3b7'
-# harfbuzz
-%stub_package '1220b8588f106c996af10249bfa092c6fb2f35fbacb1505ef477a0b04a7dd1063122'
 # libxml2
-%stub_package '122032442d95c3b428ae8e526017fad881e7dc78eab4d558e9a58a80bfbd65a64f7d'
-# libpng
-%stub_package '1220aa013f0c83da3fb64ea6d327f9173fa008d10e28bc9349eac3463457723b1c66'
-# oniguruma
-%stub_package '1220c15e72eadd0d9085a8af134904d9a0f5dfcbed5f606ad60edc60ebeccd9706bb'
+%stub_package  N-V-__8AAG3RoQEyRC2Vw7Qoro5SYBf62IHn3HjqtNVY6aWK
 # pixels (wuffs test)
-%stub_package '12207ff340169c7d40c570b4b6a97db614fe47e0d83b5801a932dcd44917424c8806'
-# zlib
-%stub_package '1220fed0c74e1019b3ee29edae2051788b080cd96e90d56836eea857b0b966742efb'
-# sentry
-%stub_package '1220446be831adcca918167647c06c7b825849fa3fba5f22da394667974537a9c77e'
-# breakpad
-%stub_package '12207fd37bb8251919c112dcdd8f616a491857b34a451f7e4486490077206dc2a1ea'
-# zig_js
-%stub_package '12205a66d423259567764fa0fc60c82be35365c21aeb76c5a7dc99698401f4f6fefc'
-# zig_objc
-%stub_package '1220e17e64ef0ef561b3e4b9f3a96a2494285f2ec31c097721bf8c8677ec4415c634'
+%stub_package  N-V-__8AADYiAAB_80AWnH1AxXC0tql9thT-R-DYO1gBqTLc
 
 %build
 %{zig_build} %{build_flags}
@@ -373,7 +353,7 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/%{project_id}.deskto
 %{zsh_completions_dir}/_%{name}
 
 # Locale files
-%{_datadir}/locale/zh_CN.UTF-8/LC_MESSAGES/%{project_id}.mo
+%{_datadir}/locale/{zh_CN,de_DE,nb_NO}.UTF-8/LC_MESSAGES/%{project_id}.mo
 
 %docdir %{_datadir}/%{name}/doc
 %doc README.md
