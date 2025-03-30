@@ -11,10 +11,10 @@
 %undefine _missing_build_ids_terminate_build
 
 %global utfcpp_version 4.0.5
-%global iterm2_color_commit e348884a00ef6c98dc837a873c4a867c9164d8a0
+%global iterm2_color_commit 8650079de477e80a5983646e3e4d24cda1dbaefa
 %global z2d_commit 1e89605a624940c310c7a1d81b46a7c5c05919e3
 %global spirv_cross_commit 476f384eb7d9e48613c45179e502a15ab95b6b49
-%global libvaxis_commit1 4182b7fa42f27cf14a71dbdb54cfd82c5c6e3447
+%global libvaxis_commit1 1f41c121e8fc153d9ce8c6eb64b2bbab68ad7d23
 %global libvaxis_commit2 dc0a228a5544988d4a920cfb40be9cd28db41423
 %global glslang_version 14.2.0
 %global highway_commit 66486a10623fa0d72fe91260f96c892e41aceb06
@@ -22,8 +22,8 @@
 %global imgui_commit e391fe2e66eb1c96b1624ae8444dc64c23146ef4
 %global wuffs_version 0.4.0-alpha.9
 %global ziglyph_commit b89d43d1e3fb01b6074bc1f7fc980324b04d26a5
-%global zf_commit 1039cf75447a8d5b8d481fedb914fe848d246276
-%global zigimg_commit 0ce4eca3560d5553b13263d6b6bb72e146dd43d0
+%global zf_commit 7aacbe6d155d64d15937ca95ca6c014905eb531f
+%global zigimg_commit 31268548fe3276c0e95f318a6c0d2ab10565b58d
 %global zig_gjobject_version 0.2.2
 %global zg_commit 4a002763419a34d61dcbb1f415821b83b9bf8ddc
 %global zig_wayland_commit f3c5d503e540ada8cbcb056420de240af0c094f7 
@@ -70,7 +70,7 @@ interactive applications.}
 
 
 Name:           ghostty
-Version:        1.1.3~tip
+Version:        1.1.4~tip
 Release:        %autorelease
 Summary:        A fast, feature-rich, and cross-platform terminal emulator in Zig
 
@@ -158,6 +158,7 @@ Source30:       https://github.com/jcollie/ghostty-gobject/releases/download/0.1
 ExclusiveArch: %{zig_arches}
 # Compile with zig, which bundles a C/C++ compiler
 # Use pandoc to build docs, minisign to check signature
+# FIXME: Upgrade to zig 0.14.0
 BuildRequires:  (zig >= 0.13.0 with zig < 0.14.0~)
 BuildRequires:  zig-rpm-macros
 BuildRequires:  pandoc
@@ -284,7 +285,7 @@ Provides vim syntax and filetype plugins to highlight Ghostty config and theme f
 %prep
 # Check source signature with minisign pubkey at https://github.com/ghostty-org/ghostty/blob/main/PACKAGING.md
 minisign -Vm %{SOURCE0} -x %{SOURCE1} -P %{pubkey}
-%setup -q -n ghostty-1.1.3-main+141b697
+%setup -q -n ghostty-1.1.4-main+1067cd3
 # Fill zig_cache with dependency sources
 # zig will identify fetched dependencies at build time.
 %zig_extract %deps_start %deps_end
@@ -342,7 +343,7 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/%{project_id}.deskto
 %{zsh_completions_dir}/_%{name}
 
 # Locale files
-%{_datadir}/locale/{zh_CN,de_DE,nb_NO}.UTF-8/LC_MESSAGES/%{project_id}.mo
+%{_datadir}/locale/{de_DE,nb_NO,pl_PL,uk_UA,zh_CN}.UTF-8/LC_MESSAGES/%{project_id}.mo
 
 %docdir %{_datadir}/%{name}/doc
 %doc README.md
