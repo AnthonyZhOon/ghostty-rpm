@@ -68,7 +68,7 @@ interactive applications.}
 
 
 Name:           ghostty
-Version:        1.1.2
+Version:        1.1.3
 Release:        %autorelease
 Summary:        A fast, feature-rich, and cross-platform terminal emulator in Zig
 
