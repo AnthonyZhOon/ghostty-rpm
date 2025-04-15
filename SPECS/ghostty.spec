@@ -11,7 +11,7 @@
 %undefine _missing_build_ids_terminate_build
 
 %global utfcpp_version 4.0.5
-%global iterm2_color_commit 8650079de477e80a5983646e3e4d24cda1dbaefa
+%global iterm2_color_commit 4c57d8c11d352a4aeda6928b65d78794c28883a5
 %global z2d_commit 1e89605a624940c310c7a1d81b46a7c5c05919e3
 %global spirv_cross_commit 476f384eb7d9e48613c45179e502a15ab95b6b49
 %global libvaxis_commit1 1f41c121e8fc153d9ce8c6eb64b2bbab68ad7d23
@@ -285,7 +285,7 @@ Provides vim syntax and filetype plugins to highlight Ghostty config and theme f
 %prep
 # Check source signature with minisign pubkey at https://github.com/ghostty-org/ghostty/blob/main/PACKAGING.md
 minisign -Vm %{SOURCE0} -x %{SOURCE1} -P %{pubkey}
-%setup -q -n ghostty-1.1.4-main+1067cd3
+%setup -q -n ghostty-1.1.4-main+4aa875b
 # Fill zig_cache with dependency sources
 # zig will identify fetched dependencies at build time.
 %zig_extract %deps_start %deps_end
@@ -343,7 +343,27 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/%{project_id}.deskto
 %{zsh_completions_dir}/_%{name}
 
 # Locale files
-%{_datadir}/locale/{de_DE,nb_NO,pl_PL,uk_UA,zh_CN}.UTF-8/LC_MESSAGES/%{project_id}.mo
+%{expand:%{lua:
+   local locales = {
+   "ca_ES",
+   "de_DE",
+   "es_BO",
+   "fr_FR",
+   "id_ID",
+   "ja_JP",
+   "mk_MK",
+   "nb_NO",
+   "nl_NL",
+   "pl_PL",
+   "pt_BR",
+   "ru_RU",
+   "tr_TR",
+   "uk_UA",
+   "zh_CN",
+   }
+   local joined = table.concat(locales, ",")
+   print("%{_datadir}/locale/{" .. joined .. "}.UTF-8/LC_MESSAGES/%{project_id}.mo")
+}}
 
 %docdir %{_datadir}/%{name}/doc
 %doc README.md
