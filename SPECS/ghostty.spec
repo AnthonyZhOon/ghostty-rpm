@@ -290,7 +290,7 @@ Provides vim syntax and filetype plugins to highlight Ghostty config and theme f
 %prep
 # Check source signature with minisign pubkey at https://github.com/ghostty-org/ghostty/blob/main/PACKAGING.md
 minisign -Vm %{SOURCE0} -x %{SOURCE1} -P %{pubkey}
-%setup -q -n ghostty-1.1.3-main+141b697
+%setup -q
 # Fill zig_cache with dependency sources
 # zig will identify fetched dependencies at build time.
 %zig_extract %deps_start %deps_end
@@ -353,7 +353,27 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/%{project_id}.deskto
 %{zsh_completions_dir}/_%{name}
 
 # Locale files
-%{_datadir}/locale/{zh_CN,de_DE,nb_NO}.UTF-8/LC_MESSAGES/%{project_id}.mo
+%{expand:%{lua:
+   local locales = {
+   "ca_ES",
+   "de_DE",
+   "es_BO",
+   "fr_FR",
+   "id_ID",
+   "ja_JP",
+   "mk_MK",
+   "nb_NO",
+   "nl_NL",
+   "pl_PL",
+   "pt_BR",
+   "ru_RU",
+   "tr_TR",
+   "uk_UA",
+   "zh_CN",
+   }
+   local joined = table.concat(locales, ",")
+   print("%{_datadir}/locale/{" .. joined .. "}.UTF-8/LC_MESSAGES/%{project_id}.mo")
+}}
 
 %docdir %{_datadir}/%{name}/doc
 %doc README.md
