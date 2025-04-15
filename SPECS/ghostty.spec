@@ -235,6 +235,7 @@ Summary:       Terminfo for ghostty terminal
 BuildArch:     noarch
 
 Requires:      ncurses-base
+Supplements:   %{name}
 
 %description terminfo
 %{project_description}
@@ -247,6 +248,7 @@ BuildArch:     noarch
 
 Requires:      nautilus-python
 Requires:      %{name} = %{version}-%{release}
+Supplements:   %{name}
 
 %description nautilus
 Provides the 'Open in Ghostty' action to start the terminal.
@@ -257,6 +259,7 @@ BuildArch:     noarch
 
 Requires:      kf6-filesystem
 Requires:      %{name} = %{version}-%{release}
+Supplements:   %{name}
 
 %description dolphin
 Provides the 'Open in Ghostty' menu to start the terminal.
@@ -267,6 +270,7 @@ BuildArch:     noarch
 
 Requires:      vim-filesystem
 Requires:      %{name} = %{version}-%{release}
+Supplements:   %{name}
 
 %description syntax-vim
 Provides vim syntax and filetype plugins to highlight Ghostty config and theme files
@@ -324,6 +328,8 @@ rm %{buildroot}/%{_datadir}/bat/syntaxes/%{name}.sublime-syntax
 # installing under /usr/share/nvim/site will not enable the plugins without
 # adding to the nvim runtimepath variable. So not packaged
 rm %{buildroot}/%{_datadir}/nvim/site/{ftdetect,ftplugin,syntax,compiler}/%{name}.vim
+# Avoid conflict with ncurses-term packaging this terminfo file
+rm %{buildroot}/%{_datadir}/terminfo/g/ghostty
 
 
 %check
@@ -356,8 +362,7 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/%{project_id}.deskto
 
 %files terminfo
 %license LICENSE
-%{_datadir}/terminfo/g/%{name}
-# the terminfo/x/xterm-ghostty file is used as a sentinel to discover the GHOSTTY_RESOURCES_DIR
+# the terminfo/x/xterm-ghostty or terminfo/g/ghostty file is used as a sentinel to discover the GHOSTTY_RESOURCES_DIR automatically
 %{_datadir}/terminfo/x/xterm-%{name}
 
 %files nautilus
