@@ -18,7 +18,7 @@
 %global libvaxis_commit2 dc0a228a5544988d4a920cfb40be9cd28db41423
 %global glslang_version 14.2.0
 %global highway_commit 66486a10623fa0d72fe91260f96c892e41aceb06
-%global libxev_commit 3df9337a9e84450a58a2c4af434ec1a036f7b494
+%global libxev_commit 75a10d0fb374e8eb84948dcfc68d865e755e59c2
 %global imgui_commit e391fe2e66eb1c96b1624ae8444dc64c23146ef4
 %global wuffs_version 0.4.0-alpha.9
 %global ziglyph_commit b89d43d1e3fb01b6074bc1f7fc980324b04d26a5
@@ -162,6 +162,8 @@ ExclusiveArch: %{zig_arches}
 BuildRequires:  (zig >= 0.13.0 with zig < 0.14.0~)
 BuildRequires:  zig-rpm-macros
 BuildRequires:  zig-srpm-macros
+# Installing systemd unit files
+BuildRequires:  systemd-rpm-macros
 BuildRequires:  pandoc
 BuildRequires:  minisign
 # Compile gtk blueprints for UI
@@ -351,14 +353,15 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/%{project_id}.deskto
 %{bash_completions_dir}/%{name}.bash
 %{fish_completions_dir}/%{name}.fish
 %{zsh_completions_dir}/_%{name}
-
 # Locale files
 %{expand:%{lua:
    local locales = {
    "ca_ES",
    "de_DE",
+   "es_AR",
    "es_BO",
    "fr_FR",
+   "ga_IE",
    "id_ID",
    "ja_JP",
    "mk_MK",
