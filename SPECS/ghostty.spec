@@ -10,6 +10,8 @@
 %endif
 %undefine _missing_build_ids_terminate_build
 
+%global short_commit 3cf181a
+
 %global utfcpp_version 4.0.5
 %global iterm2_color_commit 4c57d8c11d352a4aeda6928b65d78794c28883a5
 %global z2d_commit 1e89605a624940c310c7a1d81b46a7c5c05919e3
@@ -289,7 +291,7 @@ Provides vim syntax and filetype plugins to highlight Ghostty config and theme f
 %prep
 # Check source signature with minisign pubkey at https://github.com/ghostty-org/ghostty/blob/main/PACKAGING.md
 minisign -Vm %{SOURCE0} -x %{SOURCE1} -P %{pubkey}
-%setup -q -n ghostty-1.1.4-main+4aa875b
+%setup -q -n ghostty-1.1.4-main+%{short_commit}
 # Fill zig_cache with dependency sources
 # zig will identify fetched dependencies at build time.
 %zig_extract %deps_start %deps_end
