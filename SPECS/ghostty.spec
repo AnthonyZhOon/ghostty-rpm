@@ -13,14 +13,14 @@
 %global short_commit 3cf181a
 
 %global utfcpp_version 4.0.5
-%global iterm2_color_commit 4c57d8c11d352a4aeda6928b65d78794c28883a5
-%global z2d_commit 1e89605a624940c310c7a1d81b46a7c5c05919e3
+%global iterm2_color_commit 6fa671fdc1daf1fcfa025cb960ffa3e7373a2ed8
+%global z2d_commit 1bf4bc81819385f4b24596445c9a7cf3b3592b08
 %global spirv_cross_commit 476f384eb7d9e48613c45179e502a15ab95b6b49
 %global libvaxis_commit1 1f41c121e8fc153d9ce8c6eb64b2bbab68ad7d23
 %global libvaxis_commit2 dc0a228a5544988d4a920cfb40be9cd28db41423
 %global glslang_version 14.2.0
 %global highway_commit 66486a10623fa0d72fe91260f96c892e41aceb06
-%global libxev_commit 3df9337a9e84450a58a2c4af434ec1a036f7b494
+%global libxev_commit 75a10d0fb374e8eb84948dcfc68d865e755e59c2
 %global imgui_commit e391fe2e66eb1c96b1624ae8444dc64c23146ef4
 %global wuffs_version 0.4.0-alpha.9
 %global ziglyph_commit b89d43d1e3fb01b6074bc1f7fc980324b04d26a5
@@ -161,8 +161,10 @@ ExclusiveArch: %{zig_arches}
 # Compile with zig, which bundles a C/C++ compiler
 # Use pandoc to build docs, minisign to check signature
 # FIXME: Upgrade to zig 0.14.0
-BuildRequires:  (zig >= 0.13.0 with zig < 0.14.0~)
+BuildRequires:  (zig >= 0.14.0 with zig < 0.15.0~)
 BuildRequires:  zig-rpm-macros
+# Installing systemd unit files
+BuildRequires:  systemd-rpm-macros
 BuildRequires:  pandoc
 BuildRequires:  minisign
 # Compile gtk blueprints for UI
@@ -340,6 +342,9 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/%{project_id}.deskto
 # Owned directory containing themes, shell integration and docs
 %{_datadir}/%{name}/
 %{_datadir}/applications/%{project_id}.desktop
+%{_metainfodir}/com.mitchellh.ghostty.metainfo.xml
+%{_userunitdir}/com.mitchellh.ghostty.service
+%{_datadir}/dbus-1/services/com.mitchellh.ghostty.service
 
 
 %{_datadir}/icons/hicolor/*/apps/%{project_id}.png
@@ -349,14 +354,15 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/%{project_id}.deskto
 %{bash_completions_dir}/%{name}.bash
 %{fish_completions_dir}/%{name}.fish
 %{zsh_completions_dir}/_%{name}
-
 # Locale files
 %{expand:%{lua:
    local locales = {
    "ca_ES",
    "de_DE",
+   "es_AR",
    "es_BO",
    "fr_FR",
+   "ga_IE",
    "id_ID",
    "ja_JP",
    "mk_MK",
