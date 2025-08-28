@@ -128,8 +128,8 @@ Summary:        A fast, feature-rich, and cross-platform terminal emulator in Zi
 
 License:        MIT AND 0BSD AND Apache-2.0 AND BSD-2-Clause AND BSD-3-Clause AND BSL-1.0 AND GPL-3.0-or-later AND LGPL-2.1-only AND MPL-2.0 AND OFL-1.1 AND (WTFPL OR CC0-1.0)
 URL:            https://ghostty.org
-Source0:        https://github.com/ghostty-org/ghostty/releases/download/tip/ghostty-source.tar.gz
-Source1:        https://github.com/ghostty-org/ghostty/releases/download/tip/ghostty-source.tar.gz.minisig
+Source0:        https://github.com/ghostty-org/ghostty/releases/download/tip/ghostty-source.tar.gz#/%{name}-%{short_commit}.tar.gz
+Source1:        https://github.com/ghostty-org/ghostty/releases/download/tip/ghostty-source.tar.gz.minisig#/%{name}-%{short_commit}.tar.gz.minisig
 
 # Take these archives from recursively searching URLs in build.zig.zon files, and build errors when not included
 Source10:       https://github.com/nemtrif/utfcpp/archive/refs/tags/v%{utfcpp_version}/utfcpp-%{utfcpp_version}.tar.gz
