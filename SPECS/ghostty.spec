@@ -342,9 +342,9 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/%{project_id}.deskto
 # Owned directory containing themes, shell integration and docs
 %{_datadir}/%{name}/
 %{_datadir}/applications/%{project_id}.desktop
-%{_metainfodir}/com.mitchellh.ghostty.metainfo.xml
-%{_userunitdir}/com.mitchellh.ghostty.service
-%{_datadir}/dbus-1/services/com.mitchellh.ghostty.service
+%{_metainfodir}/%{project_id}.metainfo.xml
+%{_userunitdir}/%{project_id}.service
+%{_datadir}/dbus-1/services/%{project_id}.service
 
 
 %{_datadir}/icons/hicolor/*/apps/%{project_id}.png
