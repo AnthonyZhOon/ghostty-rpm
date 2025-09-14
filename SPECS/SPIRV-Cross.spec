@@ -15,7 +15,7 @@ License:        Apache-2.0
 URL:            https://github.com/KhronosGroup/%{name}
 Source0:        %url/archive/vulkan-sdk-%{sdkver}.tar.gz#/%{name}-sdk-%{sdkver}.tar.gz
 
-BuildRequires:  cmake3
+BuildRequires:  cmake
 BuildRequires:  gcc-c++
 
 %description
@@ -29,27 +29,21 @@ Summary:        Shared library files for %{name}
 %package        devel
 Summary:        Development files for %{name}
 Requires:       %{name}-libs%{?_isa} = %{version}-%{release}
-Recommends:     %{name}-static%{?_isa} = %{version}-%{release}
 %description    devel
-%{project_description}
-
-%package        static
-Summary:        Static library files for %{name}
-Requires:       %{name}-devel%{?_isa} = %{version}-%{release}
-%description    static
 %{project_description}
 
 %prep
 %autosetup -p1 -n %{name}-vulkan-sdk-%{sdkver}
 
 %build
-%cmake3 -DSPIRV_CROSS_SHARED=ON
+%cmake -DSPIRV_CROSS_SHARED=ON
 %cmake_build
 
 %install
 %{cmake_install}
-# Remove cmake package files
-rm -r %{buildroot}/%{_datadir}
+# Remove unpackaged static-library files
+rm %{buildroot}/%{_libdir}/libspirv-cross-{c,core,cpp,glsl,hlsl,msl,reflect,util}.a
+rm %{buildroot}/%{_libdir}/pkgconfig/spirv-cross-c.pc
 
 
 %check
@@ -59,16 +53,13 @@ rm -r %{buildroot}/%{_datadir}
 %license LICENSE
 %doc README.md
 %{_bindir}/%{lower:%{name}}
-%files static
-%license LICENSE
-%{_libdir}/libspirv-cross-{c,core,cpp,glsl,hlsl,msl,reflect,util}.a
-%{_libdir}/pkgconfig/spirv-cross-c.pc
 %files devel
-%license LICENSE
 %{_includedir}/spirv_cross/
 %{_libdir}/pkgconfig/spirv-cross-c-shared.pc
+%{_libdir}/libspirv-cross-c-shared.so
+%{_datadir}/spirv_cross_{c,core,c_shared,cpp,glsl,hlsl,msl,reflect,util}/cmake/
 %files libs
 %license LICENSE
-%{_libdir}/libspirv-cross-c-shared.so*
+%{_libdir}/libspirv-cross-c-shared.so.0{,.*}
 %changelog
 %autochangelog
