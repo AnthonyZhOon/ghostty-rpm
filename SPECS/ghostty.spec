@@ -5,7 +5,7 @@
 %undefine _missing_build_ids_terminate_build
 
 # The github short commit of the source code
-%global short_commit 74b204b
+%global short_commit f6e4a28
 
 %global utfcpp_version 4.0.5
 %global iterm2_color_commit b314fc540434cc037c2811fc048d32854b5b78c3
@@ -69,7 +69,7 @@ interactive applications.}
 
 
 Name:           ghostty
-Version:        1.1.4~tip
+Version:        1.2.1~tip
 Release:        %autorelease
 Summary:        A fast, feature-rich, and cross-platform terminal emulator in Zig
 
@@ -266,7 +266,7 @@ Provides vim syntax and filetype plugins to highlight Ghostty config and theme f
 %prep
 # Check source signature with minisign pubkey at https://github.com/ghostty-org/ghostty/blob/main/PACKAGING.md
 minisign -Vm %{SOURCE0} -x %{SOURCE1} -P %{pubkey}
-%setup -q -n ghostty-1.1.4-main+%{short_commit}
+%setup -q -n ghostty-1.2.1-main+%{short_commit}
 # Fill zig_cache with dependency sources
 # zig will identify fetched dependencies at build time.
 %zig_extract %deps_start %deps_end
