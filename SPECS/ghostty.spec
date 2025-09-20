@@ -2,12 +2,6 @@
 # build step with `zig fetch <url>`. We can instead download the archive
 # sources and do `zig fetch <path>` to populate the package cache offline
 %bcond test 1
-# Fedora 40 doesn't have the required simdutf version
-%if 0%{?fedora} == 40
-%bcond simdutf 0
-%else
-%bcond simdutf 1
-%endif
 %undefine _missing_build_ids_terminate_build
 
 %global utfcpp_version 4.0.5
@@ -46,7 +40,7 @@
 # fixed in zig-rpm-macros-0.13.0-4
 %global build_flags %{shrink:
    --system %{_zig_cache_dir}/p \
-   %{?with_simdutf:-fsys=simdutf} \
+   -fsys=simdutf \
    -Dgtk-wayland=true \
    -Dgtk-x11=true \
    -Dsentry=false \
@@ -180,9 +174,7 @@ BuildRequires:  pkgconfig(harfbuzz)
 BuildRequires:  pkgconfig(libadwaita-1)
 BuildRequires:  pkgconfig(libpng)
 BuildRequires:  pkgconfig(oniguruma)
-%if %{with simdutf}
 BuildRequires:  pkgconfig(simdutf) >= 5.2.8
-%endif
 BuildRequires:  pkgconfig(zlib-ng)
 
 
@@ -211,9 +203,6 @@ Provides:       bundled(highway) = 0~git%{highway_commit}
 Provides:       bundled(libvaxis) = 0~git6d729a2dc3b934818dffe06d2ba3ce02841ed74b
 Provides:       bundled(libxev) = 0~gitdb6a52bafadf00360e675fefa7926e8e6c0e9931
 Provides:       bundled(mach-glfw) = 0~git37c2995f31abcf7e8378fba68ddcf4a3faa02de0
-%if %{without simdutf}
-Provides:       bundled(simdutf) = 5.2.8
-%endif
 Provides:       bundled(spirv-cross) = 13.1.1
 Provides:       bundled(wayland) = 0~git%{wayland_commit}
 Provides:       bundled(wayland-protocols) = 0~git%{wayland_protocols_commit}
