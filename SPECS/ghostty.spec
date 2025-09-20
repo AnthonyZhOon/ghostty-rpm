@@ -357,14 +357,19 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/%{project_id}.deskto
 # Locale files
 %{expand:%{lua:
    local locales = {
+   "bg_BG",
    "ca_ES",
    "de_DE",
    "es_AR",
    "es_BO",
    "fr_FR",
    "ga_IE",
+   "he_IL",
+   "hu_HU",
    "id_ID",
+   "it_IT",
    "ja_JP",
+   "ko_KR",
    "mk_MK",
    "nb_NO",
    "nl_NL",
