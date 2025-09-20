@@ -5,7 +5,7 @@
 %undefine _missing_build_ids_terminate_build
 
 %global utfcpp_version 4.0.5
-%global iterm2_color_commit e348884a00ef6c98dc837a873c4a867c9164d8a0
+%global iterm2_color_release_tag 20250915-162204-b1fe546
 %global z2d_version 0.8.1
 %global spirv_cross_commit 476f384eb7d9e48613c45179e502a15ab95b6b49
 %global libvaxis_commit1 4182b7fa42f27cf14a71dbdb54cfd82c5c6e3447
@@ -122,7 +122,7 @@ Source1:        https://release.files.ghostty.org/%{version}/ghostty-%{version}.
 
 # Take these archives from build.zig.zon.json
 Source10:       https://github.com/nemtrif/utfcpp/archive/refs/tags/v%{utfcpp_version}/utfcpp-%{utfcpp_version}.tar.gz
-Source11:       https://github.com/mbadolato/iTerm2-Color-Schemes/archive/%{iterm2_color_commit}/iTerm2-Color-Schemes-%{iterm2_color_commit}.tar.gz
+Source11:       https://github.com/mbadolato/iTerm2-Color-Schemes/releases/download/release-%{iterm2_color_release_tag}/ghostty-themes.tgz#/ghostty-themes-%{iterm2_color_release_tag}.tgz
 Source12:       https://github.com/vancluever/z2d/archive/refs/tags/v%{z2d_version}.tar.gz
 Source13:       https://github.com/KhronosGroup/SPIRV-Cross/archive/%{spirv_cross_commit}/SPIRV-Cross-%{spirv_cross_commit}.tar.gz
 # zf requires a different version of libvaxis than ghostty
