@@ -10,28 +10,31 @@
 %endif
 %undefine _missing_build_ids_terminate_build
 
-%global short_commit 3cf181a
+# The github short commit of the source code
+%global short_commit 74b204b
 
 %global utfcpp_version 4.0.5
-%global iterm2_color_commit 6fa671fdc1daf1fcfa025cb960ffa3e7373a2ed8
-%global z2d_commit 1bf4bc81819385f4b24596445c9a7cf3b3592b08
+%global iterm2_color_commit b314fc540434cc037c2811fc048d32854b5b78c3
+%global z2d_version 0.8.1
 %global spirv_cross_commit 476f384eb7d9e48613c45179e502a15ab95b6b49
 %global libvaxis_commit1 1f41c121e8fc153d9ce8c6eb64b2bbab68ad7d23
 %global libvaxis_commit2 dc0a228a5544988d4a920cfb40be9cd28db41423
+%global ghostty_gobject_version 0.15.1-2025-09-04-48-1
 %global glslang_version 14.2.0
 %global highway_commit 66486a10623fa0d72fe91260f96c892e41aceb06
-%global libxev_commit 75a10d0fb374e8eb84948dcfc68d865e755e59c2
+%global libxev_commit 7f803181b158a10fec8619f793e3b4df515566cb
 %global imgui_commit e391fe2e66eb1c96b1624ae8444dc64c23146ef4
 %global wuffs_version 0.4.0-alpha.9
 %global ziglyph_commit b89d43d1e3fb01b6074bc1f7fc980324b04d26a5
 %global zf_commit 7aacbe6d155d64d15937ca95ca6c014905eb531f
 %global zigimg_commit 31268548fe3276c0e95f318a6c0d2ab10565b58d
-%global zig_gjobject_version 0.2.2
 %global zg_commit 4a002763419a34d61dcbb1f415821b83b9bf8ddc
 %global zig_wayland_commit f3c5d503e540ada8cbcb056420de240af0c094f7 
 %global wayland_commit 9cb3d7aa9dc995ffafdbdef7ab86a949d0fb0e7d
 %global wayland_protocols_commit 258d8f88f2c8c25a830c6316f87d23ce1a0f12d9
 %global plasma_wayland_protocols_commit db525e8f9da548cffa2ac77618dd0fbe7f511b86
+%global jetbrains_mono_version 2.304
+%global nerdfont_symbols_only_version 3.4.0
 
 %global pubkey RWQlAjJC23149WL2sEpT/l0QKy7hMIFhYdQOFy0Z7z7PbneUgvlsnYcV
 
@@ -40,7 +43,7 @@
 %global _zig_cache_dir %{_builddir}/zig-cache
 
 %global deps_start 10
-%global deps_end 30
+%global deps_end 32
 
 # zig-rpm-macros is broken for system integration
 # fixed in zig-rpm-macros-0.13.0-4
@@ -80,27 +83,32 @@ Summary:        A fast, feature-rich, and cross-platform terminal emulator in Zi
 # Unbundled dependencies are stubbed and do not contain source code compiled into the result
 # These do not require their license added to a Fedora package
 #
+# ghostty-gobject:            MIT
 # ghostty:                    MIT
+# iTerm2-Color-Schemes:       MIT
 # libvaxis:                   MIT
 # libxev:                     MIT
-# plasma-wayland-protocols    LGPL-2.1-only
-# wayland                     MIT
-# wayland-protocols           MIT
-# zig-gobject                 0BSD
-# zig-wayland                 MIT
-# z2d:                        MPL-2.0
-# zf:                         MIT
-# zigimg:                     MIT
-# ziglyph:                    MIT
-# zg:                         MIT
-# iTerm2-Color-Schemes:       MIT
-# pkg/utfcpp:                 BSL-1.0
-# pkg/spirv-cross:            Apache-2.0
+# pixels                      CC0-1.0
+# pkg/cimgui:                 MIT
 # pkg/glslang:                BSD-2-Clause AND BSD-3-Clause AND GPL-3.0-or-later AND Apache-2.0 AND MIT
 # pkg/highway:                Apache-2.0 AND BSD-3-Clause
-# pkg/cimgui:                 MIT
+# pkg/spirv-cross:            Apache-2.0
+# pkg/utfcpp:                 BSL-1.0
 # pkg/wuffs:                  Apache-2.0 AND MIT
+# plasma-wayland-protocols    LGPL-2.1-only
 # vendor/glad                 (WTFPL OR CC0-1.0) AND Apache-2.0
+# wayland                     MIT
+# wayland-protocols           MIT
+# z2d:                        MPL-2.0
+# zf:                         MIT
+# zg:                         MIT
+# zigimg:                     MIT
+# ziglyph:                    MIT
+# zig-wayland                 MIT
+
+## Bundled Fonts
+# JetBrainsMono               OFL-1.1
+# NerdFontSymbolsOnly         MIT
 
 ## unbundled
 # pkg/breakpad:               MIT AND BSD-2-Clause AND BSD-3-Clause AND BSD-4-Clause AND Apache-2.0 AND MIT AND curl AND APSL-2.0 AND ClArtistic AND Unicode-3.0 AND LicenseRef-Fedora-Public-Domain AND (GPL-2.0-or-later WITH Autoconf-exception-generic)
@@ -114,27 +122,16 @@ Summary:        A fast, feature-rich, and cross-platform terminal emulator in Zi
 # zig-js:                     MIT
 # zig-objc:                   MIT
 
-# CodeNewRoman                OFL-1.1
-# GeistMono                   OFL-1.1
-# Inconsolata                 OFL-1.1
-# JetBrainsMono               OFL-1.1
-# JuliaMono                   OFL-1.1
-# KawkabMono                  OFL-1.1
-# Lilex                       OFL-1.1
-# MonaspaceNeon               OFL-1.1
-# NotoEmoji                   OFL-1.1
-# CozetteVector               MIT
-# NerdFont                    MIT AND OFL-1.1
 
-License:        MIT AND 0BSD AND Apache-2.0 AND BSD-2-Clause AND BSD-3-Clause AND BSL-1.0 AND GPL-3.0-or-later AND LGPL-2.1-only AND MPL-2.0 AND OFL-1.1 AND (WTFPL OR CC0-1.0)
+License:        MIT AND Apache-2.0 AND BSD-2-Clause AND BSD-3-Clause AND BSL-1.0 AND CC0-1.0 AND GPL-3.0-or-later AND LGPL-2.1-only AND MPL-2.0 AND OFL-1.1 AND (WTFPL OR CC0-1.0)
 URL:            https://ghostty.org
 Source0:        https://github.com/ghostty-org/ghostty/releases/download/tip/ghostty-source.tar.gz#/%{name}-%{short_commit}.tar.gz
 Source1:        https://github.com/ghostty-org/ghostty/releases/download/tip/ghostty-source.tar.gz.minisig#/%{name}-%{short_commit}.tar.gz.minisig
 
-# Take these archives from recursively searching URLs in build.zig.zon files, and build errors when not included
+# Take these archives from build.zig.zon.json
 Source10:       https://github.com/nemtrif/utfcpp/archive/refs/tags/v%{utfcpp_version}/utfcpp-%{utfcpp_version}.tar.gz
 Source11:       https://github.com/mbadolato/iTerm2-Color-Schemes/archive/%{iterm2_color_commit}/iTerm2-Color-Schemes-%{iterm2_color_commit}.tar.gz
-Source12:       https://github.com/vancluever/z2d/archive/%{z2d_commit}/z2d-%{z2d_commit}.tar.gz
+Source12:       https://github.com/vancluever/z2d/archive/refs/tags/v%{z2d_version}.tar.gz
 Source13:       https://github.com/KhronosGroup/SPIRV-Cross/archive/%{spirv_cross_commit}/SPIRV-Cross-%{spirv_cross_commit}.tar.gz
 # zf requires a different version of libvaxis than ghostty
 Source14:       https://github.com/rockorager/libvaxis/archive/%{libvaxis_commit1}/libvaxis-%{libvaxis_commit1}.tar.gz
@@ -153,14 +150,15 @@ Source25:       https://codeberg.org/ifreund/zig-wayland/archive/%{zig_wayland_c
 Source26:       https://gitlab.freedesktop.org/wayland/wayland/-/archive/%{wayland_commit}/wayland-%{wayland_commit}.tar.gz
 Source27:       https://gitlab.freedesktop.org/wayland/wayland-protocols/-/archive/%{wayland_protocols_commit}/wayland-protocols-%{wayland_protocols_commit}.tar.gz
 Source28:       https://github.com/KDE/plasma-wayland-protocols/archive/%{plasma_wayland_protocols_commit}/plasma-wayland-protocols-%{plasma_wayland_protocols_commit}.tar.gz
-Source29:       https://github.com/ianprime0509/zig-gobject/releases/download/v%{zig_gjobject_version}/bindings-gnome47.tar.zst
 # FIXME: Temporary fork until it is done in-tree
-Source30:       https://github.com/jcollie/ghostty-gobject/releases/download/0.14.0-2025-03-18-21-1/ghostty-gobject-0.14.0-2025-03-18-21-1.tar.zst
+Source29:       https://github.com/jcollie/ghostty-gobject/releases/download/%{ghostty_gobject_version}/ghostty-gobject-%{ghostty_gobject_version}.tar.zst
+Source30:       https://deps.files.ghostty.org/JetBrainsMono-%{jetbrains_mono_version}.tar.gz
+Source31:       https://deps.files.ghostty.org/NerdFontsSymbolsOnly-%{nerdfont_symbols_only_version}.tar.gz
+Source32:       https://github.com/make-github-pseudonymous-again/pixels/archive/d843c2714d32e15b48b8d7eeb480295af537f877/pixels-d843c27.tar.gz
 
 ExclusiveArch: %{zig_arches}
 # Compile with zig, which bundles a C/C++ compiler
 # Use pandoc to build docs, minisign to check signature
-# FIXME: Upgrade to zig 0.14.0
 BuildRequires:  (zig >= 0.14.0 with zig < 0.15.0~)
 BuildRequires:  zig-rpm-macros
 # Installing systemd unit files
@@ -205,22 +203,8 @@ Suggests:       %{name}-syntax-vim = %{version}-%{release}
 Suggests:       %{name}-nautilus = %{version}-%{release}
 Suggests:       %{name}-dolphin = %{version}-%{release}
 # Embedded fonts
-# see src/font/embedded.zig, most fonts are in source for tests and only
-# JetBrainsMono, Noto Color Emoji, and Noto Color are in the application.
-# Discovered with  `fc-query -f '%{fontversion}\n' ./CozetteVector.ttf | perl -E 'printf "%.3f\n", <>/65536.0'`
-Provides:       bundled(font(CodeNewRoman)) = 2.000
-Provides:       bundled(font(CozetteVector)) = 1.22.2
-Provides:       bundled(font(GeistMono)) = 1.2.0
-Provides:       bundled(font(Inconsolata)) = 3.001
-Provides:       bundled(font(JetBrainsMonoNerdFont)) = 2.304
-Provides:       bundled(font(JetBrainsMonoNoNF)) = 2.304
-Provides:       bundled(font(JuliaMono)) = 0.055
-# Version does not match known releases
-Provides:       bundled(font(KawkabMono)) = 1.000 
-Provides:       bundled(font(Lilex)) = 2.200 
-Provides:       bundled(font(MonaspaceNeon)) = 1.000
-Provides:       bundled(font(NotoColorEmoji)) = 2.034
-Provides:       bundled(font(NotoEmoji)) = 1.002
+Provides:       bundled(font(JetBrainsMonoNoNF)) = %{jetbrains_mono_version}
+Provides:       bundled(font(NerdFontSymbolsOnly)) = %{nerdfont_symbols_only_version}
 
 # Statically linked dependencies
 Provides:       bundled(glslang) = %{glslang_version}
@@ -235,10 +219,10 @@ Provides:       bundled(spirv-cross) = 13.1.1
 Provides:       bundled(wayland) = 0~git%{wayland_commit}
 Provides:       bundled(wayland-protocols) = 0~git%{wayland_protocols_commit}
 Provides:       bundled(plasma-wayland-protocols) = 0~git%{plasma_wayland_protocols_commit}
-Provides:       bundled(z2d) = 0~git%{z2d_commit}
+Provides:       bundled(z2d) = %{z2d_version}
 Provides:       bundled(zf) = 0~git%{zf_commit}
 Provides:       bundled(zg) = 0~git%{zg_commit}
-Provides:       bundled(zig-gobject) = %{zig_gjobject_version}
+Provides:       bundled(ghostty-gobject) = 0.3.0
 Provides:       bundled(ziglyph) = 0~git%{ziglyph_commit}
 Provides:       bundled(zig-wayland) = 0~git%{zig_wayland_commit}
 
@@ -343,7 +327,7 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/%{project_id}.deskto
 %{_datadir}/%{name}/
 %{_datadir}/applications/%{project_id}.desktop
 %{_metainfodir}/%{project_id}.metainfo.xml
-%{_userunitdir}/%{project_id}.service
+%{_userunitdir}/app-%{project_id}.service
 %{_datadir}/dbus-1/services/%{project_id}.service
 
 
