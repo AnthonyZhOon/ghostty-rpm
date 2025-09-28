@@ -1,3 +1,4 @@
+%bcond test 1
 %global sdkver 1.4.321
 %global project_description %{expand:
 SPIRV-Cross is a practical tool and library for performing reflection on SPIR-V
@@ -46,6 +47,11 @@ Source0:        %url/archive/vulkan-sdk-%{sdkver}.tar.gz#/%{name}-sdk-%{sdkver}.
 BuildRequires:  cmake
 BuildRequires:  gcc-c++
 
+%if %{with test}
+BuildRequires:  glslang
+BuildRequires:  spirv-tools
+%endif
+
 %description %{project_description}
 
 %package        libs
@@ -73,6 +79,7 @@ rm -r %{buildroot}/%{_datadir}/spirv_cross_{c,core,cpp,glsl,hlsl,msl,reflect,uti
 
 
 %check
+%if %{with test}
 # Upstreams tests do not support system installed glslang and spirv-tools, having spurious failures
 SPIRV_CROSS_PATH=%{buildroot}%{_bindir}/spirv-cross
 # ./test_shaders.py shaders --spirv-cross "$SPIRV_CROSS_PATH" || exit 1
@@ -88,6 +95,7 @@ SPIRV_CROSS_PATH=%{buildroot}%{_bindir}/spirv-cross
 ./test_shaders.py shaders-ue4 --msl --spirv-cross "$SPIRV_CROSS_PATH" || exit 1
 ./test_shaders.py shaders-ue4 --msl --opt --spirv-cross "$SPIRV_CROSS_PATH" || exit 1
 ./test_shaders.py shaders-ue4-no-opt --msl --spirv-cross "$SPIRV_CROSS_PATH" || exit 1
+%endif
 
 %files
 %license LICENSE LICENSES/
