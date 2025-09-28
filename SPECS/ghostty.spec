@@ -215,8 +215,7 @@ Provides:       bundled(ghostty-gobject) = 0.3.0
 Provides:       bundled(ziglyph) = 0~git%{ziglyph_commit}
 Provides:       bundled(zig-wayland) = 0~git%{zig_wayland_commit}
 
-%description
-%{project_description}
+%description %{project_description}
 
 %package terminfo
 Summary:       Terminfo for ghostty terminal
@@ -225,8 +224,7 @@ BuildArch:     noarch
 Requires:      ncurses-base
 Supplements:   %{name}
 
-%description terminfo
-%{project_description}
+%description terminfo %{project_description}
 
 Terminfo files for %{name} terminal
 
