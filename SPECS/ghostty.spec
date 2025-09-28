@@ -11,8 +11,7 @@
 %global iterm2_color_release_tag 20250915-162204-b1fe546
 %global z2d_version 0.8.1
 %global spirv_cross_commit 476f384eb7d9e48613c45179e502a15ab95b6b49
-%global libvaxis_commit1 1f41c121e8fc153d9ce8c6eb64b2bbab68ad7d23
-%global libvaxis_commit2 dc0a228a5544988d4a920cfb40be9cd28db41423
+%global libvaxis_commit 1f41c121e8fc153d9ce8c6eb64b2bbab68ad7d23
 %global ghostty_gobject_version 0.15.1-2025-09-04-48-1
 %global glslang_version 14.2.0
 %global highway_commit 66486a10623fa0d72fe91260f96c892e41aceb06
@@ -37,7 +36,7 @@
 %global _zig_cache_dir %{_builddir}/zig-cache
 
 %global deps_start 10
-%global deps_end 32
+%global deps_end 31
 
 # zig-rpm-macros is broken for system integration
 # fixed in zig-rpm-macros-0.13.0-4
@@ -48,7 +47,7 @@
    -Dgtk-x11=true \
    -Dsentry=false \
    -Dstrip=false \
-#  -Dversion-string=%{version} \
+   -Dversion-string=%{version} \
 }
 
 # populates the zig cache with dependency %1 through %2
@@ -69,7 +68,7 @@ interactive applications.}
 
 
 Name:           ghostty
-Version:        1.2.1~tip
+Version:        1.2.1+%{short_commit}
 Release:        %autorelease
 Summary:        A fast, feature-rich, and cross-platform terminal emulator in Zig
 
@@ -128,27 +127,26 @@ Source11:       https://github.com/mbadolato/iTerm2-Color-Schemes/releases/downl
 Source12:       https://github.com/vancluever/z2d/archive/refs/tags/v%{z2d_version}.tar.gz
 Source13:       https://github.com/KhronosGroup/SPIRV-Cross/archive/%{spirv_cross_commit}/SPIRV-Cross-%{spirv_cross_commit}.tar.gz
 # zf requires a different version of libvaxis than ghostty
-Source14:       https://github.com/rockorager/libvaxis/archive/%{libvaxis_commit1}/libvaxis-%{libvaxis_commit1}.tar.gz
-Source15:       https://github.com/rockorager/libvaxis/archive/%{libvaxis_commit2}/libvaxis-%{libvaxis_commit2}.tar.gz
+Source14:       https://github.com/rockorager/libvaxis/archive/%{libvaxis_commit}/libvaxis-%{libvaxis_commit}.tar.gz
 # sentry is only used for catching error dumps and not for uploading
-Source16:       https://github.com/KhronosGroup/glslang/archive/refs/tags/%{glslang_version}/glslang-%{glslang_version}.tar.gz
-Source17:       https://github.com/google/highway/archive/%{highway_commit}/highway-%{highway_commit}.tar.gz
-Source18:       https://github.com/mitchellh/libxev/archive/%{libxev_commit}/libxev-%{libxev_commit}.tar.gz
-Source19:       https://github.com/ocornut/imgui/archive/%{imgui_commit}/imgui-%{imgui_commit}.tar.gz
-Source20:       https://github.com/google/wuffs/archive/refs/tags/v%{wuffs_version}/wuffs-%{wuffs_version}.tar.gz
-Source21:       https://deps.files.ghostty.org/ziglyph-%{ziglyph_commit}.tar.gz
-Source22:       https://github.com/natecraddock/zf/archive/%{zf_commit}/zf-%{zf_commit}.tar.gz
-Source23:       https://github.com/TUSF/zigimg/archive/%{zigimg_commit}/zigimg-%{zigimg_commit}.tar.gz
-Source24:       https://codeberg.org/atman/zg/archive/%{zg_commit}.tar.gz
-Source25:       https://codeberg.org/ifreund/zig-wayland/archive/%{zig_wayland_commit}.tar.gz
-Source26:       https://gitlab.freedesktop.org/wayland/wayland/-/archive/%{wayland_commit}/wayland-%{wayland_commit}.tar.gz
-Source27:       https://gitlab.freedesktop.org/wayland/wayland-protocols/-/archive/%{wayland_protocols_commit}/wayland-protocols-%{wayland_protocols_commit}.tar.gz
-Source28:       https://github.com/KDE/plasma-wayland-protocols/archive/%{plasma_wayland_protocols_commit}/plasma-wayland-protocols-%{plasma_wayland_protocols_commit}.tar.gz
+Source15:       https://github.com/KhronosGroup/glslang/archive/refs/tags/%{glslang_version}/glslang-%{glslang_version}.tar.gz
+Source16:       https://github.com/google/highway/archive/%{highway_commit}/highway-%{highway_commit}.tar.gz
+Source17:       https://github.com/mitchellh/libxev/archive/%{libxev_commit}/libxev-%{libxev_commit}.tar.gz
+Source18:       https://github.com/ocornut/imgui/archive/%{imgui_commit}/imgui-%{imgui_commit}.tar.gz
+Source19:       https://github.com/google/wuffs/archive/refs/tags/v%{wuffs_version}/wuffs-%{wuffs_version}.tar.gz
+Source20:       https://deps.files.ghostty.org/ziglyph-%{ziglyph_commit}.tar.gz
+Source21:       https://github.com/natecraddock/zf/archive/%{zf_commit}/zf-%{zf_commit}.tar.gz
+Source22:       https://github.com/TUSF/zigimg/archive/%{zigimg_commit}/zigimg-%{zigimg_commit}.tar.gz
+Source23:       https://codeberg.org/atman/zg/archive/%{zg_commit}.tar.gz
+Source24:       https://codeberg.org/ifreund/zig-wayland/archive/%{zig_wayland_commit}.tar.gz
+Source25:       https://gitlab.freedesktop.org/wayland/wayland/-/archive/%{wayland_commit}/wayland-%{wayland_commit}.tar.gz
+Source26:       https://gitlab.freedesktop.org/wayland/wayland-protocols/-/archive/%{wayland_protocols_commit}/wayland-protocols-%{wayland_protocols_commit}.tar.gz
+Source27:       https://github.com/KDE/plasma-wayland-protocols/archive/%{plasma_wayland_protocols_commit}/plasma-wayland-protocols-%{plasma_wayland_protocols_commit}.tar.gz
 # FIXME: Temporary fork until it is done in-tree
-Source29:       https://github.com/jcollie/ghostty-gobject/releases/download/%{ghostty_gobject_version}/ghostty-gobject-%{ghostty_gobject_version}.tar.zst
-Source30:       https://deps.files.ghostty.org/JetBrainsMono-%{jetbrains_mono_version}.tar.gz
-Source31:       https://deps.files.ghostty.org/NerdFontsSymbolsOnly-%{nerdfont_symbols_only_version}.tar.gz
-Source32:       https://github.com/make-github-pseudonymous-again/pixels/archive/d843c2714d32e15b48b8d7eeb480295af537f877/pixels-d843c27.tar.gz
+Source28:       https://github.com/jcollie/ghostty-gobject/releases/download/%{ghostty_gobject_version}/ghostty-gobject-%{ghostty_gobject_version}.tar.zst
+Source29:       https://deps.files.ghostty.org/JetBrainsMono-%{jetbrains_mono_version}.tar.gz
+Source30:       https://deps.files.ghostty.org/NerdFontsSymbolsOnly-%{nerdfont_symbols_only_version}.tar.gz
+Source31:       https://github.com/make-github-pseudonymous-again/pixels/archive/d843c2714d32e15b48b8d7eeb480295af537f877/pixels-d843c27.tar.gz
 
 ExclusiveArch: %{zig_arches}
 # Compile with zig, which bundles a C/C++ compiler
@@ -185,6 +183,7 @@ BuildRequires:  fdupes
 
 %if %{with test}
 BuildRequires:  hostname
+BuildRequires:  valgrind
 %endif
 
 Requires:       %{name}-terminfo = %{version}-%{release}
@@ -273,8 +272,6 @@ minisign -Vm %{SOURCE0} -x %{SOURCE1} -P %{pubkey}
 # Find hash by building without fetch which compares against build.zig.zon hash
 # libxml2
 %stub_package  N-V-__8AAG3RoQEyRC2Vw7Qoro5SYBf62IHn3HjqtNVY6aWK
-# pixels (wuffs test)
-%stub_package  N-V-__8AADYiAAB_80AWnH1AxXC0tql9thT-R-DYO1gBqTLc
 
 %build
 %{zig_build} %{build_flags}
@@ -283,6 +280,7 @@ minisign -Vm %{SOURCE0} -x %{SOURCE1} -P %{pubkey}
 %install
 %{zig_install} %{build_flags}
 %fdupes %{buildroot}/${_datadir}
+%find_lang %{project_id}
 
 # remove unused files
 # Not supported by hicolor-icon-theme
@@ -297,17 +295,16 @@ rm %{buildroot}/%{_datadir}/nvim/site/{ftdetect,ftplugin,syntax,compiler}/%{name
 # Avoid conflict with ncurses-term packaging this terminfo file
 rm %{buildroot}/%{_datadir}/terminfo/g/ghostty
 
-
 %check
 desktop-file-validate %{buildroot}/%{_datadir}/applications/%{project_id}.desktop
 %{buildroot}/%{_bindir}/%{name} --version
 
 %if %{with test}
 # These are currently unit tests for individual features in ghostty
-%{zig_test} %{build_flags}
+%{zig_test} %{build_flags} -Dapp-runtime=none
 %endif
 
-%files
+%files -f %{project_id}.lang
 %{_bindir}/%{name}
 %license LICENSE
 # Owned directory containing themes, shell integration and docs
@@ -325,35 +322,6 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/%{project_id}.deskto
 %{bash_completions_dir}/%{name}.bash
 %{fish_completions_dir}/%{name}.fish
 %{zsh_completions_dir}/_%{name}
-# Locale files
-%{expand:%{lua:
-   local locales = {
-   "bg_BG",
-   "ca_ES",
-   "de_DE",
-   "es_AR",
-   "es_BO",
-   "fr_FR",
-   "ga_IE",
-   "he_IL",
-   "hu_HU",
-   "id_ID",
-   "it_IT",
-   "ja_JP",
-   "ko_KR",
-   "mk_MK",
-   "nb_NO",
-   "nl_NL",
-   "pl_PL",
-   "pt_BR",
-   "ru_RU",
-   "tr_TR",
-   "uk_UA",
-   "zh_CN",
-   }
-   local joined = table.concat(locales, ",")
-   print("%{_datadir}/locale/{" .. joined .. "}.UTF-8/LC_MESSAGES/%{project_id}.mo")
-}}
 
 %docdir %{_datadir}/%{name}/doc
 %doc README.md
