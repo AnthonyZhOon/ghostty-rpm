@@ -5,14 +5,14 @@
 %undefine _missing_build_ids_terminate_build
 
 # The github short commit of the source code
-%global short_commit f6e4a28
+%global short_commit e4e8a61
 
 %global utfcpp_version 4.0.5
-%global iterm2_color_release_tag 20250915-162204-b1fe546
+%global iterm2_color_release_tag 20250916-134637-76894f0
 %global z2d_version 0.8.1
 %global spirv_cross_commit 476f384eb7d9e48613c45179e502a15ab95b6b49
 %global libvaxis_commit 1f41c121e8fc153d9ce8c6eb64b2bbab68ad7d23
-%global ghostty_gobject_version 0.15.1-2025-09-04-48-1
+%global ghostty_gobject_version 2025-09-20-20-1
 %global glslang_version 14.2.0
 %global highway_commit 66486a10623fa0d72fe91260f96c892e41aceb06
 %global libxev_commit 7f803181b158a10fec8619f793e3b4df515566cb
@@ -143,7 +143,7 @@ Source25:       https://gitlab.freedesktop.org/wayland/wayland/-/archive/%{wayla
 Source26:       https://gitlab.freedesktop.org/wayland/wayland-protocols/-/archive/%{wayland_protocols_commit}/wayland-protocols-%{wayland_protocols_commit}.tar.gz
 Source27:       https://github.com/KDE/plasma-wayland-protocols/archive/%{plasma_wayland_protocols_commit}/plasma-wayland-protocols-%{plasma_wayland_protocols_commit}.tar.gz
 # FIXME: Temporary fork until it is done in-tree
-Source28:       https://github.com/jcollie/ghostty-gobject/releases/download/%{ghostty_gobject_version}/ghostty-gobject-%{ghostty_gobject_version}.tar.zst
+Source28:       https://github.com/ghostty-org/zig-gobject/releases/download/%{ghostty_gobject_version}/ghostty-gobject-%{ghostty_gobject_version}.tar.zst
 Source29:       https://deps.files.ghostty.org/JetBrainsMono-%{jetbrains_mono_version}.tar.gz
 Source30:       https://deps.files.ghostty.org/NerdFontsSymbolsOnly-%{nerdfont_symbols_only_version}.tar.gz
 Source31:       https://github.com/make-github-pseudonymous-again/pixels/archive/d843c2714d32e15b48b8d7eeb480295af537f877/pixels-d843c27.tar.gz
