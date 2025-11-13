@@ -2,9 +2,10 @@
 # build step with `zig fetch <url>`. We can instead download the archive
 # sources and do `zig fetch <path>` to populate the package cache offline
 %bcond test 0
+# %undefine _missing_build_ids_terminate_build
 
 %global utfcpp_version 4.0.5
-%global iterm2_color_release_tag 20250915-162204-b1fe546
+%global iterm2_color_release_tag 20251002-142451-4a5043e
 %global z2d_version 0.8.1
 %global spirv_cross_commit 476f384eb7d9e48613c45179e502a15ab95b6b49
 %global libvaxis_commit 1f41c121e8fc153d9ce8c6eb64b2bbab68ad7d23
@@ -30,7 +31,6 @@
 # Performance issues and debug build banner in safe
 %global _zig_release_mode fast
 %global _zig_cache_dir %{_builddir}/zig-cache
-
 
 %global deps_start 10
 %global deps_end 31
@@ -65,7 +65,7 @@ interactive applications.}
 
 
 Name:           ghostty
-Version:        1.2.0
+Version:        1.2.3
 Release:        %autorelease
 Summary:        A fast, feature-rich, and cross-platform terminal emulator in Zig
 
@@ -141,7 +141,7 @@ Source25:       https://gitlab.freedesktop.org/wayland/wayland/-/archive/%{wayla
 Source26:       https://gitlab.freedesktop.org/wayland/wayland-protocols/-/archive/%{wayland_protocols_commit}/wayland-protocols-%{wayland_protocols_commit}.tar.gz
 Source27:       https://github.com/KDE/plasma-wayland-protocols/archive/%{plasma_wayland_protocols_commit}/plasma-wayland-protocols-%{plasma_wayland_protocols_commit}.tar.gz
 # FIXME: Temporary fork until it is done in-tree
-Source28:       https://github.com/jcollie/ghostty-gobject/releases/download/%{ghostty_gobject_version}/ghostty-gobject-%{ghostty_gobject_version}.tar.zst
+Source28:       https://github.com/ghostty-org/zig-gobject/releases/download/%{ghostty_gobject_version}/ghostty-gobject-%{ghostty_gobject_version}.tar.zst
 Source29:       https://deps.files.ghostty.org/JetBrainsMono-%{jetbrains_mono_version}.tar.gz
 Source30:       https://deps.files.ghostty.org/NerdFontsSymbolsOnly-%{nerdfont_symbols_only_version}.tar.gz
 Source31:       https://github.com/make-github-pseudonymous-again/pixels/archive/d843c2714d32e15b48b8d7eeb480295af537f877/pixels-d843c27.tar.gz
@@ -208,7 +208,7 @@ Provides:       bundled(plasma-wayland-protocols) = 0~git%{plasma_wayland_protoc
 Provides:       bundled(z2d) = %{z2d_version}
 Provides:       bundled(zf) = 0~git%{zf_commit}
 Provides:       bundled(zg) = 0~git%{zg_commit}
-Provides:       bundled(ghostty-gobject) = 0.3.0
+Provides:       bundled(ghostty-gobject) = 15.1
 Provides:       bundled(ziglyph) = 0~git%{ziglyph_commit}
 Provides:       bundled(zig-wayland) = 0~git%{zig_wayland_commit}
 
@@ -292,7 +292,6 @@ rm %{buildroot}/%{_datadir}/bat/syntaxes/%{name}.sublime-syntax
 rm %{buildroot}/%{_datadir}/nvim/site/{ftdetect,ftplugin,syntax,compiler}/%{name}.vim
 # Avoid conflict with ncurses-term packaging this terminfo file
 rm %{buildroot}/%{_datadir}/terminfo/g/ghostty
-
 
 %check
 desktop-file-validate %{buildroot}/%{_datadir}/applications/%{project_id}.desktop
