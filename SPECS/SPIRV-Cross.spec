@@ -1,4 +1,7 @@
+<<<<<<< HEAD
+=======
 %bcond test 1
+>>>>>>> a19b4c7703b4db824b58167ff4cda1f6c8bbaea7
 %global sdkver 1.4.321
 %global project_description %{expand:
 SPIRV-Cross is a practical tool and library for performing reflection on SPIR-V
@@ -61,6 +64,7 @@ Summary:        Shared library files for %{name}
 %package        devel
 Summary:        Development files for %{name}
 Requires:       %{name}-libs%{?_isa} = %{version}-%{release}
+
 %description    devel %{project_description}
 
 %prep
