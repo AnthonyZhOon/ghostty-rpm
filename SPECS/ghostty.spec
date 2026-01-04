@@ -5,24 +5,26 @@
 %undefine _missing_build_ids_terminate_build
 
 # The github short commit of the source code
-%global short_commit e4e8a61
+%global short_commit 1c2db85
 
 %global utfcpp_version 4.0.5
-%global iterm2_color_release_tag 20250916-134637-76894f0
-%global z2d_version 0.8.1
+%global iterm2_color_release_tag 20251222-150520-0add1e1
+%global z2d_version 0.10.0
 %global spirv_cross_commit 476f384eb7d9e48613c45179e502a15ab95b6b49
-%global libvaxis_commit 1f41c121e8fc153d9ce8c6eb64b2bbab68ad7d23
-%global ghostty_gobject_version 2025-09-20-20-1
+%global libvaxis_commit 7dbb9fd3122e4ffad262dd7c151d80d863b68558
+%global ghostty_gobject_version 0.7.0-2025-11-08-23-1
 %global glslang_version 14.2.0
 %global highway_commit 66486a10623fa0d72fe91260f96c892e41aceb06
-%global libxev_commit 7f803181b158a10fec8619f793e3b4df515566cb
-%global imgui_commit e391fe2e66eb1c96b1624ae8444dc64c23146ef4
+%global libxev_commit 34fa50878aec6e5fa8f532867001ab3c36fae23e
+%global imgui_version 1.92.5-docking
+%global uucode_commit1 5f05f8f83a75caea201f12cc8ea32a2d82ea9732
+%global uucode_commit2 31655fba3c638229989cc524363ef5e3c7b580c1
 %global wuffs_version 0.4.0-alpha.9
 %global ziglyph_commit b89d43d1e3fb01b6074bc1f7fc980324b04d26a5
-%global zf_commit 7aacbe6d155d64d15937ca95ca6c014905eb531f
-%global zigimg_commit 31268548fe3276c0e95f318a6c0d2ab10565b58d
+%global zf_commit 3c52637b7e937c5ae61fd679717da3e276765b23
+%global zigimg_commit d7b7ab0ba0899643831ef042bd73289510b39906
 %global zg_commit 4a002763419a34d61dcbb1f415821b83b9bf8ddc
-%global zig_wayland_commit f3c5d503e540ada8cbcb056420de240af0c094f7 
+%global zig_wayland_commit 1b5c038ec10da20ed3a15b0b2a6db1c21383e8ea
 %global wayland_commit 9cb3d7aa9dc995ffafdbdef7ab86a949d0fb0e7d
 %global wayland_protocols_commit 258d8f88f2c8c25a830c6316f87d23ce1a0f12d9
 %global plasma_wayland_protocols_commit db525e8f9da548cffa2ac77618dd0fbe7f511b86
@@ -36,7 +38,7 @@
 %global _zig_cache_dir %{_builddir}/zig-cache
 
 %global deps_start 10
-%global deps_end 31
+%global deps_end 34
 
 # zig-rpm-macros is broken for system integration
 # fixed in zig-rpm-macros-0.13.0-4
@@ -68,7 +70,7 @@ interactive applications.}
 
 
 Name:           ghostty
-Version:        1.2.1+%{short_commit}
+Version:        1.3.0+%{short_commit}
 Release:        %autorelease
 Summary:        A fast, feature-rich, and cross-platform terminal emulator in Zig
 
@@ -89,6 +91,7 @@ Summary:        A fast, feature-rich, and cross-platform terminal emulator in Zi
 # pkg/utfcpp:                 BSL-1.0
 # pkg/wuffs:                  Apache-2.0 AND MIT
 # plasma-wayland-protocols    LGPL-2.1-only
+# uucode                      MIT AND Unicode-3.0
 # vendor/glad                 (WTFPL OR CC0-1.0) AND Apache-2.0
 # wayland                     MIT
 # wayland-protocols           MIT
@@ -132,21 +135,24 @@ Source14:       https://github.com/rockorager/libvaxis/archive/%{libvaxis_commit
 Source15:       https://github.com/KhronosGroup/glslang/archive/refs/tags/%{glslang_version}/glslang-%{glslang_version}.tar.gz
 Source16:       https://github.com/google/highway/archive/%{highway_commit}/highway-%{highway_commit}.tar.gz
 Source17:       https://github.com/mitchellh/libxev/archive/%{libxev_commit}/libxev-%{libxev_commit}.tar.gz
-Source18:       https://github.com/ocornut/imgui/archive/%{imgui_commit}/imgui-%{imgui_commit}.tar.gz
-Source19:       https://github.com/google/wuffs/archive/refs/tags/v%{wuffs_version}/wuffs-%{wuffs_version}.tar.gz
-Source20:       https://deps.files.ghostty.org/ziglyph-%{ziglyph_commit}.tar.gz
-Source21:       https://github.com/natecraddock/zf/archive/%{zf_commit}/zf-%{zf_commit}.tar.gz
-Source22:       https://github.com/TUSF/zigimg/archive/%{zigimg_commit}/zigimg-%{zigimg_commit}.tar.gz
-Source23:       https://codeberg.org/atman/zg/archive/%{zg_commit}.tar.gz
-Source24:       https://codeberg.org/ifreund/zig-wayland/archive/%{zig_wayland_commit}.tar.gz
-Source25:       https://gitlab.freedesktop.org/wayland/wayland/-/archive/%{wayland_commit}/wayland-%{wayland_commit}.tar.gz
-Source26:       https://gitlab.freedesktop.org/wayland/wayland-protocols/-/archive/%{wayland_protocols_commit}/wayland-protocols-%{wayland_protocols_commit}.tar.gz
-Source27:       https://github.com/KDE/plasma-wayland-protocols/archive/%{plasma_wayland_protocols_commit}/plasma-wayland-protocols-%{plasma_wayland_protocols_commit}.tar.gz
+Source18:       https://github.com/ocornut/imgui/archive/refs/tags/v%{imgui_version}/imgui-%{imgui_version}.tar.gz
+Source19:       https://deps.files.ghostty.org/DearBindings_v0.17_ImGui_v%{imgui_version}.tar.gz
+Source20:       https://github.com/google/wuffs/archive/refs/tags/v%{wuffs_version}/wuffs-%{wuffs_version}.tar.gz
+Source21:       https://deps.files.ghostty.org/ziglyph-%{ziglyph_commit}.tar.gz
+Source22:       https://github.com/natecraddock/zf/archive/%{zf_commit}/zf-%{zf_commit}.tar.gz
+Source23:       https://github.com/TUSF/zigimg/archive/%{zigimg_commit}/zigimg-%{zigimg_commit}.tar.gz
+Source24:       https://codeberg.org/atman/zg/archive/%{zg_commit}.tar.gz
+Source25:       https://codeberg.org/ifreund/zig-wayland/archive/%{zig_wayland_commit}.tar.gz
+Source26:       https://gitlab.freedesktop.org/wayland/wayland/-/archive/%{wayland_commit}/wayland-%{wayland_commit}.tar.gz
+Source27:       https://gitlab.freedesktop.org/wayland/wayland-protocols/-/archive/%{wayland_protocols_commit}/wayland-protocols-%{wayland_protocols_commit}.tar.gz
+Source28:       https://github.com/KDE/plasma-wayland-protocols/archive/%{plasma_wayland_protocols_commit}/plasma-wayland-protocols-%{plasma_wayland_protocols_commit}.tar.gz
 # FIXME: Temporary fork until it is done in-tree
-Source28:       https://github.com/ghostty-org/zig-gobject/releases/download/%{ghostty_gobject_version}/ghostty-gobject-%{ghostty_gobject_version}.tar.zst
-Source29:       https://deps.files.ghostty.org/JetBrainsMono-%{jetbrains_mono_version}.tar.gz
-Source30:       https://deps.files.ghostty.org/NerdFontsSymbolsOnly-%{nerdfont_symbols_only_version}.tar.gz
-Source31:       https://github.com/make-github-pseudonymous-again/pixels/archive/d843c2714d32e15b48b8d7eeb480295af537f877/pixels-d843c27.tar.gz
+Source29:       https://github.com/ghostty-org/zig-gobject/releases/download/%{ghostty_gobject_version}/ghostty-gobject-%{ghostty_gobject_version}.tar.zst
+Source30:       https://deps.files.ghostty.org/JetBrainsMono-%{jetbrains_mono_version}.tar.gz
+Source31:       https://deps.files.ghostty.org/NerdFontsSymbolsOnly-%{nerdfont_symbols_only_version}.tar.gz
+Source32:       https://github.com/make-github-pseudonymous-again/pixels/archive/d843c2714d32e15b48b8d7eeb480295af537f877/pixels-d843c27.tar.gz
+Source33:       https://github.com/jacobsandlund/uucode/archive/%{uucode_commit1}/uucode-%{uucode_commit1}.tar.gz
+Source34:       https://deps.files.ghostty.org/uucode-%{uucode_commit2}.tar.gz
 
 ExclusiveArch: %{zig_arches}
 # Compile with zig, which bundles a C/C++ compiler
@@ -216,6 +222,22 @@ Provides:       bundled(zig-wayland) = 0~git%{zig_wayland_commit}
 
 %description %{project_description}
 
+%package lib
+Summary:       Shared library for %{name}
+
+%description lib
+Shared library for %{name} to enable embedding terminal 
+functionality into other applications
+
+%package devel
+Summary:       Development files for %{name}
+
+Requires:     %{name}-lib%{?isa} = %{version}-%{release}
+
+%description devel
+Library headers for %{name} to enable embedding terminal 
+functionality into other applications
+
 %package terminfo
 Summary:       Terminfo for ghostty terminal
 BuildArch:     noarch
@@ -263,7 +285,7 @@ Provides vim syntax and filetype plugins to highlight Ghostty config and theme f
 %prep
 # Check source signature with minisign pubkey at https://github.com/ghostty-org/ghostty/blob/main/PACKAGING.md
 minisign -Vm %{SOURCE0} -x %{SOURCE1} -P %{pubkey}
-%setup -q -n ghostty-1.2.1-main+%{short_commit}
+%setup -q -n ghostty-1.3.0-main+%{short_commit}
 # Fill zig_cache with dependency sources
 # zig will identify fetched dependencies at build time.
 %zig_extract %deps_start %deps_end
@@ -325,6 +347,18 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/%{project_id}.deskto
 
 %docdir %{_datadir}/%{name}/doc
 %doc README.md
+
+%files lib
+%license LICENSE
+%{_includedir}/%{name}/vt.h
+%{_includedir}/%{name}/vt/{allocator,color,key,osc,paste,result,sgr,wasm}.h
+%{_includedir}/%{name}/vt/key/{encoder,event}.h
+%{_libdir}/lib%{name}-vt.so.0{,.*}
+
+%files devel
+%license LICENSE
+%{_libdir}/lib%{name}-vt.so
+%{_datadir}/pkgconfig/lib%{name}-vt.pc
 
 %files terminfo
 %license LICENSE
