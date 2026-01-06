@@ -152,7 +152,7 @@ Source30:       https://deps.files.ghostty.org/JetBrainsMono-%{jetbrains_mono_ve
 Source31:       https://deps.files.ghostty.org/NerdFontsSymbolsOnly-%{nerdfont_symbols_only_version}.tar.gz
 Source32:       https://github.com/make-github-pseudonymous-again/pixels/archive/d843c2714d32e15b48b8d7eeb480295af537f877/pixels-d843c27.tar.gz
 Source33:       https://github.com/jacobsandlund/uucode/archive/%{uucode_commit1}/uucode-%{uucode_commit1}.tar.gz
-Source34:       https://deps.files.ghostty.org/uucode-%{uucode_commit2}.tar.gz
+Source34:       https://github.com/jacobsandlund/uucode/archive/%{uucode_commit2}/uucode-%{uucode_commit2}.tar.gz
 
 ExclusiveArch: %{zig_arches}
 # Compile with zig, which bundles a C/C++ compiler
