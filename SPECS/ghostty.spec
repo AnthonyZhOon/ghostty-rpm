@@ -66,7 +66,7 @@ interactive applications.}
 
 
 Name:           ghostty
-Version:        1.3.0
+Version:        1.3.1
 Release:        %autorelease
 Summary:        A fast, feature-rich, and cross-platform terminal emulator in Zig
 
@@ -221,6 +221,8 @@ Provides:       bundled(zig-wayland) = 0~git%{zig_wayland_commit}
 
 %package lib
 Summary:       Shared library for %{name}
+# Doesn't have a versioned release upstream yet
+Version:       0.0.0
 
 %description lib
 Shared library for %{name} to enable embedding terminal 
