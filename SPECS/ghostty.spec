@@ -8,7 +8,7 @@
 %global z2d_version 0.10.0
 %global spirv_cross_commit 476f384eb7d9e48613c45179e502a15ab95b6b49
 %global libvaxis_commit 7dbb9fd3122e4ffad262dd7c151d80d863b68558
-%global ghostty_gobject_version 0.7.0-2025-11-08-23-1
+%global zig_gobject_version 0.7.0-2025-11-08-23-1
 %global glslang_version 14.2.0
 %global highway_commit 66486a10623fa0d72fe91260f96c892e41aceb06
 %global libxev_commit 34fa50878aec6e5fa8f532867001ab3c36fae23e
@@ -26,6 +26,8 @@
 %global plasma_wayland_protocols_commit db525e8f9da548cffa2ac77618dd0fbe7f511b86
 %global jetbrains_mono_version 2.304
 %global nerdfont_symbols_only_version 3.4.0
+
+%global zig_gobject_version_rpm %{gsub %{zig_gobject_version} - ~}
 
 %global pubkey RWQlAjJC23149WL2sEpT/l0QKy7hMIFhYdQOFy0Z7z7PbneUgvlsnYcV
 
@@ -74,7 +76,7 @@ Summary:        A fast, feature-rich, and cross-platform terminal emulator in Zi
 # Unbundled dependencies are stubbed and do not contain source code compiled into the result
 # These do not require their license added to a Fedora package
 #
-# ghostty-gobject:            MIT
+# zig-gobject:            MIT
 # ghostty:                    MIT
 # iTerm2-Color-Schemes:       MIT
 # libvaxis:                   MIT
@@ -102,7 +104,7 @@ Summary:        A fast, feature-rich, and cross-platform terminal emulator in Zi
 # JetBrainsMono               OFL-1.1
 # NerdFontSymbolsOnly         MIT
 
-## unbundled
+## unbundled (not included by configuration)
 # pkg/breakpad:               MIT AND BSD-2-Clause AND BSD-3-Clause AND BSD-4-Clause AND Apache-2.0 AND MIT AND curl AND APSL-2.0 AND ClArtistic AND Unicode-3.0 AND LicenseRef-Fedora-Public-Domain AND (GPL-2.0-or-later WITH Autoconf-exception-generic)
 # pkg/fontconfig:             MIT-Modern-Variant AND MIT AND HPND AND LicenseRef-Fedora-Public-Domain AND Unicode-DFS-2016
 # pkg/freetype:               (FTL OR GPL-2.0-or-later) AND (MIT or Apache-2.0)AND Zlib
@@ -128,7 +130,6 @@ Source12:       https://github.com/vancluever/z2d/archive/refs/tags/v%{z2d_versi
 Source13:       https://github.com/KhronosGroup/SPIRV-Cross/archive/%{spirv_cross_commit}/SPIRV-Cross-%{spirv_cross_commit}.tar.gz
 # zf requires a different version of libvaxis than ghostty
 Source14:       https://github.com/rockorager/libvaxis/archive/%{libvaxis_commit}/libvaxis-%{libvaxis_commit}.tar.gz
-# sentry is only used for catching error dumps and not for uploading
 Source15:       https://github.com/KhronosGroup/glslang/archive/refs/tags/%{glslang_version}/glslang-%{glslang_version}.tar.gz
 Source16:       https://github.com/google/highway/archive/%{highway_commit}/highway-%{highway_commit}.tar.gz
 Source17:       https://github.com/mitchellh/libxev/archive/%{libxev_commit}/libxev-%{libxev_commit}.tar.gz
@@ -144,7 +145,7 @@ Source26:       https://gitlab.freedesktop.org/wayland/wayland/-/archive/%{wayla
 Source27:       https://gitlab.freedesktop.org/wayland/wayland-protocols/-/archive/%{wayland_protocols_commit}/wayland-protocols-%{wayland_protocols_commit}.tar.gz
 Source28:       https://github.com/KDE/plasma-wayland-protocols/archive/%{plasma_wayland_protocols_commit}/plasma-wayland-protocols-%{plasma_wayland_protocols_commit}.tar.gz
 # FIXME: Temporary fork until it is done in-tree
-Source29:       https://github.com/ghostty-org/zig-gobject/releases/download/%{ghostty_gobject_version}/ghostty-gobject-%{ghostty_gobject_version}.tar.zst
+Source29:       https://github.com/ghostty-org/zig-gobject/releases/download/%{zig_gobject_version}/ghostty-gobject-%{zig_gobject_version}.tar.zst
 Source30:       https://deps.files.ghostty.org/JetBrainsMono-%{jetbrains_mono_version}.tar.gz
 Source31:       https://deps.files.ghostty.org/NerdFontsSymbolsOnly-%{nerdfont_symbols_only_version}.tar.gz
 Source32:       https://github.com/make-github-pseudonymous-again/pixels/archive/d843c2714d32e15b48b8d7eeb480295af537f877/pixels-d843c27.tar.gz
@@ -200,20 +201,25 @@ Suggests:       %{name}-dolphin = %{version}-%{release}
 Provides:       bundled(font(JetBrainsMonoNoNF)) = %{jetbrains_mono_version}
 Provides:       bundled(font(NerdFontSymbolsOnly)) = %{nerdfont_symbols_only_version}
 
+# Wayland protocol xml files
+Provides:       bundled(wayland) = 0~git%{wayland_commit}
+Provides:       bundled(wayland-protocols) = 0~git%{wayland_protocols_commit}
+Provides:       bundled(plasma-wayland-protocols) = 0~git%{plasma_wayland_protocols_commit}
+
+# Bundled images to test wuffs
+Provides:       bundled(pixels) = 0~git
+
 # Statically linked dependencies
 Provides:       bundled(glslang) = %{glslang_version}
 Provides:       bundled(highway) = 0~git%{highway_commit}
 Provides:       bundled(libvaxis) = 0~git6d729a2dc3b934818dffe06d2ba3ce02841ed74b
 Provides:       bundled(libxev) = 0~gitdb6a52bafadf00360e675fefa7926e8e6c0e9931
-Provides:       bundled(mach-glfw) = 0~git37c2995f31abcf7e8378fba68ddcf4a3faa02de0
 Provides:       bundled(spirv-cross) = 13.1.1
-Provides:       bundled(wayland) = 0~git%{wayland_commit}
-Provides:       bundled(wayland-protocols) = 0~git%{wayland_protocols_commit}
-Provides:       bundled(plasma-wayland-protocols) = 0~git%{plasma_wayland_protocols_commit}
 Provides:       bundled(z2d) = %{z2d_version}
 Provides:       bundled(zf) = 0~git%{zf_commit}
 Provides:       bundled(zg) = 0~git%{zg_commit}
-Provides:       bundled(ghostty-gobject) = 15.1
+# Version string uses multiple - which is not supported by rpm versioning
+Provides:       bundled(zig-gobject) = %{zig_gobject_version_rpm}
 Provides:       bundled(ziglyph) = 0~git%{ziglyph_commit}
 Provides:       bundled(zig-wayland) = 0~git%{zig_wayland_commit}
 
@@ -313,7 +319,7 @@ rm %{buildroot}/%{_datadir}/bat/syntaxes/%{name}.sublime-syntax
 # installing under /usr/share/nvim/site will not enable the plugins without
 # adding to the nvim runtimepath variable. So not packaged
 rm %{buildroot}/%{_datadir}/nvim/site/{ftdetect,ftplugin,syntax,compiler}/%{name}.vim
-# Avoid conflict with ncurses-term packaging this terminfo file
+# Avoid conflict with ncurses-term packaging a terminfo file with this name
 rm %{buildroot}/%{_datadir}/terminfo/g/ghostty
 
 %check
