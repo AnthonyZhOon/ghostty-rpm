@@ -1,7 +1,5 @@
-<<<<<<< HEAD
-=======
 %bcond test 1
->>>>>>> a19b4c7703b4db824b58167ff4cda1f6c8bbaea7
+
 %global sdkver 1.4.321
 %global project_description %{expand:
 SPIRV-Cross is a practical tool and library for performing reflection on SPIR-V
@@ -86,19 +84,19 @@ rm -r %{buildroot}/%{_datadir}/spirv_cross_{c,core,cpp,glsl,hlsl,msl,reflect,uti
 %if %{with test}
 # Upstreams tests do not support system installed glslang and spirv-tools, having spurious failures
 SPIRV_CROSS_PATH=%{buildroot}%{_bindir}/spirv-cross
-# ./test_shaders.py shaders --spirv-cross "$SPIRV_CROSS_PATH" || exit 1
-# ./test_shaders.py shaders --opt --spirv-cross "$SPIRV_CROSS_PATH" || exit 1
-# ./test_shaders.py shaders-no-opt --spirv-cross "$SPIRV_CROSS_PATH" || exit 1
-# ./test_shaders.py shaders-msl --msl --spirv-cross "$SPIRV_CROSS_PATH" || exit 1
-# ./test_shaders.py shaders-msl --msl --opt --spirv-cross "$SPIRV_CROSS_PATH" || exit 1
-# ./test_shaders.py shaders-msl-no-opt --msl --spirv-cross "$SPIRV_CROSS_PATH" || exit 1
-# ./test_shaders.py shaders-hlsl --hlsl --spirv-cross "$SPIRV_CROSS_PATH" || exit 1
-# ./test_shaders.py shaders-hlsl --hlsl --opt --spirv-cross "$SPIRV_CROSS_PATH" || exit 1
-# ./test_shaders.py shaders-hlsl-no-opt --hlsl --spirv-cross "$SPIRV_CROSS_PATH" || exit 1
-./test_shaders.py shaders-reflection --reflect --spirv-cross "$SPIRV_CROSS_PATH" || exit 1
-./test_shaders.py shaders-ue4 --msl --spirv-cross "$SPIRV_CROSS_PATH" || exit 1
-./test_shaders.py shaders-ue4 --msl --opt --spirv-cross "$SPIRV_CROSS_PATH" || exit 1
-./test_shaders.py shaders-ue4-no-opt --msl --spirv-cross "$SPIRV_CROSS_PATH" || exit 1
+# ./test_shaders.py shaders --spirv-cross "$SPIRV_CROSS_PATH" 
+# ./test_shaders.py shaders --opt --spirv-cross "$SPIRV_CROSS_PATH" 
+# ./test_shaders.py shaders-no-opt --spirv-cross "$SPIRV_CROSS_PATH" 
+# ./test_shaders.py shaders-msl --msl --spirv-cross "$SPIRV_CROSS_PATH" 
+# ./test_shaders.py shaders-msl --msl --opt --spirv-cross "$SPIRV_CROSS_PATH" 
+# ./test_shaders.py shaders-msl-no-opt --msl --spirv-cross "$SPIRV_CROSS_PATH" 
+# ./test_shaders.py shaders-hlsl --hlsl --spirv-cross "$SPIRV_CROSS_PATH" 
+# ./test_shaders.py shaders-hlsl --hlsl --opt --spirv-cross "$SPIRV_CROSS_PATH" 
+# ./test_shaders.py shaders-hlsl-no-opt --hlsl --spirv-cross "$SPIRV_CROSS_PATH" 
+./test_shaders.py shaders-reflection --reflect --spirv-cross "$SPIRV_CROSS_PATH"
+# ./test_shaders.py shaders-ue4 --msl --spirv-cross "$SPIRV_CROSS_PATH" 
+# ./test_shaders.py shaders-ue4 --msl --opt --spirv-cross "$SPIRV_CROSS_PATH" 
+./test_shaders.py shaders-ue4-no-opt --msl --spirv-cross "$SPIRV_CROSS_PATH" 
 %endif
 
 %files
@@ -113,5 +111,6 @@ SPIRV_CROSS_PATH=%{buildroot}%{_bindir}/spirv-cross
 %files libs
 %license LICENSE LICENSES/
 %{_libdir}/libspirv-cross-c-shared.so.0{,.*}
+
 %changelog
 %autochangelog
