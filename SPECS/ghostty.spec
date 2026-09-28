@@ -76,7 +76,7 @@ Summary:        A fast, feature-rich, and cross-platform terminal emulator in Zi
 # Unbundled dependencies are stubbed and do not contain source code compiled into the result
 # These do not require their license added to a Fedora package
 #
-# zig-gobject:            MIT
+# zig-gobject:                MIT
 # ghostty:                    MIT
 # iTerm2-Color-Schemes:       MIT
 # libvaxis:                   MIT
