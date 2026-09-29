@@ -1,6 +1,5 @@
-# To handle zig package management which requires a cache directory of its dependencies
-# build step with `zig fetch <url>`. We can instead download the archive
-# sources and do `zig fetch <path>` to populate the package cache offline
+# Zig 0.16 fetches dependencies into the project-local zig-pkg directory.
+# The RPM build uses those extracted packages in offline --system mode.
 %bcond test 1
 %undefine _missing_build_ids_terminate_build
 
@@ -8,25 +7,28 @@
 %global short_commit 1c2db85
 
 %global utfcpp_version 4.0.5
-%global iterm2_color_release_tag 20251222-150520-0add1e1
-%global z2d_version 0.10.0
+%global iterm2_color_release_tag 20260921-150923-0b55a9e
+%global z2d_version 0.12.1
+%global z2d_commit 7dbae85c81784dba9988320bf9543ed9a81350c8
 %global spirv_cross_commit 476f384eb7d9e48613c45179e502a15ab95b6b49
-%global libvaxis_commit 7dbb9fd3122e4ffad262dd7c151d80d863b68558
-%global ghostty_gobject_version 0.7.0-2025-11-08-23-1
+%global translate_c_commit 4e879eb8aba615de112eabd1231ea6e01920cead
+%global aro_commit f97cdfc3779aec4b242299e2fc9a1c828c3547c6
+%global libvaxis_commit 1dbbe575dff4586fe51e3217aa5c3fecdcbb6089
+%global libvaxis_zf_commit c1e1f23be38951c425cdf31af455ba23ef178940
+%global ghostty_gobject_version 0.3.2-2026-07-28-36-1
 %global glslang_version 14.2.0
 %global highway_commit 66486a10623fa0d72fe91260f96c892e41aceb06
-%global libxev_commit 34fa50878aec6e5fa8f532867001ab3c36fae23e
+%global libxev_commit 9ce8e8e6ff89e583258a7f8e7adeeeaeae8611bf
 %global imgui_version 1.92.5-docking
-%global uucode_commit1 5f05f8f83a75caea201f12cc8ea32a2d82ea9732
-%global uucode_commit2 31655fba3c638229989cc524363ef5e3c7b580c1
-%global wuffs_version 0.4.0-alpha.9
-%global ziglyph_commit b89d43d1e3fb01b6074bc1f7fc980324b04d26a5
-%global zf_commit 3c52637b7e937c5ae61fd679717da3e276765b23
-%global zigimg_commit d7b7ab0ba0899643831ef042bd73289510b39906
-%global zg_commit 4a002763419a34d61dcbb1f415821b83b9bf8ddc
-%global zig_wayland_commit 1b5c038ec10da20ed3a15b0b2a6db1c21383e8ea
+%global uucode_commit1 2826a37a4562284fdacd8fa029d49509cc9bffcd
+%global uucode_commit2 9d55524551411b493cca41ca06363625d90aff1e
+%global wuffs_version 0.3.5
+%global zf_commit c35c421f84895193246db06c40683c1a30e616ef
+%global zigimg_commit d695acd97c02e57bb151e8f659d1280f5cd6ca70
+%global zig_wayland_version 0.6.0
 %global wayland_commit 9cb3d7aa9dc995ffafdbdef7ab86a949d0fb0e7d
 %global wayland_protocols_commit 258d8f88f2c8c25a830c6316f87d23ce1a0f12d9
+%global wayland_protocols_version 1.47
 %global plasma_wayland_protocols_commit db525e8f9da548cffa2ac77618dd0fbe7f511b86
 %global jetbrains_mono_version 2.304
 %global nerdfont_symbols_only_version 3.4.0
@@ -36,14 +38,16 @@
 # Performance issues and debug build banner in safe
 %global _zig_release_mode fast
 %global _zig_cache_dir %{_builddir}/zig-cache
+# zig-rpm-macros defaults this to the relative project-local path.  Zig 0.16
+# requires an absolute package directory for dependencies that run build.zig.
+%global _zig_system_integration --system %{_builddir}/%{buildsubdir}/zig-pkg
 
 %global deps_start 10
-%global deps_end 34
+%global deps_end 36
 
 # zig-rpm-macros is broken for system integration
 # fixed in zig-rpm-macros-0.13.0-4
 %global build_flags %{shrink:
-   --system %{_zig_cache_dir}/p \
    -fsys=simdutf \
    -Dgtk-wayland=true \
    -Dgtk-x11=true \
@@ -80,6 +84,7 @@ Summary:        A fast, feature-rich, and cross-platform terminal emulator in Zi
 #
 # ghostty-gobject:            MIT
 # ghostty:                    MIT
+# ghostty_nautilus.py:        GPL-2.0-or-later
 # iTerm2-Color-Schemes:       MIT
 # libvaxis:                   MIT
 # libxev:                     MIT
@@ -97,10 +102,12 @@ Summary:        A fast, feature-rich, and cross-platform terminal emulator in Zi
 # wayland-protocols           MIT
 # z2d:                        MPL-2.0
 # zf:                         MIT
-# zg:                         MIT
 # zigimg:                     MIT
-# ziglyph:                    MIT
 # zig-wayland                 MIT
+
+## Build-only bundled sources included in the source RPM
+# aro:                        MIT
+# translate-c:                MIT
 
 ## Bundled Fonts
 # JetBrainsMono               OFL-1.1
@@ -119,7 +126,7 @@ Summary:        A fast, feature-rich, and cross-platform terminal emulator in Zi
 # zig-objc:                   MIT
 
 
-License:        MIT AND Apache-2.0 AND BSD-2-Clause AND BSD-3-Clause AND BSL-1.0 AND CC0-1.0 AND GPL-3.0-or-later AND LGPL-2.1-only AND MPL-2.0 AND OFL-1.1 AND (WTFPL OR CC0-1.0)
+License:        MIT AND Apache-2.0 AND BSD-2-Clause AND BSD-3-Clause AND BSL-1.0 AND CC0-1.0 AND GPL-2.0-or-later AND GPL-3.0-or-later AND LGPL-2.1-only AND MPL-2.0 AND OFL-1.1 AND Unicode-3.0 AND (WTFPL OR CC0-1.0)
 URL:            https://ghostty.org
 Source0:        https://github.com/ghostty-org/ghostty/releases/download/tip/ghostty-source.tar.gz#/%{name}-%{short_commit}.tar.gz
 Source1:        https://github.com/ghostty-org/ghostty/releases/download/tip/ghostty-source.tar.gz.minisig#/%{name}-%{short_commit}.tar.gz.minisig
@@ -127,37 +134,40 @@ Source1:        https://github.com/ghostty-org/ghostty/releases/download/tip/gho
 # Take these archives from build.zig.zon.json
 Source10:       https://github.com/nemtrif/utfcpp/archive/refs/tags/v%{utfcpp_version}/utfcpp-%{utfcpp_version}.tar.gz
 Source11:       https://github.com/mbadolato/iTerm2-Color-Schemes/releases/download/release-%{iterm2_color_release_tag}/ghostty-themes.tgz#/ghostty-themes-%{iterm2_color_release_tag}.tgz
-Source12:       https://github.com/vancluever/z2d/archive/refs/tags/v%{z2d_version}.tar.gz
+Source12:       https://github.com/vancluever/z2d/archive/%{z2d_commit}/z2d-%{z2d_commit}.tar.gz
 Source13:       https://github.com/KhronosGroup/SPIRV-Cross/archive/%{spirv_cross_commit}/SPIRV-Cross-%{spirv_cross_commit}.tar.gz
 # zf requires a different version of libvaxis than ghostty
-Source14:       https://github.com/rockorager/libvaxis/archive/%{libvaxis_commit}/libvaxis-%{libvaxis_commit}.tar.gz
+Source14:       https://github.com/rockorager/libvaxis/archive/%{libvaxis_zf_commit}/libvaxis-%{libvaxis_zf_commit}.tar.gz
 # sentry is only used for catching error dumps and not for uploading
 Source15:       https://github.com/KhronosGroup/glslang/archive/refs/tags/%{glslang_version}/glslang-%{glslang_version}.tar.gz
 Source16:       https://github.com/google/highway/archive/%{highway_commit}/highway-%{highway_commit}.tar.gz
 Source17:       https://github.com/mitchellh/libxev/archive/%{libxev_commit}/libxev-%{libxev_commit}.tar.gz
 Source18:       https://github.com/ocornut/imgui/archive/refs/tags/v%{imgui_version}/imgui-%{imgui_version}.tar.gz
 Source19:       https://deps.files.ghostty.org/DearBindings_v0.17_ImGui_v%{imgui_version}.tar.gz
-Source20:       https://github.com/google/wuffs/archive/refs/tags/v%{wuffs_version}/wuffs-%{wuffs_version}.tar.gz
-Source21:       https://deps.files.ghostty.org/ziglyph-%{ziglyph_commit}.tar.gz
-Source22:       https://github.com/natecraddock/zf/archive/%{zf_commit}/zf-%{zf_commit}.tar.gz
-Source23:       https://github.com/TUSF/zigimg/archive/%{zigimg_commit}/zigimg-%{zigimg_commit}.tar.gz
-Source24:       https://codeberg.org/atman/zg/archive/%{zg_commit}.tar.gz
-Source25:       https://codeberg.org/ifreund/zig-wayland/archive/%{zig_wayland_commit}.tar.gz
-Source26:       https://gitlab.freedesktop.org/wayland/wayland/-/archive/%{wayland_commit}/wayland-%{wayland_commit}.tar.gz
-Source27:       https://gitlab.freedesktop.org/wayland/wayland-protocols/-/archive/%{wayland_protocols_commit}/wayland-protocols-%{wayland_protocols_commit}.tar.gz
-Source28:       https://github.com/KDE/plasma-wayland-protocols/archive/%{plasma_wayland_protocols_commit}/plasma-wayland-protocols-%{plasma_wayland_protocols_commit}.tar.gz
+Source20:       https://github.com/google/wuffs-mirror-release-c/archive/refs/tags/v%{wuffs_version}/wuffs-mirror-release-c-v%{wuffs_version}.tar.gz
+Source21:       https://github.com/natecraddock/zf/archive/%{zf_commit}/zf-%{zf_commit}.tar.gz
+Source22:       https://github.com/zigimg/zigimg/archive/%{zigimg_commit}/zigimg-%{zigimg_commit}.tar.gz
+Source23:       https://codeberg.org/ifreund/zig-wayland/archive/v%{zig_wayland_version}.tar.gz
+Source24:       https://gitlab.freedesktop.org/wayland/wayland/-/archive/%{wayland_commit}/wayland-%{wayland_commit}.tar.gz
+Source25:       https://gitlab.freedesktop.org/wayland/wayland-protocols/-/archive/%{wayland_protocols_commit}/wayland-protocols-%{wayland_protocols_commit}.tar.gz
+Source26:       https://github.com/KDE/plasma-wayland-protocols/archive/%{plasma_wayland_protocols_commit}/plasma-wayland-protocols-%{plasma_wayland_protocols_commit}.tar.gz
 # FIXME: Temporary fork until it is done in-tree
-Source29:       https://github.com/ghostty-org/zig-gobject/releases/download/%{ghostty_gobject_version}/ghostty-gobject-%{ghostty_gobject_version}.tar.zst
-Source30:       https://deps.files.ghostty.org/JetBrainsMono-%{jetbrains_mono_version}.tar.gz
-Source31:       https://deps.files.ghostty.org/NerdFontsSymbolsOnly-%{nerdfont_symbols_only_version}.tar.gz
-Source32:       https://github.com/make-github-pseudonymous-again/pixels/archive/d843c2714d32e15b48b8d7eeb480295af537f877/pixels-d843c27.tar.gz
-Source33:       https://github.com/jacobsandlund/uucode/archive/%{uucode_commit1}/uucode-%{uucode_commit1}.tar.gz
-Source34:       https://github.com/jacobsandlund/uucode/archive/%{uucode_commit2}/uucode-%{uucode_commit2}.tar.gz
+Source27:       https://github.com/ghostty-org/zig-gobject/releases/download/0.10.0-2026-07-28-36-1/ghostty-gobject-0.10.0-2026-07-28-36-1.tar.zst
+Source28:       https://deps.files.ghostty.org/JetBrainsMono-%{jetbrains_mono_version}.tar.gz
+Source29:       https://deps.files.ghostty.org/NerdFontsSymbolsOnly-%{nerdfont_symbols_only_version}.tar.gz
+Source30:       https://github.com/make-github-pseudonymous-again/pixels/archive/d843c2714d32e15b48b8d7eeb480295af537f877/pixels-d843c27.tar.gz
+Source31:       https://github.com/jacobsandlund/uucode/archive/%{uucode_commit1}/uucode-%{uucode_commit1}.tar.gz
+Source32:       https://github.com/jacobsandlund/uucode/archive/%{uucode_commit2}/uucode-%{uucode_commit2}.tar.gz
+Source33:       https://codeberg.org/vancluever/translate-c/archive/%{translate_c_commit}.tar.gz
+Source34:       https://github.com/rockorager/libvaxis/archive/%{libvaxis_commit}/libvaxis-%{libvaxis_commit}.tar.gz
+Source35:       https://github.com/vancluever/arocc/archive/%{aro_commit}/arocc-%{aro_commit}.tar.gz
+Source36:       https://gitlab.freedesktop.org/wayland/wayland-protocols/-/archive/%{wayland_protocols_version}/wayland-protocols-%{wayland_protocols_version}.tar.gz
+Source37:       https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt#/GPL-2.0-or-later.txt
 
 ExclusiveArch: %{zig_arches}
 # Compile with zig, which bundles a C/C++ compiler
 # Use pandoc to build docs, minisign to check signature
-BuildRequires:  (zig >= 0.14.0 with zig < 0.15.0~)
+BuildRequires:  (zig >= 0.16.0 with zig < 0.17.0~)
 BuildRequires:  zig-rpm-macros
 # Installing systemd unit files
 BuildRequires:  systemd-rpm-macros
@@ -165,6 +175,8 @@ BuildRequires:  pandoc
 BuildRequires:  minisign
 # Compile gtk blueprints for UI
 BuildRequires:  blueprint-compiler
+# Fix the static archive produced by Zig when system libraries are enabled
+BuildRequires:  binutils
 # Compiling locale files
 BuildRequires:  gettext
 BuildRequires:  zig-rpm-macros
@@ -206,19 +218,21 @@ Provides:       bundled(font(NerdFontSymbolsOnly)) = %{nerdfont_symbols_only_ver
 # Statically linked dependencies
 Provides:       bundled(glslang) = %{glslang_version}
 Provides:       bundled(highway) = 0~git%{highway_commit}
-Provides:       bundled(libvaxis) = 0~git6d729a2dc3b934818dffe06d2ba3ce02841ed74b
-Provides:       bundled(libxev) = 0~gitdb6a52bafadf00360e675fefa7926e8e6c0e9931
+Provides:       bundled(libvaxis) = 0~git%{libvaxis_commit}
+Provides:       bundled(libxev) = 0~git%{libxev_commit}
 Provides:       bundled(mach-glfw) = 0~git37c2995f31abcf7e8378fba68ddcf4a3faa02de0
 Provides:       bundled(spirv-cross) = 13.1.1
+Provides:       bundled(uucode) = 0~git%{uucode_commit1}
+Provides:       bundled(uucode) = 0~git%{uucode_commit2}
 Provides:       bundled(wayland) = 0~git%{wayland_commit}
-Provides:       bundled(wayland-protocols) = 0~git%{wayland_protocols_commit}
+Provides:       bundled(wayland-protocols) = %{wayland_protocols_version}
 Provides:       bundled(plasma-wayland-protocols) = 0~git%{plasma_wayland_protocols_commit}
+Provides:       bundled(wuffs) = %{wuffs_version}
 Provides:       bundled(z2d) = %{z2d_version}
 Provides:       bundled(zf) = 0~git%{zf_commit}
-Provides:       bundled(zg) = 0~git%{zg_commit}
-Provides:       bundled(ghostty-gobject) = 0.3.0
-Provides:       bundled(ziglyph) = 0~git%{ziglyph_commit}
-Provides:       bundled(zig-wayland) = 0~git%{zig_wayland_commit}
+Provides:       bundled(zigimg) = 0~git%{zigimg_commit}
+Provides:       bundled(ghostty-gobject) = 0.3.2
+Provides:       bundled(zig-wayland) = %{zig_wayland_version}
 
 %description %{project_description}
 
@@ -251,6 +265,7 @@ Terminfo files for %{name} terminal
 
 %package nautilus
 Summary:       Nautilus extension for %{name}
+License:       GPL-2.0-or-later
 BuildArch:     noarch
 
 Requires:      nautilus-python
@@ -280,14 +295,15 @@ Requires:      %{name} = %{version}-%{release}
 Supplements:   %{name}
 
 %description syntax-vim
-Provides vim syntax and filetype plugins to highlight Ghostty config and theme files
+Provides Vim syntax and file-type plugins to highlight Ghostty configuration
+and theme files.
 
 %prep
 # Check source signature with minisign pubkey at https://github.com/ghostty-org/ghostty/blob/main/PACKAGING.md
 minisign -Vm %{SOURCE0} -x %{SOURCE1} -P %{pubkey}
 %setup -q -n ghostty-1.3.0-main+%{short_commit}
-# Fill zig_cache with dependency sources
-# zig will identify fetched dependencies at build time.
+
+%zig_prep
 %zig_extract %deps_start %deps_end
 
 # stubbing some packages that don't need bundled sources as we opt to dynamic link
@@ -301,6 +317,25 @@ minisign -Vm %{SOURCE0} -x %{SOURCE1} -P %{pubkey}
 
 %install
 %{zig_install} %{build_flags}
+
+# The Nautilus extension is GPL-2.0-or-later while the main project is MIT.
+install -Dpm0644 %{SOURCE37} \
+    %{buildroot}%{_licensedir}/%{name}-nautilus/GPL-2.0-or-later.txt
+
+# Zig's archive combiner includes the dynamically linked system simdutf object
+# in the static archive. Keep simdutf external as declared by the pkg-config
+# metadata and leave only relocatable objects in the archive.
+ar d %{buildroot}%{_libdir}/lib%{name}-vt.a libsimdutf.so
+ranlib %{buildroot}%{_libdir}/lib%{name}-vt.a
+
+# These describe architecture-specific libraries, so install them in libdir
+# and correct upstream's lib path for multilib platforms.
+install -d %{buildroot}%{_libdir}/pkgconfig
+mv %{buildroot}%{_datadir}/pkgconfig/lib%{name}-vt{,-static}.pc \
+    %{buildroot}%{_libdir}/pkgconfig/
+sed -i 's|^libdir=${prefix}/lib$|libdir=%{_libdir}|' \
+    %{buildroot}%{_libdir}/pkgconfig/lib%{name}-vt{,-static}.pc
+
 %fdupes %{buildroot}/${_datadir}
 %find_lang %{project_id}
 
@@ -350,15 +385,17 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/%{project_id}.deskto
 
 %files lib
 %license LICENSE
-%{_includedir}/%{name}/vt.h
-%{_includedir}/%{name}/vt/{allocator,color,key,osc,paste,result,sgr,wasm}.h
-%{_includedir}/%{name}/vt/key/{encoder,event}.h
 %{_libdir}/lib%{name}-vt.so.0{,.*}
 
 %files devel
 %license LICENSE
+%{_includedir}/%{name}/vt.h
+%{_includedir}/%{name}/vt/{allocator,build_info,color,color_scheme,device,focus,formatter,grid_ref,grid_ref_tracked,io,key,kitty_graphics,modes,mouse,osc,paste,point,render,screen,search,selection,sgr,size_report,snapshot,style,sys,terminal,types,unicode,wasm}.h
+%{_includedir}/%{name}/vt/key/{encoder,event}.h
+%{_includedir}/%{name}/vt/mouse/{encoder,event}.h
 %{_libdir}/lib%{name}-vt.so
-%{_datadir}/pkgconfig/lib%{name}-vt.pc
+%{_libdir}/lib%{name}-vt.a
+%{_libdir}/pkgconfig/lib%{name}-vt{,-static}.pc
 
 %files terminfo
 %license LICENSE
@@ -366,7 +403,7 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/%{project_id}.deskto
 %{_datadir}/terminfo/x/xterm-%{name}
 
 %files nautilus
-%license LICENSE
+%license %{_licensedir}/%{name}-nautilus/GPL-2.0-or-later.txt
 %{_datadir}/nautilus-python/extensions/%{name}.py
 
 %files syntax-vim
