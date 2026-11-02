@@ -2,7 +2,6 @@
 # The RPM build uses those extracted packages in offline --system mode.
 %bcond test 1
 
-%global iterm2_color_release_tag 20261019-151001-86a776d
 %global z2d_version 0.13.0
 %global z2d_commit 40af3e84a4e15a9f31d126b3f281f23ce6a3dae5
 %global spirv_cross_commit 476f384eb7d9e48613c45179e502a15ab95b6b49
@@ -41,7 +40,7 @@
 # Zig 0.17 applies DESTDIR only to relative install subdirectories.
 %global _zig_install_options --prefix %{_prefix} --prefix-lib-dir %{_lib}
 
-%global deps_start 11
+%global deps_start 12
 %global deps_end 34
 
 # populates the zig cache with dependency %1 through %2
@@ -75,6 +74,7 @@ Summary:        A fast, feature-rich, and cross-platform terminal emulator in Zi
    -Dgtk-x11=true \
    -Dsentry=false \
    -Dstrip=false \
+   -Demit-themes=false \
    -Dinstalled-exe-path=%{_bindir}/ghostty \
    -Dversion-string=%{version} \
 }
@@ -86,7 +86,6 @@ Summary:        A fast, feature-rich, and cross-platform terminal emulator in Zi
 # zig-gobject:                MIT
 # ghostty:                    MIT
 # ghostty_nautilus.py:        GPL-2.0-or-later
-# iTerm2-Color-Schemes:       MIT
 # libvaxis:                   MIT
 # libxev:                     MIT
 # pixels                      CC0-1.0
@@ -133,7 +132,6 @@ Source0:        https://release.files.ghostty.org/%{version}/ghostty-%{version}.
 Source1:        https://release.files.ghostty.org/%{version}/ghostty-%{version}.tar.gz.minisig
 
 # Take these archives from build.zig.zon.json
-Source11:       https://github.com/mbadolato/iTerm2-Color-Schemes/releases/download/release-%{iterm2_color_release_tag}/ghostty-themes.tgz#/ghostty-themes-%{iterm2_color_release_tag}.tgz
 Source12:       https://github.com/vancluever/z2d/archive/%{z2d_commit}/z2d-%{z2d_commit}.tar.gz
 Source13:       https://github.com/KhronosGroup/SPIRV-Cross/archive/%{spirv_cross_commit}/SPIRV-Cross-%{spirv_cross_commit}.tar.gz
 Source14:       https://github.com/KhronosGroup/glslang/archive/refs/tags/%{glslang_version}/glslang-%{glslang_version}.tar.gz
@@ -378,7 +376,7 @@ desktop-file-validate %{buildroot}/%{_datadir}/applications/%{project_id}.deskto
 %files -f %{project_id}.lang
 %{_bindir}/%{name}
 %license LICENSE
-# Owned directory containing themes, shell integration and docs
+# Owned directory containing shell integration and docs
 %{_datadir}/%{name}/
 %{_datadir}/applications/%{project_id}.desktop
 %{_metainfodir}/%{project_id}.metainfo.xml
